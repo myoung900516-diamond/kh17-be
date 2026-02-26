@@ -8,3 +8,15 @@
 - 자바는 컴파일러 방식이면서, 가상머신(에뮬레이터)을 이용한 독립적인 구조를 가진다
 - 자바의 가상머신을 JVM(Java Virtual Machine)이라고 부르며, 컴파일러와 합쳐서 JDK(Java Development Kit)라 부른다
 - amazon corretto는 아마존 이라는 회사에서 배포하는 JDK이다.
+- 확인은 터미널에서 한다 (Windows + R 입력 후 cmd 입력 확인)
+
+```
+  java --version
+```
+
+- 자바는 1부터 25까지 버전이 존재한다
+- 현재 실존하는 자바 버전은 8,11,17,21 네 개이다. (LTS버전 - 장기 지원 버전)
+
+- Eclipse와 같은 프로그램은 IDE(통합 개발 환경)라 부른다. 
+- 코드 작성부터 프로젝트 관리 및 실행, Github 연결까지 모두 수행해주는 올인원 에디터이다.
+- Eclipse외에도 vscode, IntelliJ(인텔리제이)등이 존재
