@@ -55,4 +55,4 @@
 ![카카오 무지](https://i.namu.wiki/i/h5gTVbR7kDn-bBshoThHnt42y68U48Jiln6DIpK-TwDXLrk6G_bu7l6egvkD_iNYPBkGbY028XxO2CYjHJ0oMA.webp)
 
 내가 가진 이미지를 넣으려면 Github에 이미지를 올려둔 뒤 그 주소를 써아한다. 
-![다이아몬드]()
+![다이아몬드](./스크린샷 2026-02-26 121512.png)
