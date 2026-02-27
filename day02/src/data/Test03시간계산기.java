@@ -15,6 +15,7 @@ public class Test03시간계산기 {
     	int total = yesterdayTotal + todayTotal;
     	//출력
     	System.out.println(total);
+    	System.out.println(total/60 + "시간" + total%60 + "분");
     	
 
     	
