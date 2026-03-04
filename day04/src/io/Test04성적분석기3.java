@@ -1,13 +1,19 @@
 package io;
 
+import java.util.Scanner;
 
 public class Test04성적분석기3 {
 	public static void main(String[] args) {
 		
 		//입력
-		int score1 = 84;
-		int score2 = 93;
-		int score3 = 38;
+		Scanner sc = new Scanner(System.in);
+		System.out.print("1과목 점수 : ");
+		int score1 = sc.nextInt();
+		System.out.print("2과목 점수");
+		int score2 = sc.nextInt();
+		System.out.print("3과목 점수");
+		int score3 = sc.nextInt();
+		
 		
 
 		
