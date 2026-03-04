@@ -19,7 +19,10 @@ public class Test03결제요금계산기 {
 		//처리
 		int price = pricePerPerson * person;
 		
-		double discount = (double)price * 0.85;
+		double discount = (double)price * 0.85; //권장하지 않음. 
+		
+		//문제에 주어진 값이 코딩에 들어가야함
+		
 		
 		
 		//출력
