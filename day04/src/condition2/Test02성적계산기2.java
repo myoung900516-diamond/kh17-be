@@ -20,7 +20,7 @@ public class Test02성적계산기2 {
 		int total = kor + eng + math;
 		double average = (double)total/3;
 		//String grade = "A" or "B" or "C" or "D";
-		String grade;
+		String grade; //char 는 A+못써서 미래를 보고 string을 씀
 		if(average >= 90) {
 			grade = "A";
 		}
