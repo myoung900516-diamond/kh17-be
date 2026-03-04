@@ -20,7 +20,7 @@ public class Test02지각판정기5 {
 		
 		int standard = stdHour * 60 + stdMinute;;
 		
-		boolean safe = convert <= standard;
+		//boolean safe = convert <= standard;
 		
 		
 		//출력
@@ -29,7 +29,7 @@ public class Test02지각판정기5 {
 		//   (safe가 false와 같다 == safe 가 아니면)
 		//if(safe == true) {
 		//굳이 두번 물어봐야 둘 중 하나를 출력할 수 있을까?
-		if(safe) {
+		if(convert <= standard) {
 			System.out.println("정상 출력입니다.");
 
 		}
