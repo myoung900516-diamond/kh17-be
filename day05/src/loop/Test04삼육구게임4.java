@@ -9,7 +9,7 @@ public class Test04삼육구게임4 {
 			boolean ten = i /10 == 3 || i / 10 == 6 || i / 10 == 9;
 			boolean one = i % 10 == 3 || i % 10 == 6 || i % 10 == 9; 
 		
-			if(ten && one) {
+			if(ten && one) {//if 문에서 까다로운게 가장 먼저 와야함
 				System.out.println("짝짝");
 				
 			}
