@@ -7,7 +7,7 @@ public class Test02약수찾기2 {
 		
 	//6의 약수가 몇개에요? 
 	//→ 6을 1부터 6까지 숫자로 나눈 나머지를 확인해본다
-		int number = 6;
+		int number = 3;
 		int count = 0;
 		for(long i = 2 ; i<= number ; i++) {
 			if (number % i ==0) {
