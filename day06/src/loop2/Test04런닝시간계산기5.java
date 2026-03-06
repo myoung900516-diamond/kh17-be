@@ -11,9 +11,7 @@ public class Test04런닝시간계산기5 {
 		for(int day = 1 ; day <= 7*4 ; day++) {
 			if(day % 2 ==1) {//홀수일 = 내가 뛰는 날
 				System.out.println(day + "일(" + round + "회차) -" + time +  "분");
-				
-				
-				total += time;//시간 합산
+			    total += time;//시간 합산
 				System.out.println("총 운동시간(" + round + "회차) : " + total + "분");
 				round++;
 			}
