@@ -15,7 +15,7 @@ public class Test02홀수짝수설명3 {
 		while(true) {
 			System.out.println("숫자입력(0입력시 종료)");
 			int number = sc.nextInt();
-			//위치가 중요함
+			//위치가 중요함*******
 			//종료조건
 			
 			if(number == 0) break;
