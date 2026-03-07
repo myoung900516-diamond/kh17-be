@@ -19,6 +19,7 @@ public class Test05숫자모레성게임2 {
 		while(true) {
 			
 			System.out.println("참가자" + count + "님의 숫자 :  ");
+			
 			int user = sc.nextInt();
 		
 			
