@@ -10,7 +10,7 @@ public class Test03업다운게임home {
 		Random r = new Random();
 		
 		int number = r.nextInt(1000) + 1;
-		System.out.println(number);
+		//System.out.println(number);
 		System.out.println("1~1000 사이의 숫자를 맞추세요");
 		
 		Scanner sc = new Scanner(System.in);
