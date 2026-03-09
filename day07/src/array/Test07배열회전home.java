@@ -4,7 +4,7 @@ public class Test07배열회전home {
 	public static void main(String[] args) {
 		
 		int[] data = new int[] {30, 20, 10, 50, 40};
-		int round = 1;
+		//int round = 1;
 		
 		//회전
 		int backup = data[4];
