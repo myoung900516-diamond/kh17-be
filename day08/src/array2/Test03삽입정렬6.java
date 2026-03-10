@@ -5,38 +5,17 @@ public class Test03삽입정렬6 {
 		
 		int[] data = new int[] {30, 50, 20, 10, 40};
 		
+		int backup = data[2];
 		
-		
-		for(int i = 0; i < data.length; i++) {
-			
+		for(int i = 1; i >= 0; i --) {
+			if(backup < data[i]) {
+				data[i + 1] = data[i];
 		}
-	
-		int backup = data[4];
-		if(data[3] > data[4]) {
-			data[4] = data[3];
-			if(data[2] > data [4]) {
-				data[3] = data[2];
-				if(data[1] > data[4]) {
-					data[2] = data[1];
-					if(data[0] > data[4]) {
-						data[1] = data[0];
-					}
-					else { 
-						data[1] = backup;
-					}
-				}
-				else {
-					data[2] = backup;
-				}
-			}
-			else {
-				data[3] = backup;
-			}
+//			else(backup > data[i]){
+//				
+//			}
+//			
 		}
-		else {
-			data[4] = backup;
-		}
-		
 		
 		
 		for(int i = 0; i < data.length; i++) {
