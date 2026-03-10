@@ -28,9 +28,11 @@ public class Test01선택정렬 {
 		data[minRocation] = backup;
 		
 		for(int i = 0; i <data.length; i++) {
-			System.out.println(data[i]);
+			//System.out.println(data[i]);
+			System.out.print(data[i] + "\t");
 		}
-		
+		System.out.println();
+	
 		//나머지 위치에서 가장 작은 수 찾기 
 		int min2 = data[1];
 		int min2Rocation = data[1];
@@ -48,8 +50,10 @@ public class Test01선택정렬 {
 		data[min2Rocation] = backup;
 		
 		for(int i = 0; i < data.length; i++) {
-			System.out.println(data[i]);
+			//System.out.println(data[i]);
+			System.out.print(data[i] + "\t");
 		}
+		System.out.println();
 		
 		//그 나머지 위치에서 가장 작은 수 
 		int min3 = data[2];
@@ -68,8 +72,10 @@ public class Test01선택정렬 {
 		data[min3Rocation] = backup;
 		
 		for(int i = 0; i < data.length; i++) {
-			System.out.println(data[i]);
+			//System.out.println(data[i]);
+			System.out.print(data[i] + "\t");
 		}
+		System.out.println();
 		//그그 나머지 위치에서 가장 작은 수 
 		int min4 = data[3];
 		int min4Rocation = data[3];
@@ -87,8 +93,10 @@ public class Test01선택정렬 {
 		data[min4Rocation] = backup;
 		
 		for(int i = 0; i < data.length; i++) {
-			System.out.println(data[i]);
+			//System.out.println(data[i]);
+			System.out.print(data[i] + "\t");
 		}
+		System.out.println();
 		
 		
 	}
