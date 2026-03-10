@@ -45,6 +45,7 @@ public class Teat09배열뒤집기2 {
 				int backup = data[b];
 				data[b] = data[a];
 				data[a] = backup;
+				//System.out.println()
 			}
 //		}
 		
