@@ -16,22 +16,44 @@ public class Teat09배열뒤집기2 {
 		
 		
 		//옮기는 과정
-	    int backup = data[0];
-		data[0] = data[4];
-		data[4] = backup;
-		
-		backup = data[1];
-		data[1] = data[3];
-		data[3] = backup;
+//	    int backup = data[0];
+//		data[0] = data[4];
+//		data[4] = backup;
+//		
+//		backup = data[1];
+//		data[1] = data[3];
+//		data[3] = backup;
 		
 //		if(data.length % 2 == 0) {
 //			for(int k = 0; k < data.length/2; k++) {
+//				int a = k;
+//				int b = data.length/2;
+//		
 //				int backup = data[k];
 //				data[k] = data[data.length];
 //				data[data.length] = backup;
 //			}
 //		}
 		
+//		if(data.length % 2 == 0) {
+			for(int k = 0; k < data.length/2; k++) {
+				int a = k;
+				int b = data.length/2;
+		
+				int backup = data[b];
+				data[b] = data[a];
+				data[a] = backup;
+			}
+//		}
+		
+//		for(int i = 0; i < data.length/2; i++) {
+//			int a = i;
+//			int b = data.length - 1 - i;
+//			int backup = data[b];
+//			data[b] = data[a];
+//			data[a] = backup;
+//		}
+	
 //		if(data.length % 2 == 1) {
 //			
 //			for(int k = 0; k < data.length/2 +1; k++) {
