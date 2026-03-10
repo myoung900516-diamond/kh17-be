@@ -36,10 +36,12 @@ public class Teat09배열뒤집기2 {
 //		}
 		
 //		if(data.length % 2 == 0) {
+		int a = 0;
+		int b = 4;
 			for(int k = 0; k < data.length/2; k++) {
-				int a = k;
-				int b = data.length/2;
-		
+//				int a = k;
+//				int b = data.length/2;
+//		
 				int backup = data[b];
 				data[b] = data[a];
 				data[a] = backup;
