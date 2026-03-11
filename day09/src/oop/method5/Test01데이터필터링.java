@@ -10,8 +10,8 @@ public class Test01데이터필터링 {
 		//문제1 : 값을 하나만 바구기가 어려움
 		
 		//문제2 : 값에 조건을 걸기가 어려움
-		//a.korean = -50; 
-		a.setKorean(-50);
+		//a.korean = -50; //차단 불가
+		a.setKorean(-50);//차단 가능
 		a.show();
 	}
 
