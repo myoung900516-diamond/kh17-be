@@ -1,4 +1,4 @@
-package opp.basic5;
+package oop.basic5;
 
 public class Olympic2 {
 	

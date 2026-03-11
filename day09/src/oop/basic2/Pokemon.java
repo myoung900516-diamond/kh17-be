@@ -1,4 +1,4 @@
-package opp.basic2;
+package oop.basic2;
 
 public class Pokemon {
 

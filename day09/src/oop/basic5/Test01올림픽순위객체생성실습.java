@@ -1,4 +1,4 @@
-package opp.basic5;
+package oop.basic5;
 
 public class Test01올림픽순위객체생성실습 {
 	public static void main(String[] args) {

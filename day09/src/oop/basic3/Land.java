@@ -1,4 +1,4 @@
-package opp.basic3;
+package oop.basic3;
 
 public class Land {
 	
