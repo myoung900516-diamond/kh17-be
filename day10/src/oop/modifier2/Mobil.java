@@ -63,11 +63,20 @@ public class Mobil {
 	public int getPeriod() {
 		return this.period;
 	}
-	
-	
-	public int getPricePerMonth() {
-		return this.mobilPrice/12;
+	public boolean isContractExist() { 
+		return this.period > 0;
 	}
+	public int getMonthlyPrice() {
+		if(this.period == 0) return 0;
+		return this.mobilPrice / this.period;
+	}
+	public int getExtraPrice() {
+		return this.mobilPrice * (100 + 10)/100;
+	}
+	
+//	public int getPricePerMonth() {
+//		return this.mobilPrice/12;
+//	}
 //	int getSurCharge() {
 //		return this.mobilPrice*(100-10)/100;
 //	}
@@ -85,8 +94,15 @@ public class Mobil {
 		System.out.println("<" + this.getModel() + ">");
 		System.out.println("메모리 : " + this.getMemory() + "GB");
 		System.out.println("통신사 : " + this.getTelecom());
-		System.out.println("판매가 : " + this.getMobilPrice() + "원");
-		System.out.println("약정기간 : " + this.getPeriod() + "개월");
+		if(this.isContractExist()) {
+			System.out.println("판매가 : " + this.getMobilPrice() + "원 (월" + this.getMonthlyPrice() + "원)");
+			System.out.println("약정기간 : " + this.getPeriod() + "개월");
+		}
+		else {
+			System.out.println("판매가 : " + this.getExtraPrice() + "원 (약정기간 없을 경우 10% 인상됩니다.)");
+		}
+			
+		//System.out.println("판매가 : " + this.getMobilPrice() + "원");
 	}
 
 }
