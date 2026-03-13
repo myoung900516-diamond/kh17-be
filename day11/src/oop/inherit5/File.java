@@ -3,7 +3,7 @@ package oop.inherit5;
 public class File {
 	protected String filename;
 	protected long filesize;
-	protected int pagesize;
+	//protected int pagesize;
 	
 	public String getFilename() {
 		return filename;
@@ -17,12 +17,12 @@ public class File {
 	public void setFilesize(long filesize) {
 		this.filesize = filesize;
 	}
-	public int getPagesize() {
-		return pagesize;
-	}
-	public void setPagesize(int pagesize) {
-		this.pagesize = pagesize;
-	}
+//	public int getPagesize() {
+//		return pagesize;
+//	}
+//	public void setPagesize(int pagesize) {
+//		this.pagesize = pagesize;
+//	}
 	public void execute() {
 		System.out.println("실행기능");
 	}
@@ -39,7 +39,7 @@ public class File {
 	public File(String filename, long filesize, int pagesize) {
 		this.setFilename(filename);
 		this.setFilesize(filesize);
-		this.setPagesize(pagesize);
+	//	this.setPagesize(pagesize);
 		
 	}
 	public File(String filename, long filesize) {
