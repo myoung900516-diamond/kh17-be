@@ -3,9 +3,10 @@ package oop.modifier.practice;
 public class Book {
 	private String title;
 	private String genre;
-	private int pages;
+	private int pages; //숫자 쓸 때 int 인지 long인지 한 번 고민하고 넘어가자
 	private int price;
-	private boolean rent;
+	private boolean rent; //String 으로 할 수 있음. 무엇을 쓰든 결과가 같게 나올 수있는 방법이 있어야함.
+	//int를 써서 = 1-대여가능 2-대여중 3-예약중 4-대출불가 이라고 약속하자 (번호로 하면 데이터가 줄어듬)
 	
 	
 	public String getTitle() {
@@ -45,7 +46,7 @@ public class Book {
 		this.rent = rent;
 	}
 	
-	public int getTax() {
+	public int getTax() { //부가세 getVat()b,
 		return this.price*(100+10)/100;
 	}
 	
