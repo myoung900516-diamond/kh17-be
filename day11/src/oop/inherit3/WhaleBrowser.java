@@ -1,6 +1,6 @@
 package oop.inherit3;
 
-public class Whale extends Browser{
+public class WhaleBrowser extends Browser{
 	public void papago() {
 		System.out.println("파파고 기능");
 	}
