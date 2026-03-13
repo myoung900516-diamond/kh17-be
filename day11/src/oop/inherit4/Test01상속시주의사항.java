@@ -1,5 +1,9 @@
 package oop.inherit4;
 
 public class Test01상속시주의사항 {
+	public static void main(String[] args) {
+		GalaxyS26 phone = new GalaxyS26("메탈그레이", "010-1212-3434");
+		phone.pay();
+	}
 
 }
