@@ -2,11 +2,11 @@ package oop.inherit7;
 
 public class ActionCamera extends Camera {
 
-	@Override
-	public void show() {
-		System.out.println(this.getName());
-		System.out.println(this.getResolution() + "만 화소");
-	}
+//	@Override
+//	public void show() {
+//		System.out.println(this.getName());
+//		System.out.println(this.getResolution() + "만 화소");
+//	}
 
 	@Override
 	public void on() {

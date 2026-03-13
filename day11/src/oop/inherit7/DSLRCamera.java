@@ -1,15 +1,15 @@
 package oop.inherit7;
 
 public class DSLRCamera extends Camera{
-
-	@Override
-	public void show() {
-//		System.out.println(this.getName());
-//		System.out.println(this.getResolution() + "만 화소");
-////		super(name, resolution);
-//		this.getName;
-//		this.getResolution;
-	}
+//
+//	@Override
+//	public void show() {
+////		System.out.println(this.getName());
+////		System.out.println(this.getResolution() + "만 화소");
+//////		super(name, resolution);
+////		this.getName;
+////		this.getResolution;
+//	}
 
 	@Override
 	public void on() {

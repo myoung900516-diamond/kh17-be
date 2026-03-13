@@ -17,7 +17,11 @@ public abstract class Camera {
 		this.resolution = resolution;
 	}
 	
-	public abstract void show();
+	public /*abstract*/ void show() {//명확한 메소드는 일반메소드로 한다. 
+		System.out.println("<카메라정보>");
+		System.out.println("카메라명 : " + this.getName());
+		System.out.println("해상도 : " + this.getResolution() + "만 화소");
+	}
 		//System.out.println(this.getName());
 		
 	
@@ -27,9 +31,8 @@ public abstract class Camera {
 	public abstract void zoom();
 	
 	public Camera(String name, int resolution) {
-		super();
-		this.name = name;
-		this.resolution = resolution;
+		this.setName(name);
+		this.setResolution(resolution);
 	}
 	
 	
