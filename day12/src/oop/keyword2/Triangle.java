@@ -6,6 +6,9 @@ package oop.keyword2;
 //-필드 없이 일회용 메소드만으로 구현
 public class Triangle {
 	
+	//이런 클래스는 객체 생성이 안되야 하지 않을까? 
+	//-생성자를 잠금(private) 처리하여 구현 가능
+	private Triangle() {}
 //	public double getArea(int width, int height) {
 //		return width * height / 2.0;
 //	}

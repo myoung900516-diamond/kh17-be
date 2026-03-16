@@ -27,7 +27,14 @@ public class Test01일회용메소드실습 {
 		double bm = Calculator.bmi(g, h);
 		System.out.println("bmi : " + bm);
 		
+		int k= 45;
+		int sub = Calculator.subway(k);
+		System.out.println("subway : " + sub);
 		
+		int l = 80;
+		int m = 90;
+		int ran = Calculator.random(l, m);
+		System.out.println("random : " + ran);
 		
 	}
 
