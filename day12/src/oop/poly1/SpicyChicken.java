@@ -1,5 +1,5 @@
 package oop.poly1;
 
-public class SpicyChicken {
+public class SpicyChicken extends Chicken{
 
 }
