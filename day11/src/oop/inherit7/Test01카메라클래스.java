@@ -12,6 +12,7 @@ public class Test01카메라클래스 {
 		a.takePhoto();
 		a.zoom();
 		
+		
 	ActionCamera b = new ActionCamera("Action", 4000);
 		
 		b.show();

@@ -10,6 +10,7 @@ public class Test01일회용메소드 {
 		System.out.println("rea = " + res);
 		
 		
+		
 	}
 
 }
