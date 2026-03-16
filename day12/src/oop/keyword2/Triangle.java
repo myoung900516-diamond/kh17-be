@@ -7,13 +7,13 @@ package oop.keyword2;
 public class Triangle {
 	
 //	public double getArea(int width, int height) {
-//		return width * height / 2;
+//		return width * height / 2.0;
 //	}
 
 	//아예 객체 없이 접근 가능하도록 정적(static) 처리 구현 
 	//static이 붙은 애들은 클래스가 껍데기 
 	//객체에 포함되지 않고 독립적으로 사용 가능한 메소드 
 	public static double getArea(int width, int height) {
-		return width * height / 2;
+		return width * height / 2.0;
 	}
 }
