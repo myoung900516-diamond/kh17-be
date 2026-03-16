@@ -1,5 +1,7 @@
 package oop.multi2;
 
+
+//메인은 만들필요 없었음. 
 public class Test01다중상속실습 {
 	public static void main(String[] args) {
 		VehicleR v = new VehicleR();
