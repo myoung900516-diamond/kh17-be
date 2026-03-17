@@ -7,11 +7,12 @@ public class Test01문자열분석 {
 		
 	
 		
-		String a = new String();
-		String b = new String();
-		String c = new String();
+		String a = new String("Hello");
+		String b = new String("hello");
+		String c = new String("hello");
 		
-		System.out.println(a.hashCode());
+		System.out.println(a.length());		
+		//System.out.println(a.hashCode());
 	
 		
 		//a.indent(Hello);

@@ -15,7 +15,7 @@ public class Test02API실습 {
 		
 		System.out.println(a.reverse());
 		
-		System.out.println(b.delete(4, 9));
+		System.out.println(b.delete(5, 10));
 		
 		//System.out.println(b.deleteCharAt(1));
 		
