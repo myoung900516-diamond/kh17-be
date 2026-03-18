@@ -30,8 +30,8 @@ public class Test02만나이계산기2 {
 		
 		int age =LocalDate.now().getYear() - year + 1;
 		
-		String middle = birth.substring(5, 7);
-		int month = Integer.parseInt(middle);
+	//	String middle = birth.substring(5, 7);
+		int month = Integer.parseInt( birth.substring(5, 7));
 		int y2 = age -1; 
 		int m2 = LocalDate.now().getMonthValue() - month;
 		int m = y2*12 + m2;
