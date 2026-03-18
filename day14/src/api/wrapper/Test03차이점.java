@@ -10,6 +10,7 @@ public class Test03차이점 {
 		//계산한 값에 null이 들어갈 수 있으면 반드시 구분해서 사용해야 함 
 		int b = a;//문법적으로는 문제가 없는데 실행하면 오류가 나는 코그(런타임에러)
 		System.out.println("b= " + b);
+		
 	}
 
 }
