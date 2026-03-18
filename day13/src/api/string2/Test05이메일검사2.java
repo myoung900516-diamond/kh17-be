@@ -24,7 +24,7 @@ public class Test05이메일검사2 {
 		String leftRegex = "^([a-z][a-z0-9]{4,19})$";
 		//@을 기준으로 우 조건식에 부합한다. 
 		//우 조건식 =
-		String rightRegex = "^([a-zA-Z.-]{1,})[.]([a-zA-Z]{2,})$";
+		String rightRegex = "^([a-zA-Z0-9.-]{1,})[.]([a-zA-Z0-9]{2,})$";
 		//@을 기준으로 왼쪽, 오른쪽 문자를 분리한다. 
 		
 //		String part [] = email1.split(rightRegex);
