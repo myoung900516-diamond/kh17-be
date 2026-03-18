@@ -1,0 +1,28 @@
+package api.wrapper;
+
+public class Test01하이브리드클래스4 {
+	public static void main(String[] args) {
+		//Wrapper class
+		//-원시형 데이터(primitive type)를 클래스로 만들어논 형태
+		//-Wrap 단어는 감싸다 라는 의미 
+		//-원시형 데이터를 편하게 이용할 수 있도록 객체화 시켜둔 클래스 
+		//-계산이 간단할 수록 원시형이 유리하며 계산이 복잡할수록 참조형이 유리 
+		
+		//복잡한 계산 : 두 수 중에서 더 큰 수 찾기 
+		int a = 10;
+		int b = 20;
+//		int c;
+//		if(a>b) {
+//			c =a ;
+//		}
+//		else {
+//			c=b;
+//		}
+		int c = a > b ? a : b; //간단한 if문의 압축버전(=3항 연산자)
+		               //true : false;
+		System.out.println("큰수 =" +c);
+		
+		
+	}
+
+}
