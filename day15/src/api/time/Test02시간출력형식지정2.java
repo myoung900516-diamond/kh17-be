@@ -2,13 +2,13 @@ package api.time;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
 import java.util.Date;
-import java.util.Locale;
 
 public class Test02시간출력형식지정2 {
 	public static void main(String[] args) {
 		Date a = new Date();
-		
+		 ZonedDateTime now = ZonedDateTime.now();
 		//기본 언어(Locale)를 변경
 		//Locale.setDefault(설정할 Locale 객체);
 //		Locale.setDefault(Locale.JAPAN);//지역을 일본으로 설정 
@@ -26,8 +26,12 @@ public class Test02시간출력형식지정2 {
 		
 		SimpleDateFormat sdf3 = new SimpleDateFormat("a h:mm");
 		String date3 = sdf3.format(a);
-		System.out.println("'" + date3 + "'");
-		
+		System.out.println("'" + date3 + " (UTC" + now.getOffset() + ")'");
+		//ZonedDateTime f = new ZonedDateTime.now();
+		       
+		        
+		        System.out.println("현재 시간: " + now);
+		        System.out.println("UTC 오프셋: " + now.getOffset());
 	}
 
 }
