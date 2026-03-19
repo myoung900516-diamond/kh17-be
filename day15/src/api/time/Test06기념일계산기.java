@@ -45,9 +45,10 @@ public class Test06기념일계산기 {
 		//100일마다 800일까지 기념일 구하기 
 		int i = 0;
 		for(i=1; i<=8; i++) {
-			c.set(Calendar.DATE, firstDay + 100*i);
+			c.set(Calendar.DATE, firstDay + 100);
 			Date d = c.getTime();
 			Format f = new SimpleDateFormat("yyyy-MM-dd");
+			//System.out.println(firstDay);
 			System.out.println("D + " + 100*i + " : " + f.format(d));
 		}
 		
@@ -60,7 +61,7 @@ public class Test06기념일계산기 {
 		
 		//출력
 		
-		//System.out.println(firstDay + "첫날입니다");
+		//System.out.println(firstDay);
 		//System.out.println(c.add(firstDay, firstDay + 1));
 	}
 
