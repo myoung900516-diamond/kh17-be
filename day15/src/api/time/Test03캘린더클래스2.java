@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class Test03캘린더클래스2 {
 	public static void main(String[] args) {
-		
+		//날짜 계산 하기 위해 최적화된 클래스 
 		Calendar c = Calendar.getInstance(); 
 		//시간을 변경하는 방법
 		//-우리가 배운 변경메소드(세터)는 set +필드명 
