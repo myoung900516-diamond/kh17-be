@@ -24,6 +24,7 @@ public class Test05달력만들기2 {
 		//마지막은 며칠? 
 		c.getActualMaximum(month - 1);
 		
+		
 		//2026.8.1 은 일요일
 		System.out.println("                                      " + year + "년" + month + "월                   " );
 		System.out.println("일          월          화          수          목          금          토");
