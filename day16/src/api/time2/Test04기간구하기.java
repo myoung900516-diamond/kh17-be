@@ -15,8 +15,11 @@ public class Test04기간구하기 {
 		System.out.println(p);
 		
 		//[2]단위에 초점을 맞춰서 기간 구하기 (연/월/일/시/분/초/밀리초)
+		//-ChronoUnit이라는 클래스는 열거형(enum)클래스
+		//-열거형 클래스는 상수만 편하게 쓸 수 있도록 모아놓고 더이상 생성은 불가능한 클래스 
 		long days = ChronoUnit.DAYS.between(a, b);
 		System.out.println(days);
+		
 	}
 
 }
