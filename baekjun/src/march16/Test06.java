@@ -9,6 +9,7 @@ public class Test06 {
 		int seogi = bulgi - 543;
 		
 		System.out.println(seogi);
+		 sc.close();
 	}
 
 }

@@ -38,6 +38,7 @@ public class Test09 {
 		System.out.println(ab4);
 		System.out.println(ab5);
 		System.out.println(ab6);
+		 sc.close();
 	}
 
 }

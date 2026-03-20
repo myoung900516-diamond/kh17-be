@@ -11,7 +11,7 @@ public class Test03 {
 		
 		double c = (double) a/b;
 		System.out.println(c);
-		
+		 sc.close();
 	}
 
 }

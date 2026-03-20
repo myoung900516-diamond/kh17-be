@@ -20,6 +20,7 @@ public class Test04 {
 		System.out.println(e);
 		System.out.println(f);
 		System.out.println(g);
+		 sc.close();
 	}
 
 }

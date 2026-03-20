@@ -11,7 +11,7 @@ public class Test05 {
 	//	System.out.println(sc.next() + "??!");
 		//System.out.println(a + "??!");
 	    System.out.println(id + "??!");
-		
+	    sc.close();
 	}
 
 }

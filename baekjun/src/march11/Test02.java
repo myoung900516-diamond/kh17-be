@@ -12,6 +12,7 @@ public class Test02 {
 		int c = a * b;
 		
 		System.out.println(c);
+		 sc.close();
 	}
 
 }
