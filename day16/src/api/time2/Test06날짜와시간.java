@@ -3,12 +3,14 @@ package api.time2;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Test06날짜와시간 {
 	public static void main(String[] args) {
 		//LocalDateTime : 날짜와 시간이 모두 필요한 경우
-		//ZoneDateTime : 추가로 타임존 설정이 필요한 경우
+		//ZonedDateTime : 추가로 타임존 설정이 필요한 경우
 		
 		LocalDateTime t1 = LocalDateTime.now();//현재시각
 		LocalDateTime t2 = LocalDateTime.of(2026, 9, 30, 17, 50, 0);
@@ -42,6 +44,15 @@ public class Test06날짜와시간 {
 		LocalDate t6 = t5.toLocalDate();
 		System.out.println(t6);
 		
+		ZonedDateTime zoneTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+		System.out.println(zoneTime);
+
+
+		//Zone확인
+		ZoneId currentZone = ZoneId.systemDefault();//현재시스템의 타임존
+		System.out.println("현재 = " + currentZone);
+		
+		System.out.println("모든 = " + ZoneId.getAvailableZoneIds());
 	}
 
 }
