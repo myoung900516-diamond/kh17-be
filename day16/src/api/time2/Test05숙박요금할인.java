@@ -1,8 +1,7 @@
 package api.time2;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 
 public class Test05숙박요금할인 {
@@ -32,6 +31,9 @@ public class Test05숙박요금할인 {
 		
 		//숙박하는 날에 요일은? 
 		System.out.println("체크인 날이 요일 = " + checkInDay.getDayOfWeek());
+		
+		DayOfWeek week = checkInDay.plusDays(0).getDayOfWeek(); //체크인에 날부터 체크아웃전날까지 요일이 무엇인가
+		
 	}
 
 }
