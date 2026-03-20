@@ -25,7 +25,7 @@ public class Test01랜덤클래스4 {
 		
 		//시드 역시 두 개로 나워서 생성
 		long seed1 = user1.hashCode() + System.currentTimeMillis()/5000;
-		long seed2 = user2.hashCode() + System.currentTimeMillis()/5000;
+		long seed2 = user2.hashCode() + System.currentTimeMillis()/5000; 
 		r.setSeed(seed1);
 		int otp1 = r.nextInt(1000000);
 		r.setSeed(seed2);//OTP비밀번호 
