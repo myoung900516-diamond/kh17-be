@@ -36,10 +36,10 @@ public class Test01리스트 {
 		System.out.println(e.contains("또가스"));
 		
 		//데이터 삭제 
-	//1번 위치 데이터 삭제[라이츄]
-		e.remove(1);
+		
+		e.remove(1);//1번 위치 데이터 삭제[라이츄]
 		System.out.println("e = " + e );
-		e.remove("꼬부기");
+		e.remove("꼬부기");//일치하는 데이터 삭제
 		System.out.println("e = " + e );
 		
 	}
