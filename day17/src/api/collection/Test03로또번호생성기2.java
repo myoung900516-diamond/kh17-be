@@ -13,7 +13,7 @@ public class Test03로또번호생성기2 {
 		int num = r.nextInt(45) + 1 ;
 		List<Integer> lucky = new ArrayList<>();
 		
-		int i = 0;
+		//int i = 0;
 		
 		//for (i = 1; i<= 6; i++) {
 		while(lucky.size()<6) {

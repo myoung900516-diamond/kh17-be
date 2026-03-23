@@ -32,12 +32,13 @@ public class Test05사다리게임 {
 			String name1 = sc.next();
 			name.add(name1);
 		}
-			for(k=0;k<count;k++) {
-				System.out.println((k + 1) + "개의 항목을 입력하세요");
-				System.out.println((k + 1) + "번 항복 : ");
-				String choice1 = sc.next();
-				choice.add(choice1);
+		for(k=0;k<count;k++) {
+			System.out.println((k + 1) + "개의 항목을 입력하세요");
+			System.out.println((k + 1) + "번 항복 : ");
+			String choice1 = sc.next();
+			choice.add(choice1);
 		}
+			sc.close();
 		
 //		System.out.println(name);
 //		System.out.println(choice);

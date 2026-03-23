@@ -42,7 +42,7 @@ public class Test05사다리게임2 {
 				//System.out.println(choice.get(l));
 				System.out.println(name.get(l) + "→" + choice.get(l));
 			}
-				
+			sc.close();
 		
 	}
 
