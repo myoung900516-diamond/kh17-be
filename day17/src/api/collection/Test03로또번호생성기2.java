@@ -24,7 +24,7 @@ public class Test03로또번호생성기2 {
 			}
 		}
 		
-		Collections.sort(lucky);
+		Collections.sort(lucky);//=number.sort(null);
 		System.out.println("이번주 로또 번호 = " + lucky);
 	
 		//중복이 있는지 검증하기 
