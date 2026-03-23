@@ -20,29 +20,9 @@ public class Test06끝말잇기게임2 {
 		offer.add("마우스패드");
 		offer.add("어머니");
 		
-		Random r = new Random();
-		int here = r.nextInt(9) + 1;
-		
-		String offer1 = offer.get(here);
-		System.out.println("[제시어] = " + offer1);
 		
 		
-		Scanner sc = new Scanner(System.in);
-		System.out.println("쿵쿵따→");
-		String word = sc.next();
-		System.out.println("쿵쿵따→");
-		
-		System.out.println(word.charAt(word.length()-1)); //입력한 값의 마지막 글자 출력
-		
-		boolean match = offer1.charAt(offer1.length()-1) == word.charAt(word.length()-1);//너무 길다
-		System.out.println(match);
-		if(match) { 
-			System.out.println("게임오버");
-		}
-		
-		if(word.length()< 2) {
-			System.out.println("게임오버");
-		}
+	
 		
 		
 	}
