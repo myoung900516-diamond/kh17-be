@@ -32,7 +32,7 @@ public class Test08포커게임 {
 		//한 덱deck을 구현
 		List<String> card = new ArrayList<>();
 	//	System.out.println( shape.get(0) + number.get(0) );//이게 똑같은게 안나오면서 52장 나와야함 
-		int i = 0;
+	//	int i = 0;
 		//for(i = 0 ; i < 52 ; i ++) {
 		while(card.size()<52) {
 			
