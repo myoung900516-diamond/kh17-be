@@ -22,7 +22,7 @@ public class Test04집합연산 {
 		//교집합
 		Set<Integer> intersection = new TreeSet<>();
 		intersection.addAll(a);
-		//intersection.removeAll(b); //b와 겹치는 부분을  
+		//intersection.removeAll(b); //b와 겹치는 부분을  빼
 		intersection.retainAll(b); //b와 겹치는 부분만 남겨
 		
 		System.out.println("교집합 = " + intersection);
