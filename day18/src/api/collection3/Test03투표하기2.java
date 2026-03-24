@@ -7,11 +7,11 @@ import java.util.Scanner;
 public class Test03투표하기2 {
 	public static void main(String[] args) {
 		Map<String, Integer> vote = new HashMap<>();
-		int i = 1;
+		//int i = 0;
 		
 		//더미..데이터?
-		vote.put("홍길동",  i);
-		vote.put("김수미", i);
+		vote.put("홍길동",  0);
+		vote.put("김수미", 0);
 		
 		Scanner sc = new Scanner(System.in);
 		
@@ -26,8 +26,12 @@ public class Test03투표하기2 {
 				break; 
 			}
 			if(vote.containsKey(name)){
-				vote.put(name, i++ );
+				vote.put(name, vote.get(name) + 1 );
 				System.out.println(name + "현재 " + vote.get(name) + "표 획득!");
+			}
+			else {
+				vote.put(name, 1);
+				System.out.println(name + " 현재 " + vote.get(name) + "표 획득!");
 			}
 			
 		}
