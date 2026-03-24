@@ -13,24 +13,25 @@ public class Test03팔로우처리 {
 		user.add("testuser3");
 		
 		Scanner sc = new Scanner(System.in);
-		System.out.println("아이디를 입력하세요");
+		while(true) {
+			System.out.println("아이디를 입력하세요");
+			String testuser = sc.next();
 		
-		String testuser = sc.next();
-		
-		System.out.println("user = " + user);
-		
-		if(user.contains(testuser)) {
-			user.remove(testuser);
+		//System.out.println("user = " + user);
+			if(testuser.equals("종료")) break;
+			if(user.contains(testuser)) {
+				user.remove(testuser);
 			
-		}
-		System.out.println("user = " + user);
+			}
+			//System.out.println("user = " + user);
+			}
 		
-		
-		for(String test : user) {
+		for(String testuser : user) {
 		//	System.out.println("아이디 입력 : " + user);
-			System.out.println( user + " 님을 팔로우하였습니다.");
+			System.out.println( "->" + testuser + " 님을 팔로우하였습니다.");
 		}
 		
+		sc.close();
 	}
 
 }
