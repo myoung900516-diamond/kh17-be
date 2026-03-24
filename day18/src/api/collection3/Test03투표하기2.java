@@ -3,6 +3,7 @@ package api.collection3;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 public class Test03투표하기2 {
 	public static void main(String[] args) {
@@ -20,9 +21,16 @@ public class Test03투표하기2 {
 		
 		while(true) {
 			String name = sc.next();
+			
+			Set<String> names = vote.keySet();
+			
 			if(name.equals("종료")) {
 				System.out.println("프로그램을 종료합니다");
 				System.out.println("투표결과");
+				for(String result : names) { 
+					int count = vote.get(result);
+					System.out.println(result + " : " + count + "표" );
+				}
 				break; 
 			}
 			if(vote.containsKey(name)){
