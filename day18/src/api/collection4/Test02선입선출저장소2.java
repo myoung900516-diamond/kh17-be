@@ -16,7 +16,8 @@ public class Test02선입선출저장소2 {
 			@Override
 			public int compare(String o1, String o2) {
 				//return 0;//현상유지
-				return o1.compareTo(o2);//o1에서 o2를 뺀 결과를 반환하세요
+				//return o1.compareTo(o2);//o1에서 o2를 뺀 결과를 반환하세요=오름차순
+				return o2.compareTo(o1);//=내림차순
 			}
 		};
 		
