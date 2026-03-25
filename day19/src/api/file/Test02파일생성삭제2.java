@@ -23,7 +23,7 @@ public class Test02파일생성삭제2 {
 		
 		//target.delete();//파일 삭제
 		File target2 = new File("files", "change.txt");
-		target.renameTo(target2);
+		target.renameTo(target2);//target2의 정보로 이름을 바꿔라 
 	}
 
 }
