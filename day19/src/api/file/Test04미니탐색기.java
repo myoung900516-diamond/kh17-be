@@ -10,9 +10,10 @@ public class Test04미니탐색기 {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("입력하세요");
-		String path = sc.next();
-		
-		File a = new File("path");
+		//String path = sc.next();
+		String input = sc.nextLine();
+		sc.close();
+		File a = new File(input);
 		
 		
 		System.out.println("존재 여부 = " + a.exists());
@@ -62,7 +63,7 @@ public class Test04미니탐색기 {
 			}
 				
 		}
-		sc.close();
+		
 	}
 
 }

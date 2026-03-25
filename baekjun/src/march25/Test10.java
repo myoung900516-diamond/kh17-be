@@ -6,7 +6,7 @@ public class Test10 {
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);	
 		
-		int a1 = sc.nextInt();
+		long a1 = sc.nextLong();
 		int b1 = sc.nextInt();
 		int c1 = sc.nextInt();
 		
@@ -15,10 +15,10 @@ public class Test10 {
 		int c = 7777;
 		
 		int result = a + b + c;
-		int result1 = a1 + b1 + c1;
+		//int result1 = a1 + b1 + c1;
 		
 		//System.out.println(result);
-		System.out.println(result1);
+		//System.out.println(result1);
 		
 		sc.close();
 	}
