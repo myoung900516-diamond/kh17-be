@@ -1,0 +1,5 @@
+Hello java
+File control
+Wonderworld
+\r:줄의 처음으로 이동
+\n: 아래로 이동 
