@@ -30,7 +30,7 @@ public class Test03디렉터리제어 {
 			//-객체를 추출
 			File[] files = dir.listFiles();
 			for(File file : files) {
-				System.out.println("→" + file.getAbsolutePath());
+				System.out.println("→" + file.getPath());
 				System.out.println("→" + file.length());
 				System.out.println("→" + file.getName());
 			}

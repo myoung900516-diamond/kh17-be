@@ -32,7 +32,7 @@ public class Test01파일다루기 {
 		if(a.isFile()) {//a가 파일일 때만 작업을 진행할게
 			//파일 정보 분석
 			System.out.println("이름 = "+ a.getName());
-			System.out.println("위치 = " + a.getPath());//생성 시 입력한 경로 
+			System.out.println("위치 = " + a.getPath());//생성 시 입력한 경로  상대경로
 			System.out.println("위치 = " + a.getAbsolutePath());//실체 위치(전체 경로) 절대경로
 			System.out.println("위치 = " + a.getCanonicalPath()); //깔끔한 위치 (불필요한 글자 제거)
 			System.out.println("크기 = " + a.length());//파일의 크기 = 파일에 들어있는 글자의 길이 
