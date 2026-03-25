@@ -31,6 +31,10 @@ public class Test01바이트출력 {
 		stream.write('a');//
 		stream.write('\n');//줄바꿈
 		
+		//범위를 초과하는 값은 자동으로 byte로 변환되어 전송됨(ex:문방구팔찌)
+//		stream.write('가');//되나?
+//		stream.write(30000);//범위초과?
+		
 		stream.close();
 		//스트림은 메모리 점유가 높으므로 사용 종료 후에 정리하도록 습관을 들인다. 
 	}
