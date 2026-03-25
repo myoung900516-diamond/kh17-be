@@ -15,8 +15,12 @@ public class Test10 {
 		int c = 7777;
 		
 		int result = a + b + c;
+		int result1 = a1 + b1 + c1;
 		
-		System.out.println(result);
+		//System.out.println(result);
+		System.out.println(result1);
+		
+		sc.close();
 	}
 
 }
