@@ -1,9 +1,6 @@
 package api.file;
 
-import java.io.File;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.Scanner;
 
 public class Test04미니탐색기2 {
