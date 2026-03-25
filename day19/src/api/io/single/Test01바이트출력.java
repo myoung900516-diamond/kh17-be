@@ -30,6 +30,7 @@ public class Test01바이트출력 {
 		stream.write('v');//
 		stream.write('a');//
 		stream.write('\n');//줄바꿈
+		//아스키 코드는 0~127까지 
 		
 		//범위를 초과하는 값은 자동으로 byte로 변환되어 전송됨(ex:문방구팔찌)
 //		stream.write('가');//되나?
