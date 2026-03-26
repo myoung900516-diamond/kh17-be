@@ -31,6 +31,7 @@ public class Test05비만판정기2 {
 		//System.out.println(b);
 		System.out.println(a);
 		
+		sc.close();
 	}
 
 }
