@@ -37,12 +37,12 @@ public class Test04성적정보분석 {
 		System.out.println("j학생의 점수 =" + scoreJ + "점");
 		data.close();
 		
-		int pass = 0;
-		while(true) {
+		//int pass = 0;
+		//while(true) {
 			//if(data.readInt() == -1)break;
 			//data.readInt() >= 60;
-			pass ++;
-		}
+			//pass ++;
+		//}
 		//System.out.println("합격 인원수 = " + pass + "명");
 		
 		

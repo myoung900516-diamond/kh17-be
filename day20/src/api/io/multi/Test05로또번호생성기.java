@@ -3,7 +3,6 @@ package api.io.multi;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.Random;
 
@@ -22,7 +21,7 @@ public class Test05로또번호생성기 {
 		data.writeInt(number);
 		System.out.println("로또번호 " + number);
 		}
-		
+		data.close();
 	}
 
 }
