@@ -35,6 +35,7 @@ public class Test03문자열입력 {
 		System.out.println("line = " + line);
 		
 		buffer.close();
+		
 	}
 
 }

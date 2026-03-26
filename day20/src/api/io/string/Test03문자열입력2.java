@@ -20,7 +20,7 @@ public class Test03문자열입력2 {
 //		입력
 		while(true) {
 			String line = buffer.readLine();// 1줄을 읽으세요! 무조건 1줄이지만 성능이 매우 좋음 
-			if(line == null) break;
+			if(line == null) break;//EOF발견시 나가세요
 			System.out.println("line = " + line);
 		}
 		
