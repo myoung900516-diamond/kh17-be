@@ -10,18 +10,18 @@ public class Test02로또번호생성기 {
 		
 		Random r = new Random();
 		
-		int i = 0;
-		for(i = 0; i<12; i++) {
+	//	int i = 0;
+		while(number.size() < 6 ) {
 			int num = r.nextInt(45) + 1;
-			i++;
+			//i++;
 //			number.add(num);
 //			if(number.contains(num)) {
 //				i--;
 //				number.add(num);
 //			}
 			number.add(num);
-			System.out.println("로또번호 = " + number);
 		}
+		System.out.println("로또번호 = " + number);
 	}
 
 }

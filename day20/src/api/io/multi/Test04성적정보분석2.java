@@ -14,36 +14,26 @@ public class Test04성적정보분석2 {
 		BufferedInputStream buffer = new BufferedInputStream(stream);
 		DataInputStream data = new DataInputStream(buffer);
 		
-		try {
 			while(true) {
 				int score = data.readInt();
 				System.out.println("점수 = " + score);
+				if(score < 0) break;
 			}
-		}
-		catch(Exception e) {
-		}
-		try {
-			int count = 0;
-			while(true) {
-				int score = data.readInt();
-				if(score >= 60) 
-					count++;
-				System.out.println("합격자 수 = " + count);
-			}
-		}
-		catch(Exception e) {
-		}
-		try {
-			int total = 0;
-			while(true) {
-				int score = data.readInt();
-				total += score;
-				double average = total / 10d;
-				System.out.println("평균 = " + average);
-			}
-		}
-		catch(Exception e) {
-		}
+//			int count = 0;
+//			while(true) {
+//				int score = data.readInt();
+//				if(score >= 60) 
+//					count++;
+//				System.out.println("합격자 수 = " + count);
+//			}
+			
+//			int total = 0;
+//			while(true) {
+//				int score = data.readInt();
+//				total += score;
+//			}
+//			double average = total / 10d;
+//			System.out.println("평균 = " + average);
 		
 		data.close();
 		
