@@ -1,4 +1,4 @@
-package api.io.multi;
+package api.io.object;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 
-public class Test06로또번호출력기2 {
+public class Test04로또번호출력기 {
 	public static void main(String[] args) throws Exception {
 		
 		File target = new File("files", "lotto.kh");
@@ -16,7 +16,9 @@ public class Test06로또번호출력기2 {
 		BufferedInputStream buffer = new BufferedInputStream(stream);
 		ObjectInputStream object = new ObjectInputStream(buffer);
 		
-		Set<Integer> number = (TreeSet)object.readObject();
+		
+		Set<Integer> number = (TreeSet)object.readObject();//경고가 발생함(내용물까지 완벽히 책임지지 못한다는 것)
+		
 		
 		object.close();
 		

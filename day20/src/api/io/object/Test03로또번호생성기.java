@@ -1,7 +1,6 @@
-package api.io.multi;
+package api.io.object;
 
 import java.io.BufferedOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
@@ -9,7 +8,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Test05로또번호생성기4 {
+public class Test03로또번호생성기 {
 	public static void main(String[] args) throws Exception {
 		
 		File target = new File("files", "lotto.kh");
