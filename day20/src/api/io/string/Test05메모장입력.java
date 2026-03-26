@@ -22,6 +22,7 @@ public class Test05메모장입력 {
 		}
 		
 		buffer.close();
+		sc.close();
 		
 	}
 

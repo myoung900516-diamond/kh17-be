@@ -23,7 +23,7 @@ public class Test04미니메모장출력 {
 		
 		while(true) {
 			System.out.println("입력하세요");
-			String word = sc.next();
+			String word = sc.nextLine();
 			if(word.equals("종료"))break;
 			printer.println(word);
 		}
