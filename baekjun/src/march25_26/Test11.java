@@ -6,8 +6,8 @@ public class Test11 {
 		String a = "\\";
 		
 		
-		System.out.println(a + "\s\s\s\s\s\s\s\s/" + a);
-		System.out.println("\s\s\s)\s\s\s\s\s\s(\s\s'\s)");
+		System.out.println(a + "\s\s\s\s\s\s\s/" + a);
+		System.out.println("\s\s\s)\s\s\s\s\s(\s\s'\s)");
 		System.out.println("\s\s(\s\s\s\s/\s\s\s\s)");
 		System.out.println("\s\s\s" + a + "(__)\s|");
 		
