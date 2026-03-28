@@ -44,3 +44,28 @@ check(menu_event in ('Y', 'N'))
 
 
 create sequence menu_seq;
+
+insert into menu(
+	menu_no, menu_category, menu_name,
+	menu_price, menu_event
+)
+values(menu_seq.nextval, '음료', '아메리카노', 2500, 'Y');
+
+insert into menu(
+	menu_no, menu_category, menu_name,
+	menu_price
+)
+values(menu_seq.nextval, '음료', '고구마라떼', 3000);
+
+insert into menu(
+	menu_no, menu_category, menu_name,
+	menu_price, menu_event
+)
+values(menu_seq.nextval, '디저트', '디라미수', 4000, 'Y');
+
+insert into menu(
+	menu_no, menu_category, menu_name,
+	menu_price
+)
+values(menu_seq.nextval, '디저트', '마카롱', 2000);
+
