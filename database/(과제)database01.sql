@@ -1,16 +1,19 @@
+drop table lecture;
 create table lecture(
 lecture_no number not null unique,
-lecture_title varchar(40byte) not null,
-lecture_category varchar(10byte) not null,
+lecture_title varchar(40byte) not null,  --웬만하면 not null 없어도 되나? 따져보기 없으면 안되니까 
+lecture_category varchar(10byte) not null, --고정이면 char(6byte)로 하면 성능이 좋음
 lecture_duration number(3) not null,
 lecture_price number not null,
 lecture_type varchar(15byte) default '오프라인' not null,
-check(lecture_duration >= 30),
+check(lecture_duration > 0),
+check(mod(lecture_duration, 30) = 0),
 check(lecture_category in('이론', '실습', '시험')),
-check(lecture_price >= 0),
+check(lecture_price > 0 and mod(lecture_price, 1000) = 0),
 check(lecture_type in('온라인', '오프라인', '혼합'))
 );
 
+drop sequence lecture_seq;
 create sequence lecture_seq;
 
 insert into lecture(
@@ -42,49 +45,58 @@ values(
 	lecture_seq.nextval, '빅데이터 분석기사 실기', '시험', 120, 850000, '혼합'
 );
 
-create table printservice(
-printservice_no number not null,
-printservice_partname varchar(30byte) not null,
-printservice_partcategory varchar(15byte) not null,
-printservice_makeduration number not null,
-printservice_unitprice number not null,
-printservice_deliverytype varchar(15byte) not null,
-check(printservice_partcategory in('재료', '소모품', '부품', '출력')),
-check(mod(printservice_makeduration, 24) = 0),
-check(mod(printservice_unitprice, 1000) = 0),
-check(printservice_deliverytype in ('일반', '퀵', '방문수령'))
+--최종저장
+commit; 
+
+select * from lecture;
+
+create table print_service(
+print_service_no number not null,
+print_service_part_name varchar(30byte) not null,
+print_service_part_category varchar(15byte) not null,
+print_service_make_duration number not null,
+print_service_uni_tprice number not null,
+print_service_delivery_type varchar(15byte) not null,
+check(print_service_part_category in('재료', '소모품', '부품', '출력')),
+check(print_service_make_duration >= 0),
+check(mod(print_service_make_duration, 24) = 0),
+check(print_service_unit_price >=0),
+check(mod(print_service_unit_price, 1000) = 0),
+check(print_service_delivery_type in ('일반', '퀵', '방문수령'))
 );
 
-create sequence printservice_seq;
+drop sequence print_servie_seq;
+create sequence print_service_seq;
 
-insert into printservice(printservice_no, printservice_partname,
-	printservice_partcategory, printservice_makeduration, 
-	printservice_unitprice, printservice_deliverytype
+insert into print_service(print_service_no, print_service_part_name,
+	print_service_part_category, print_service_make_duration, 
+	print_service_unit_price, print_service_delivery_type
 )
 values(
-	printservice_seq.nextval, '고강도 PLA 필라멘트', '재료', 24, 25000, '일반');
+	print_service_seq.nextval, '고강도 PLA 필라멘트', '재료', 24, 25000, '일반');
 
-insert into printservice(printservice_no, printservice_partname,
-	printservice_partcategory, printservice_makeduration, 
-	printservice_unitprice, printservice_deliverytype
+insert into print_service(print_service_no, print_service_part_name,
+	print_service_part_category, print_service_make_duration, 
+	print_service_unit_price, print_service_delivery_type
 )
 values(
-	printservice_seq.nextval, '노즐세트', '소모품', 48, 15000, '퀵');
+	print_service_seq.nextval, '노즐세트', '소모품', 48, 15000, '퀵');
 
-insert into printservice(printservice_no, printservice_partname,
-	printservice_partcategory, printservice_makeduration, 
-	printservice_unitprice, printservice_deliverytype
+insert into print_service(print_service_no, print_service_part_name,
+	print_service_part_category, print_service_make_duration, 
+	print_service_unit_price, print_service_delivery_type
 )
 values(
-	printservice_seq.nextval, '출력물 전용 베드', '부품', 72, 45000, '일반');
+	print_service_seq.nextval, '출력물 전용 베드', '부품', 72, 45000, '일반');
 
-insert into printservice(printservice_no, printservice_partname,
-	printservice_partcategory, printservice_makeduration, 
-	printservice_unitprice, printservice_deliverytype
+insert into print_service(print_service_no, print_service_part_name,
+	print_service_part_category, print_service_make_duration, 
+	print_service_unit_price, print_service_delivery_type
 )
 values(
-	printservice_seq.nextval, '맞춤형 출력물 제작', '출력', 120, 100000, '방문수령');
-
+	print_service_seq.nextval, '맞춤형 출력물 제작', '출력', 120, 100000, '방문수령');
+commit;
+select * from print_service;
 
 create table person(
 person_no number not null unique,
