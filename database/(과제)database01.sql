@@ -1,6 +1,7 @@
 drop table lecture;
 create table lecture(
-lecture_no number not null unique,
+lecture_no number primary key, --한개만 가능, 변경이 불가능한 데이터
+--lecture_no number not null unique, --여러개 가능, 변경이 가능하지만 중복이 안되는 데이터
 lecture_title varchar(40byte) not null,  --웬만하면 not null 없어도 되나? 따져보기 없으면 안되니까 
 lecture_category varchar(10byte) not null, --고정이면 char(6byte)로 하면 성능이 좋음
 lecture_duration number(3) not null,
@@ -51,7 +52,8 @@ commit;
 select * from lecture;
 
 create table print_service(
-print_service_no number not null,
+print_serviece_no number primary key,
+--print_service_no number not null,
 print_service_part_name varchar(30byte) not null,
 print_service_part_category varchar(15byte) not null,
 print_service_make_duration number not null,
@@ -100,7 +102,8 @@ select * from print_service;
 
 drop table person;
 create table person(
-person_no number not null unique,
+person_no number primary key,
+--person_no number not null unique,
 person_name varchar(21byte) not null,
 person_job varchar(12byte) not null,
 person_age number not null, --상한선을 두지 않음
@@ -146,7 +149,8 @@ select * from person;
 
 drop table phone;
 create table phone(
-phone_no number not null unique,
+phone_no number primary key,
+--phone_no number not null unique,
 phone_name varchar(60byte) not null,
 phone_memory number not null,
 phone_telecom varchar(9byte) not null,
