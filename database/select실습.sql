@@ -97,8 +97,7 @@ between '2001-01-01 00:00:00.000'
 and systimestamp;
 --?2022년 상반기(6월 30일까지) 제조된 상품을 조회 
 select * from item 
-where item_made 
-to '2022-06-30 23:59:59.999';
+where item_made <= '2022-06-30 23:59:59.999';
 --모든 상품을 가격이 낮은 순으로 조회
 select * from item order by item_price asc, item_no asc;
 --모든 상품을 최근 제조한 순으로 조회
