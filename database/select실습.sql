@@ -104,3 +104,12 @@ select * from item order by item_price asc, item_no asc;
 select * from item order by item_made desc, item_no asc;
 --가격이 2000원 이상인 상품을 1차 이름순, 2차 제조일순으로 조회
 select * from item where item_price >= 2000 order by item_name asc, item_made desc, item_no asc;
+
+--주류 카테고리의 상품 개수
+select count(*) from item where item_type = '주류';
+--아이스크림의 평균 가격
+--select item.*, avg(item_type = '아이스크림') from item;
+select avg(item_price) from item where item_type = '아이스크림';
+--등록된 상품 중 가장 비싼 상품 1개의 이름과 종류, 가격
+select item_name, item_type, item_price from item 
+where item_price = (select max(item_price) from item);
