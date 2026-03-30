@@ -62,3 +62,20 @@ select * from book where book_price <= 20000;
 select * from book where book_price >= 10000 and book_price < 20000;
 select * from book where book_price between 10000 and 19999;
 select * from book where book_price >= 10000 and book_price <= 19999;
+
+-- [2] 문자열 조건(Java String처럼 일치, 유사 검사들이 핵심, 크기 비교는 잘 안함)
+
+-- 제목이 "어린왕자"인 도서를 조회 (정확하게 일치하는 문자열 탐색)
+select * from book where book_title = '어린왕자';
+
+-- "열린책들" 출판사에서 출판한 도서를 조회 (정확하게 일치하는 문자열 탐색)
+select * from book where book_publisher = '열린책들';
+
+-- "마법사"가 제목에 포함된 도서를 조회
+--		패턴을 지정한 검색(%는 글자의 존재 가능성이 있다는 의미, 자바의 contains와 유사)
+select * from book where book_title like '%마법사%';
+--		존재 위치가 어디인지 찾는 겁색(자바의 indexOf와 유사, 오라클은 위치가 1부터 시작하여 없으면 0)
+select * from book where instr(book_title, '마법사') > 0; 
+--		정규표현식 검색(매우 복잡한 걸 찾을 수 있지만 느림, 패턴이 복잡할 때 씀)
+select * from book where regexp_like(book_title, '마법사');
+
