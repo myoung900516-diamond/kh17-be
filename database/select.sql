@@ -1,0 +1,43 @@
+-- 데이터 조회(select)
+-- DBMS에서 가장 많이 하는 작업이며 많은 종류의 문법들이 존재 
+-- 구문 - select 항목 from 테이블 [조건] [정렬]; 
+-- 대괄호는 없어도 되는 구문을 표시하는 의미 
+
+-- 조회할 항목을 설정하는 법
+
+-- [1] 원하는 항목을 골라서 조회할 수 있다 
+select book_title, book_price from book;
+
+select book.* from book; --book의 모든항목(*)을 조회
+select * from book; --이렇게 사용해도 된다 
+select * from lecture;
+
+-- [2] 존재하지는 않지만 계산을 통해 값을 만들어서 조회할 수 있다. 
+select book_title, book_price, book_price/book_page_count from book;
+-- 조회할 항목의 이름 대신 "별칭"을 사용할 수 있다. (쌍따옴표 사용)
+-- 쌍따옴표가 있으면 별칭에 띄어쓰기를 사용할 수 있고, 없으면 못씀
+-- 자바에서는 문자열 내에 쌍따옴표 표기가 어려우므로 별칭에 띄어쓰기를 하지 않고
+-- 쌍따옴표를 제거하여 사용 
+select 
+	book_title "도서명", 
+	book_price "판매가",
+	book_price/book_page_count "페이지당 가격" 
+FROM  book;
+
+select 
+	book_title 도서명, 
+	book_price 판매가,
+	book_price/book_page_count 페이지당가격 
+FROM  book;
+
+select * from lecture;
+
+select lecture_price/lecture_duration 기간당가격 from lecture;
+
+select lecture.*, 
+lecture_price/lecture_duration lecture_price_per_page 
+from lecture;
+
+select print_service.*, 
+PRINT_SERVICE_UNIT_PRICE/PRINT_SERVICE_MAKE_DURATION 시간당 요금 
+from PRINT_SERVICE;
