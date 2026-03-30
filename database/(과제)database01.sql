@@ -98,21 +98,24 @@ values(
 commit;
 select * from print_service;
 
+drop table person;
 create table person(
 person_no number not null unique,
-person_name varchar(20byte) not null,
-person_job varchar(30byte) not null,
-person_age number(3) not null,
-person_height number(3) not null,
-person_weight number(3) not null,
+person_name varchar(21byte) not null,
+person_job varchar(12byte) not null,
+person_age number not null, --상한선을 두지 않음
+person_height number not null,
+person_weight number not null,
 check(person_age >= 0),
 check(person_height >= 0),
 check(person_weight >= 0),
-check(regexp_like(person_name, '^[가-힣]+$'))
+check(regexp_like(person_name, '^[가-힣]{2,7}$')) --또는 '^[가-힣]{2,}$'
 );
 
+drop sequence person_seq;
 create sequence person_seq;
 
+--더미데이터
 insert into person(
 	person_no, person_name, person_job, person_age,
 	person_height, person_weight
@@ -137,21 +140,25 @@ insert into person(
 )
 values(person_seq.nextval, '쿠파', '기획자', 30, 190, 95);
 
+commit;
 
+select * from person;
 
+drop table phone;
 create table phone(
 phone_no number not null unique,
-phone_name varchar(30byte) not null,
-phone_memory number(3) not null,
-phone_telecom varchar(15byte) not null,
+phone_name varchar(60byte) not null,
+phone_memory number not null,
+phone_telecom varchar(9byte) not null,
 phone_price number not null,
-phone_contract number(2) not null,
+phone_contract number not null,
 check(phone_telecom in ('SKT', 'KT', 'LG', '알뜰폰')),
 check(phone_contract in (0, 24, 36)),
 check(phone_price >= 0),
 check(phone_memory in (64, 128, 256, 512))
 );
 
+drop sequence phone_seq;
 create sequence phone_seq;
 
 insert into phone(
@@ -178,6 +185,8 @@ insert into phone(
 )
 values(phone_seq.nextval, 'iPhone 17', 256, '알뜰폰', 1200000, 36);
 
+commit;
 
+select * from phone;
 
 
