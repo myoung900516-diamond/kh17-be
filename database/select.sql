@@ -111,6 +111,32 @@ extract(month from to_timestamp(book_publication_date, 'YYYY-MM-DD'))
 in (6, 7, 8);
 
 
+-- 2001년 부터 2020년 상반기까지 출판된 도서를 조회
+--select * from book 
+--where 날짜로바꾼출판일 >= 2002년1월1일0시0분0초 and 날짜로바꾼출판일 <= 2006년6월30일23시59분59초.999초
+--where 날짜로바꾼출판일 between 2002년1월1일0시0분0초 and 2006년6월30일23시59분59초.999초
+
+select * from book
+where to_timestamp(book_publication_date, 'YYYY-MM-DD')
+	between
+		to_timestamp('2001-01-01 00:00:00.000', 'YYYY-MM-DD HH24:MI:SS.FF3')
+		and
+		to_timestamp('2020-06-30 23:59:59.999', 'YYYY-MM-DD HH24:MI:SS.FF3');
+
+-- (Q) 최근 90일 사이에 출판된 도서 조회 
+select * from book
+where to_timestamp(book_publication_date, 'YYYY-MM-DD')
+	between systimestamp - interval '90' day and systimestamp;
+
+-- (Q) 최근 20년간 출판된 도서 조회
+select * from book
+where to_timestamp(book_publication_date, 'YYYY-MM-DD')
+	between systimestamp - interval '20' year and systimestamp;
+
+-- (Q) 최근 10년 6개월 간 출판된 도서 조회
+select * from book
+where to_timestamp(book_publication_date, 'YYYY-MM-DD')
+	between systimestamp - interval '10-6' year to month and systimestamp;
 
 
 
