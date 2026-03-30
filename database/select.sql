@@ -38,6 +38,27 @@ select lecture.*,
 lecture_price/lecture_duration lecture_price_per_page 
 from lecture;
 
-select print_service.*, 
-PRINT_SERVICE_UNIT_PRICE/PRINT_SERVICE_MAKE_DURATION 시간당 요금 
-from PRINT_SERVICE;
+select 
+print_service.*, 
+print_service_unit_price/print_service_make_duration price_per_duration 
+from print_service;
+
+
+
+-- 조건 : 
+-- - 자바의 if문처럼 조회구문에 where 키워드와 같이 사용해서 
+-- 데이터를 필터링하는 역할을 수행 
+-- - 숫자, 문자열, 날짜와 관련된 조건들이 각각 다름 
+
+-- [1] 숫자 조건 (비교 연산 : >, <, >=, <=, ==, != 과 논리 연산: and, or, not)
+
+-- 번호가 5번인 도서를 조회 (찾는건 다 찾는데 조건에 맞는 데이터만 표시함)
+select * from book where book_id = 5;
+
+-- 가격이 2만원 이하인 도서를 조회 
+select * from book where book_price <= 20000;
+
+-- 가격이 1만원대인 도서를 조회 
+select * from book where book_price >= 10000 and book_price < 20000;
+select * from book where book_price between 10000 and 19999;
+select * from book where book_price >= 10000 and book_price <= 19999;
