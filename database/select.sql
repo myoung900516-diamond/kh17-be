@@ -79,3 +79,46 @@ select * from book where instr(book_title, '마법사') > 0;
 --		정규표현식 검색(매우 복잡한 걸 찾을 수 있지만 느림, 패턴이 복잡할 때 씀)
 select * from book where regexp_like(book_title, '마법사');
 
+-- '해리포터' 시리즈를 조회 
+select * from book where book_title like '해리포터%';
+select * from book where instr(book_title, '해리포터') = 1; 
+
+-- 결론 
+-- 정규표현식은 매우 복잡한 패턴을 찾지만 성능이 많이 안 좋다 
+-- like 연산은 전반적으로 성능이 안좋지만 시작검사만큼은 천상계 속도를 가진다 
+-- instr 함수는 전반적으로 성능이 좋지만 상황에 따른 차이가 없다. 
+
+-- [3] 날짜 조건
+-- book테이블에는 날짜 데이터는 없으므로 변환명령을 사용해서 조회(to_date, to_timestamp)
+
+--2000년 이후에 출판된 도서 조회(문자열로 보고 풀이) 
+select * from book where book_publication_date like '2%';
+select * from book where instr(book_publication_date, '2') = 1;
+
+-- 2000년 이후에 출판된 도서 조회 (날짜로 바꿔서 풀이)
+-- extract 함수는 날짜 데이터에서 원하는 항목을 추출할 수 있다. 
+-- select * from book where extract(year from 날짜정보) >= 2000;
+select * from book where
+extract(year from to_timestamp(book_publication_date, 'YYYY-MM-DD')) >= 2000;
+
+--여름에 출판된 도서를 조회
+select * from book where
+extract(month from to_timestamp(book_publication_date, 'YYYY-MM-DD')) 
+between 6 and 8;
+
+select * from book where
+extract(month from to_timestamp(book_publication_date, 'YYYY-MM-DD')) 
+in (6, 7, 8);
+
+
+
+
+
+
+
+
+
+
+
+
+
