@@ -29,3 +29,12 @@ select count(*) from item; --전부다 null이어도 카운트를 셈
 select count(*) from item where item_type = '과자';
 select count(*) cnt from item where item_type = '과자';
 
+--다음 코드는 실행이 안됨 (집계함수가 조건에 들어가면 성능이 너무 저하되서 차단됨)
+--select * from item where item_price = max(item_price);
+
+--두 개의 구문을 순차적으로 실행할 수 있다면 가능할지도 
+select max(item_price) from item; --아이템 중에 가장 비싼 것의 가격은? 
+select * from item where item_price = 3000; --가격이 3000원인 것의 모든 정보는? = 가격이 가장 비싼 것의 모든 정보는? 
+
+--조회 구문도 괄호를 이용해서 순서대로 실행시킬ㅇ 수 있습니다(sub query, 서브쿼리)
+select * from item where item_price = (select max(item_price) from item);
