@@ -21,7 +21,6 @@ public class Test01연결테스트 {
 		jdbcTemplate.execute(sql);//실행
 		
 		
-		
 		System.out.println("실행완료");
 	}
 
