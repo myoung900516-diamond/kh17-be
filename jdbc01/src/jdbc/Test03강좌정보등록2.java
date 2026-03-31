@@ -18,11 +18,12 @@ public class Test03강좌정보등록2 {
 		int lecturePrice = sc.nextInt();
 		System.out.println("강좌형태");
 		String lectureType = sc.next();
-//		sc.next();
-		
+////		sc.next();
+//		
 		sc.close();
 		
 		JdbcTemplate jdbcTemplate = JdbcUtils.create();//이 한 줄로 DB도구 생성이 끝남 
+//		System.out.println(jdbcTemplate);
 		
 //		String lectureTitle = "코딩이론";
 //		String lectureCategory = "이론";
