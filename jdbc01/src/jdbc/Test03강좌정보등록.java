@@ -37,15 +37,15 @@ public class Test03강좌정보등록 {
 //		int lecturePrice = 250000;
 //		String lectureType = "오프라인";
 		
-//		String sql = "insert into lecture(lecture_no, lecture_title, lecture_category, "
-//				+ "lecture_duration, lecture_price, lecture_type)"
-//				+ "values(lecture_seq.nextval, ?, ?, ?, ?, ?)";
+		String sql = "insert into lecture(lecture_no, lecture_title, lecture_category, "
+				+ "lecture_duration, lecture_price, lecture_type)"
+				+ "values(lecture_seq.nextval, ?, ?, ?, ?, ?)";
 		Object[] params = {lectureTitle, lectureCategory, lectureDuration, lecturePrice, 
 				lectureType};
-		String sql = "update lecture set lecture_duration = 990"
+		String sql2 = "update lecture set lecture_duration = 990"
 				+ " where lecture_title = '코딩기초'";
-//		jdbcTemplate.update(sql, params);
-		jdbcTemplate.update(sql);
+		jdbcTemplate.update(sql, params);
+		jdbcTemplate.update(sql2);
 		
 		System.out.println("등록완료");
 		
