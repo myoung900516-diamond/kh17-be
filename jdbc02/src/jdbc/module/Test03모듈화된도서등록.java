@@ -11,12 +11,14 @@ public class Test03모듈화된도서등록 {
 		bookDto.setBookPublicationDate("1774-06-25");
 		bookDto.setBookPrice(23000);
 		bookDto.setBookPublisher("열린책들");
+		bookDto.setBookPageCount(356);
 		bookDto.setBookGenre("소설");
 		
 		BookDao bookDao = new BookDao();
 		bookDao.insert(bookDto);
 		
 		System.out.println("complete");
+		
 	}
 
 
