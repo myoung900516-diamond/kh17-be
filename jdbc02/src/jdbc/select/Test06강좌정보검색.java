@@ -5,6 +5,8 @@ import java.util.Scanner;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import jdbc.dto.LectureDto;
+import jdbc.mapper.LectureMapper;
 import jdbc.util.JdbcUtils;
 
 public class Test06강좌정보검색 {

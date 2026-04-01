@@ -1,4 +1,4 @@
-package jdbc.select;
+package jdbc.dto;
 
 public class LectureDto {
 	private int lectureNo;
