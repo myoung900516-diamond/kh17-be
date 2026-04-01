@@ -3,8 +3,6 @@ package jdbc.select;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-
 import jdbc.util.JdbcUtils;
 
 public class Test01국가정보조회 {
@@ -12,7 +10,7 @@ public class Test01국가정보조회 {
 		//국가 정보 조회
 		
 		JdbcTemplate jdbcTemplate =JdbcUtils.create();
-		String sql = "select * from country order by country_no";
+		String sql = "select * from country order by country_no asc";
 		//Object[] params =={};
 		//jdbcTemplate.update(sql)//실행은 되지만 적합하지 않은 명령 
 		

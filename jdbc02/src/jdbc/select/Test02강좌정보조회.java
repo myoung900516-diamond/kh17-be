@@ -1,0 +1,21 @@
+package jdbc.select;
+
+import java.util.List;
+
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import jdbc.util.JdbcUtils;
+
+public class Test02강좌정보조회 {
+	public static void main(String[] args) {
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		String sql = "select * from lecture";
+		LectureMapper lectureMapper = new LectureMapper();
+		List<LectureDto> list = jdbcTemplate.query(sql, lectureMapper);
+		
+		System.out.println("조회결과 : " + list.size() + "개");
+		for(LectureDto lectureDto : list) {
+			System.out.println(lectureDto);
+		}
+	}
+}
