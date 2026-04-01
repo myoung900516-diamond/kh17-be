@@ -1,5 +1,7 @@
 package jdbc.delete;
 
+import java.util.Scanner;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import jdbc.util.JdbcUtils;
@@ -9,8 +11,10 @@ public class Test01국가정보삭제 {
 		//[SQL]delete country where country_no = ?;
 		
 		//입력
-		int countryNo =62;
-		
+		Scanner sc = new Scanner(System.in);
+		System.out.print("삭제할 국가 번호 : ");
+		int countryNo =sc.nextInt();
+		sc.close();
 		
 		//처리
 		JdbcTemplate jdbcTemplate = JdbcUtils.create();//처리도구생성
