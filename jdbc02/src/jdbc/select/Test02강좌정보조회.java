@@ -9,7 +9,7 @@ import jdbc.util.JdbcUtils;
 public class Test02강좌정보조회 {
 	public static void main(String[] args) {
 		JdbcTemplate jdbcTemplate = JdbcUtils.create();
-		String sql = "select * from lecture";
+		String sql = "select * from lecture order by lecture_no asc";
 		LectureMapper lectureMapper = new LectureMapper();
 		List<LectureDto> list = jdbcTemplate.query(sql, lectureMapper);
 		
