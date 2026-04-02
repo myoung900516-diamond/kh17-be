@@ -1,6 +1,7 @@
 package kh.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
@@ -57,11 +58,29 @@ public class MusicDao {
 	}
 	
 	public List<MusicDto> selectList(String column, String keyword){
+		
+		if(column == null || keyword == null) return selectList();
+		if(column.isEmpty() || keyword.isEmpty()) return selectList();
+		
+		Set<String> allowList = Set.of("music_title"," music_artist", ""
+				+ "music_album" , " music_release", ""
+				+ "music_genre");
+		if(allowList.contains(column) == false) return selectList();
+		
 		JdbcTemplate jdbcTemplate = JdbcUtils.create();
 		String sql = "select * from music where instr("+column+", ?) > 0 order by music_id asc";
 		Object[] params = {keyword};
 		MusicMapper musicMapper = new MusicMapper();
 		return jdbcTemplate.query(sql, musicMapper, params);
+	}
+	
+	public MusicDto selectOne(int musicId) {
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		String sql = "select *from music where music_id = ?";
+		Object[] params = {musicId};
+		MusicMapper musicMapper = new MusicMapper();
+		List<MusicDto> list = jdbcTemplate.query(sql, musicMapper, params);
+		return list.isEmpty() ? null : list.get(0);
 	}
 	
 
