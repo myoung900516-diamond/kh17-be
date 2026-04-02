@@ -1,8 +1,12 @@
 package jdbc.dao;
 
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import jdbc.dto.CountryDto;
+import jdbc.mapper.CountryMapper;
 import jdbc.util.JdbcUtils;
 
 //DAO(Data Access Object)
@@ -75,9 +79,36 @@ public class CountryDao {
 		
 	}
 	
+	//조회 메소드
+	//-CountryDto 목록 (List<CountryDto>을 반환하도록 구현
+	public List<CountryDto> selectList(){
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		String sql = "select * from country order by country_no asc";
+		//홀더없음
+		CountryMapper mapper = new CountryMapper();
+//		List<CountryDto> list = jdbcTemplate.query(sql, mapper);
+//		return list;
+		return jdbcTemplate.query(sql, mapper);
+		
+	}
 	
-	
-	
+	//검색메소드
+	//-컬럼 + 키워드 검색
+	//-반환해야할 데이터 형태는 목록과 동일
+	public List<CountryDto> selectList(String column, String keyword){
+//		if(데이터가 부족하면) return 목록;
+//		if(column == null || keyword == null) return this.selectList(); //column.equals(null); 이것은 잘못된 코드 
+		if(column == null || keyword == null) return List.of(); //검색항목이 없으면 비어있는 결과반환 
+		
+		Set<String> allowList = Set.of("country_region", "country_name", "country_capital");
+		if(allowList.contains(column) == false) return List.of();//허용되는 검색항목이 아니면 비어있는 결과 반환
+		
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		String sql = "select * from country where instr("+column+", ?) >0 order by country_no asc";
+		Object[] params = {keyword};
+		CountryMapper countryMapper = new CountryMapper();
+		return jdbcTemplate.query(sql, countryMapper, params);//(주의)홀더는 맨 마지막!!!! 
+	}
 	
 	
 	
