@@ -85,3 +85,7 @@ COMMIT;
 
 -- 데이터 확인
 SELECT * FROM music;
+
+select music_title, music_play, music_like, music_dislike,
+	(music_play * 2) + (music_like * 5) - (music_dislike * 10) as ranking_point
+	from music order by ranking_point desc;
