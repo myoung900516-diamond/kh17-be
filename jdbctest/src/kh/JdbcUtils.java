@@ -1,4 +1,4 @@
-package kh.util;
+package kh;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;

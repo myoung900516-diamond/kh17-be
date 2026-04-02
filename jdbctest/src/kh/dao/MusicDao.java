@@ -5,9 +5,9 @@ import java.util.Set;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import kh.JdbcUtils;
 import kh.dto.MusicDto;
 import kh.mapper.MusicMapper;
-import kh.util.JdbcUtils;
 
 public class MusicDao {
 	public void insert(MusicDto musicDto) {
@@ -63,8 +63,7 @@ public class MusicDao {
 		if(column.isEmpty() || keyword.isEmpty()) return selectList();
 		
 		Set<String> allowList = Set.of("music_title"," music_artist", ""
-				+ "music_album" , " music_release", ""
-				+ "music_genre");
+				+ "music_album");
 		if(allowList.contains(column) == false) return selectList();
 		
 		JdbcTemplate jdbcTemplate = JdbcUtils.create();
