@@ -110,6 +110,18 @@ public class CountryDao {
 		return jdbcTemplate.query(sql, countryMapper, params);//(주의)홀더는 맨 마지막!!!! 
 	}
 	
+	//상세메소드
+	//-기본키(primary key)를 이용하여 단 하나의 데이터만 찾는 검색(없을 수는 있음)
+	public CountryDto selectOne(int countryNo) {
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		String sql = "select * from country where country_no= ?";
+		Object[] params = {countryNo};
+		CountryMapper countryMapper = new CountryMapper();
+		//return jdbcTemplate.query(sql, countryMapper, params); // 안되는 코드 
+		List<CountryDto> list = jdbcTemplate.query(sql, countryMapper, params); //일단 목록으로조회하고 
+		
+		return list.isEmpty() ? null : list.get(0);
+	}
 	
 	
 	
