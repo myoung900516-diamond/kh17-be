@@ -16,5 +16,26 @@ public class LectureDao {
 				lectureDto.getLectureType()};
 		
 		jdbcTemplate.update(sql, params);
+		
+		
 		}
+	
+	public boolean update(LectureDto lectureDto) {
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		
+		String sql = "update lecture "
+				+ "set lecture_title = ?, lecture_category=?, lecture_duration=?, "
+				+ "lecture_price=?, lecture_type=? "
+				+ "where lecture_no=?";
+		Object[] params = {
+				lectureDto.getLectureTitle(), lectureDto.getLectureCategory(), 
+				lectureDto.getLectureDuration(), lectureDto.getLecturePrice(), 
+				lectureDto.getLectureType(), lectureDto.getLectureNo()
+		};
+//		int rows = jdbcTemplate.update(sql, params);
+//		return rows > 0;
+		
+		return jdbcTemplate.update(sql, params) >0 ;
+		
+	}
 	}

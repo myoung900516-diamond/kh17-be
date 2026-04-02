@@ -3,7 +3,7 @@ package jdbc.program;
 import jdbc.dao.CountryDao;
 import jdbc.dto.CountryDto;
 
-public class Test01국가정보수정 {
+public class Test01모듈화된국가정보수정 {
 	public static void main(String[] args) {
 		//입력 : CountryDto
 		CountryDto countryDto = new CountryDto();
