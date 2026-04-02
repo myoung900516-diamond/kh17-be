@@ -1,8 +1,12 @@
 package jdbc.dao;
 
+import java.util.List;
+import java.util.Set;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import jdbc.dto.BookDto;
+import jdbc.mapper.BookMapper;
 import jdbc.util.JdbcUtils;
 
 public class BookDao {
@@ -44,5 +48,53 @@ public class BookDao {
 		return jdbcTemplate.update(sql, params)>0 ;
 		
 	}
+	
+	public List<BookDto> selectList(){
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		String sql = "select * from book order by book_id asc";
+		BookMapper bookMapper = new BookMapper();
+		return jdbcTemplate.query(sql, bookMapper);
+	}
+	
+	public List<BookDto> selectList(String column, String keyword){
+		
+		if(column == null || keyword == null) return selectList();//없는 경우를 처리하고 싶다면(필수)
+		if(column.isEmpty() || keyword.isEmpty()) return selectList(); //빈 문자열을 처리하고 싶다면(선택)
+		
+		Set<String> allowList =Set.of("book_title", "book_author", "book_publisher", "book_genre");
+		if(allowList.contains(column) == false) return selectList();
+		
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		String sql = "select * from book where instr("+column+", ?) >0 order by book_id asc";
+		Object[] params = {keyword};
+		BookMapper bookMapper = new BookMapper();
+		return jdbcTemplate.query(sql, bookMapper, params);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
