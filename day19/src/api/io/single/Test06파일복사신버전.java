@@ -16,7 +16,7 @@ public class Test06파일복사신버전 {
 		byte[] buffer = new byte[5];
 		
 		//한 덩어리를 복사 
-		int size = readStream.read(buffer); //buffer에 가득 채워 읽고 실제로 얼마 읽었는지 size에 반환하세요
+		readStream.read(buffer); //buffer에 가득 채워 읽고 실제로 얼마 읽었는지 size에 반환하세요
 		writeStream.write(buffer);//buffer에 있는 모든 데이터를 내보내세요!
 		
 		//통로 정리

@@ -3,7 +3,6 @@ package jdbc;
 import java.util.Scanner;
 
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 public class Test03강좌정보등록2 {
 	public static void main(String[] args) {

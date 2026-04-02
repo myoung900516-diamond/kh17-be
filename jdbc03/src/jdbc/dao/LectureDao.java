@@ -5,9 +5,7 @@ import java.util.Set;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import jdbc.dto.BookDto;
 import jdbc.dto.LectureDto;
-import jdbc.mapper.BookMapper;
 import jdbc.mapper.LectureMapper;
 import jdbc.util.JdbcUtils;
 

@@ -3,8 +3,6 @@ package api.io.single;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.text.DecimalFormat;
-import java.text.Format;
 
 public class Test06파일복사신버전6 {
 	public static void main(String[] args) throws Exception {

@@ -2,7 +2,6 @@ package jdbc.select;
 
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import jdbc.dto.CountryDto;

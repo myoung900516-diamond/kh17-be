@@ -13,7 +13,8 @@ public class Test01국가정보조회 {
 		//국가 정보 조회
 		
 		JdbcTemplate jdbcTemplate =JdbcUtils.create();
-		String sql = "select * from country order by country_no asc";
+		String sql = "select * from country where country_no=28";
+//		String sql = "select * from country order by country_no asc";
 		//Object[] params =={};
 		//jdbcTemplate.update(sql)//실행은 되지만 적합하지 않은 명령 
 		

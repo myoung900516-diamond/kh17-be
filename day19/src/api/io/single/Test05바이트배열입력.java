@@ -2,7 +2,6 @@ package api.io.single;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.util.Arrays;
 
 public class Test05바이트배열입력 {
