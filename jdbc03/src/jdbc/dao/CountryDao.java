@@ -64,5 +64,45 @@ public class CountryDao {
 		
 	}
 	
+	//삭제 메소드 
+	//-기본키(primary key)를 이용해서 삭제(매개변수가 기본키)
+	//-반환형을 boolean으로 설정해서 진짜로 삭제되었는지 판정하여 반환 
+	public boolean delete(int countryNo) {
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		String sql = "delete country where country_no=?";
+		Object[] params = {countryNo};
+		return jdbcTemplate.update(sql, params) >0;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
 

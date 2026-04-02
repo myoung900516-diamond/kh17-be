@@ -38,4 +38,11 @@ public class LectureDao {
 		return jdbcTemplate.update(sql, params) >0 ;
 		
 	}
+	public boolean delete(int lectureNo) {
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		String sql = "delete lecture where lecture_no = ?";
+		Object[] params = {lectureNo};
+		
+		return jdbcTemplate.update(sql, params)>0;
+	}
 	}
