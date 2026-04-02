@@ -5,7 +5,9 @@ import java.util.Set;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 
+import jdbc.dto.BookDto;
 import jdbc.dto.LectureDto;
+import jdbc.mapper.BookMapper;
 import jdbc.mapper.LectureMapper;
 import jdbc.util.JdbcUtils;
 
@@ -73,6 +75,17 @@ public class LectureDao {
 		return jdbcTemplate.query(sql, lectureMapper, params);
 	}
 	
+	public LectureDto selectOne(int lectureNo) {
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		String sql = "select * from lecture where lecture_no =?";
+		Object[] params = {lectureNo};
+		LectureMapper lectureMapper = new LectureMapper();
+		List<LectureDto> list = jdbcTemplate.query(sql, lectureMapper, params);
+		return list.isEmpty() ? null : list.get(0);
+
+	}
+	
+
 	
 	
 	

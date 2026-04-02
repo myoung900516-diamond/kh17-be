@@ -71,6 +71,16 @@ public class BookDao {
 		return jdbcTemplate.query(sql, bookMapper, params);
 		
 	}
+	public BookDto selectOne(int bookId) {
+		JdbcTemplate jdbcTemplate = JdbcUtils.create();
+		String sql = "select * from book where book_id = ? ";
+		Object[] params = {bookId};
+		BookMapper bookMapper = new BookMapper();
+		List<BookDto> list = jdbcTemplate.query(sql, bookMapper, params);
+		return list.isEmpty() ? null : list.get(0);
+		
+	}
+	
 	
 	
 	
