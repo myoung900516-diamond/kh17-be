@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.kh</groupId>
-	<artifactId>spring05quiz</artifactId>
+	<artifactId>spring05</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name>spring05quiz</name>
+	<name>spring05</name>
 	<description/>
 	<url/>
 	<licenses>
