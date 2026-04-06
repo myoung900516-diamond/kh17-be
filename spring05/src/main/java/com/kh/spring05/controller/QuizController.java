@@ -20,13 +20,13 @@ public class QuizController {
 		return "age = " + age;
 	}
 	@RequestMapping("/quiz02")
-	public String bmi(@RequestParam double h, double w) {
+	public String bmi(@RequestParam double h, @RequestParam double w) {
 		double m = h/100;
 		double bmi = w/(m*m);
 		return "bmi = " + bmi;
 	}
 	@RequestMapping("/quiz03")
-	public String period(@RequestParam String begin, String end) {
+	public String period(@RequestParam String begin, @RequestParam String end) {
 //		Format f = new SimpleDateFormat("yyyy-MM-dd");
 //		long b = f.format(begin);
 //		long e = f.format(end);
@@ -37,7 +37,7 @@ public class QuizController {
 		return "period = " + period;
 	}
 	@RequestMapping("/quiz04")
-	public String result(@RequestParam double k, double e, double m) {
+	public String result(@RequestParam double k,@RequestParam  double e, @RequestParam double m) {
 		double total = k + e + m;
 		double average = total/3.0;
 		return "total score = " + total +", " + "average score = " + average;
