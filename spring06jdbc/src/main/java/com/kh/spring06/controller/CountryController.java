@@ -9,6 +9,7 @@ import com.kh.spring06.dao.CountryDao;
 import com.kh.spring06.dto.CountryDto;
 
 @RestController//등록(제어 반전, IoC, Inversion of Control)
+@RequestMapping("/country")//공용주소
 public class CountryController {
 	@Autowired//주세요!(의존성 주입,  DI, Dependency Injection)
 //	private JdbcTemplate jdbcTemplate;
