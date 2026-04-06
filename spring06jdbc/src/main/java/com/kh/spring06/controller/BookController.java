@@ -42,10 +42,11 @@ public class BookController {
 		}
 	}
 	@RequestMapping("/list")
-	public String list(@RequestParam(required = false) String column, @RequestParam(required = false) String keyword) {
+	public String list(@RequestParam(required = false) String column, 
+			@RequestParam(required = false) String keyword) {
 		List<BookDto> list = bookDao.selectList(column, keyword);
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("도서 번호 : " + list.size() + "<br>");
+		buffer.append("도서 개수 : " + list.size() + "<br>");
 		for(BookDto bookDto : list) {
 			buffer.append(bookDto);
 			buffer.append("<br>");
@@ -56,6 +57,9 @@ public class BookController {
 	@RequestMapping("/detail")
 	public String detail(@RequestParam int bookId) {
 		BookDto bookDto = bookDao.selectOne(bookId);
+		if(bookDto == null) {
+			return "존재하지 않는 국가 정보";
+		}
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("도서번호 : " + bookDto.getBookId()+ "<br>");
 		buffer.append("제목 : " + bookDto.getBookTitle()+ "<br>");
