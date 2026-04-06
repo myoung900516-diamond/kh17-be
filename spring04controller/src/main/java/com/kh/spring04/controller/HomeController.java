@@ -1,5 +1,6 @@
 package com.kh.spring04.controller;
 
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,5 +31,41 @@ public class HomeController {
 		int c = a + b;
 		return "테스트 결과 : " + c;
 	}
+	
+	//국어, 영어, 수학점수를 입력받아 평균을 구해서 출력하세요. 
+	//국여, 영어, 수학을 한번에 받을수는 없을까? 
+	//@RequestParam을 3번 사용하면 되는데 이게 맞을까? 
+	//연관이 있는 데이터라면 객체 단위로 처리하는게 좋다고 배웠으니까 Strudent클래스로 처리해보자 
+	//이 때는 @ModelAttribute를 사용(필드의 이름에 맞는 파라미터를 자동수신)
+	//단점은 파라미터가 없어도 객체가 생기면서 데이터를 수신한다. (필수라면 추가검사가 필요)
+	@RequestMapping("/score")
+	public String score(@ModelAttribute Student student) {
+		return "평균 : " + student.getAverage();
+	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

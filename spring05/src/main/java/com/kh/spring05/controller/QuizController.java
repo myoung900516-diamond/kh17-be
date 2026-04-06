@@ -21,7 +21,8 @@ public class QuizController {
 	}
 	@RequestMapping("/quiz02")
 	public String bmi(@RequestParam double h, double w) {
-		double bmi = w/(h*h) + w%(h*h);
+		double m = h/100;
+		double bmi = w/(m*m);
 		return "bmi = " + bmi;
 	}
 	@RequestMapping("/quiz03")
@@ -38,7 +39,7 @@ public class QuizController {
 	@RequestMapping("/quiz04")
 	public String result(@RequestParam double k, double e, double m) {
 		double total = k + e + m;
-		double average = total/3 + total%3;
+		double average = total/3.0;
 		return "total score = " + total +", " + "average score = " + average;
 	}
 	@RequestMapping("/quiz05")
@@ -49,7 +50,7 @@ public class QuizController {
 //		case age<=19 return "550";
 //		case age<=15 return "550";
 //		case age<65 return "1550";
-		if(age <= 7 || age >= 65) {
+		if(age <= 7  || age >= 65) {
 			return "price = 0";
 		}
 		else if(age <= 13) {
