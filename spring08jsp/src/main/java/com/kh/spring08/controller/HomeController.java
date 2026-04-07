@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller//새로운 등록(화면을 줄게!)
+@RequestMapping("/home ")
 public class HomeController {
 	@RequestMapping("/welcome")
 	public String welcome() {
