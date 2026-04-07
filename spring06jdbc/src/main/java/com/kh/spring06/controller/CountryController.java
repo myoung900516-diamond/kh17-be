@@ -85,6 +85,5 @@ public class CountryController {
 				return buffer.toString();
 			}
 		}
-		
 	}
 

@@ -51,7 +51,6 @@ public class BookDao {
 		String sql = "delete book where book_id=?";
 		Object[] params = {bookId};
 		return jdbcTemplate.update(sql, params)>0 ;
-		
 	}
 	
 	public List<BookDto> selectList(){
@@ -61,10 +60,13 @@ public class BookDao {
 	
 	public List<BookDto> selectList(String column, String keyword){
 		
-		if(column == null || keyword == null) return selectList();//없는 경우를 처리하고 싶다면(필수)
-		if(column.isEmpty() || keyword.isEmpty()) return selectList(); //빈 문자열을 처리하고 싶다면(선택)
+		if(column == null || keyword == null) return selectList();
+		if(column.isEmpty() || keyword.isEmpty()) return selectList(); 
 		
-		Set<String> allowList =Set.of("book_title", "book_author", "book_publisher", "book_genre");
+		Set<String> allowList =Set.of(
+				"book_title", "book_author", "book_publication_date", 
+				"book_publisher", "book_genre"
+				);
 		if(allowList.contains(column) == false) return selectList();
 		
 		String sql = "select * from book where instr("+column+", ?) >0 order by book_id asc";

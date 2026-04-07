@@ -24,10 +24,19 @@ public class BookDto {
 	public String getBookAuthor() {
 		return bookAuthor;
 	}
+	//표시용메소드
+	public String getBookAuthorString() {
+		if(bookAuthor == null) return "미상";
+		return bookAuthor;
+	}
 	public void setBookAuthor(String bookAuthor) {
 		this.bookAuthor = bookAuthor;
 	}
 	public String getBookPublicationDate() {
+		return bookPublicationDate;
+	}
+	public String getBookPublicationDateString() {
+		if(bookPublicationDate == null) return "알수없음";
 		return bookPublicationDate;
 	}
 	public void setBookPublicationDate(String bookPublicationDate) {
@@ -40,6 +49,10 @@ public class BookDto {
 		this.bookPrice = bookPrice;
 	}
 	public String getBookPublisher() {
+		return bookPublisher;
+	}
+	public String getBookPublisherString() {
+		if(bookPublisher == null) return "";
 		return bookPublisher;
 	}
 	public void setBookPublisher(String bookPublisher) {
