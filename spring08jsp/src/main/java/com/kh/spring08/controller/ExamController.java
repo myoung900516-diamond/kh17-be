@@ -10,5 +10,9 @@ public class ExamController {
 	public String exam01() {
 		return "/WEB-INF/views/exam/test01.jsp";
 	}
+	@RequestMapping("/test02")
+	public String exam02() {
+		return "/WEB-INF/views/exam/test02.jsp";
+	}
 
 }
