@@ -8,6 +8,17 @@
 	가격 <input type="text" name="bookPrice" required><br><br>
 	출판사 <input type="text" name="bookPublisher" ><br><br>
 	페이지수 <input type="text" name="bookPageCount" required><br><br>
-	장르 <input type="text" name="bookGenre" required><br><br>
+<!-- 	장르 <input type="text" name="bookGenre" required><br><br> -->
+	장르
+		<select name="bookGenre" required>
+			<option value = "">선택</option>
+			<option>판타지</option>
+			<option>교양</option>
+			<option>소설</option>
+			<option>역사</option>
+			<option>과학</option>
+			<option>추리소설</option>
+			<option>자기계발</option>
+		</select><br><br>
 		<button>등록하기</button>
 </form>
