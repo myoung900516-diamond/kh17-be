@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <h1>국가 정보 등록 페이지</h1>
 
-<form action="./insert2">
+<form action="./insert" method="post">
 	대륙 <input type="text" name="countryRegion"><br><br>
 	이름 <input type="text" name="countryName"><br><br>
 	수도 <input type="text" name="countryCapital"><br><br>
