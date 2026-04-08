@@ -13,3 +13,4 @@
 			</c:if>
 	</h2>
 </c:forEach>
+<hr> 
