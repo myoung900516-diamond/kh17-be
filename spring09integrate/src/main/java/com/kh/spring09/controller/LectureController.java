@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09.dao.LectureDao;
 import com.kh.spring09.dto.LectureDto;
+import com.kh.spring09.exception.TargetNotfoundException;
 
 @Controller
 @RequestMapping("/lecture")
@@ -44,6 +45,8 @@ public class LectureController {
 	@RequestMapping("/detail")
 	public String detail(@RequestParam int lectureNo, Model model) {
 		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
+		if(lectureDto == null)
+			throw new TargetNotfoundException("존재하지 않는 강좌 정보");
 		model.addAttribute("lectureDto", lectureDto);
 		return "/WEB-INF/views/lecture/detail.jsp";
 	}

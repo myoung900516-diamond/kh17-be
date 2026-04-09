@@ -2,6 +2,7 @@ package com.kh.spring09.exception;
 
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -15,8 +16,27 @@ public class ErrorController {
 	//-코드는 컨트롤러와 동일하게 작성 가능
 	//-예외 객체를 제공받을 수 있음
 	@ExceptionHandler(Exception.class)
-	public String error(Exception e) {
-		e.printStackTrace();
+	public String error(Exception e, Model model) {
+		e.printStackTrace();//오류 로그를 서버에 출력하고
+		model.addAttribute("message", e.getMessage());
 		return "/WEB-INF/views/error/500.jsp";
 	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
