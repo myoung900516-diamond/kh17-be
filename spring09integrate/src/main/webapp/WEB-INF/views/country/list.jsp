@@ -7,7 +7,7 @@
 <h1>국가 목록 및 검색</h1>
 <a href="./insert">신규 등록하기</a>
 <!-- 검색창 -->
-<form action="./list">
+<form action="./list" method="get">
 <!-- 	<input type="text" name="column"> -->
 	<select name="column">
 		<option value="country_name" ${param.column == "country_name" ? "selected": ""}>국가명</option>
@@ -19,7 +19,6 @@
 	<button>검색</button>
 </form>
 
-<a href="./insert">신규 등록하기</a>
 
 <!-- 결과출력 -->
 <h2>결과 수 : ${list.size()}</h2>
@@ -40,7 +39,11 @@
 			<tr>
 					<td>${countryDto.countryNo}</td>
 					<td>${countryDto.countryRegion}</td>
-					<td>${countryDto.countryName}</td>
+					<td>
+						<a href="./detail?countryNo=${countryDto.countryNo}">
+								${countryDto.countryName}
+						</a>
+					</td>
 					<td>${countryDto.countryCapital}</td>
 					<td align="right">
 						<fmt:formatNumber value="${countryDto.countryPopulation}"></fmt:formatNumber>명

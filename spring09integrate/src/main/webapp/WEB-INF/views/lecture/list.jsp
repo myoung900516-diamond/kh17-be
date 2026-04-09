@@ -9,7 +9,7 @@
 <a href="./insert">신규 등록하기</a>
 
 
-<form action="./list" method="post">
+<form action="./list" method="get">
 	<select name = "column">
 		<option value= "lecture_title" ${param.column == "lecture_name" ? "selected": ""}>강의명</option>
 		<option value= "lecture_category" ${param.column == "lecture_category" ? "selected": ""}>카테고리</option>
@@ -28,7 +28,7 @@
 	<thead align="center">
 				<tr>
 					<th>강좌번호</th>
-					<th>강좌명</th>
+					<th width="40%">강좌명</th>
 					<th>카테고리</th>
 					<th>강의기간</th>
 					<th>수강료</th>
@@ -39,14 +39,25 @@
 		<c:forEach var="lectureDto" items="${list}">
 				<tr>
 					<td>${lectureDto.lectureNo}</td>
-					<td>${lectureDto.lectureTitle}</td>
-					<td>${lectureDto.lectureCategory}</td>
-					<td>${lectureDto.lectureDuration}</td>
+					<td><a href="./detail?lectureNo=${lectureDto.lectureNo}">
+					          ${lectureDto.lectureTitle}
+					</a>
+					</td>
+					<td>
+						<a href="./list?column=lecture_category&keyword=${lectureDto.lectureCategory}">
+						${lectureDto.lectureCategory}
+						</a>
+						</td>
+					<td>${lectureDto.lectureDuration}H</td>
 					<td align="right">
 						<fmt:formatNumber value="${lectureDto.lecturePrice}" pattern="#,##0">
-						</fmt:formatNumber>
+						</fmt:formatNumber>원
 						</td>
-					<td>${lectureDto.lectureType}</td>
+					<td>
+					<a href="./list?column=lecture_type&keyword=${lectureDto.lectureType}">
+					${lectureDto.lectureType}
+						</a>
+					</td>
 				</tr>
 		</c:forEach>
 	</tbody>

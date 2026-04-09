@@ -41,6 +41,12 @@ public class LectureController {
 		model.addAttribute("list", list);
 		return "/WEB-INF/views/lecture/list.jsp";
 	}
+	@RequestMapping("/detail")
+	public String detail(@RequestParam int lectureNo, Model model) {
+		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
+		model.addAttribute("lectureDto", lectureDto);
+		return "/WEB-INF/views/lecture/detail.jsp";
+	}
 
 	
 	
