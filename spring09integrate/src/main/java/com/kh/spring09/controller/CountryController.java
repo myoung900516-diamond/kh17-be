@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09.dao.CountryDao;
 import com.kh.spring09.dto.CountryDto;
@@ -42,9 +43,13 @@ public class CountryController {
 		return "/WEB-INF/views/country/insertComplete.jsp";
 	}
 	
+	//목록 및 검색에 대한 매핑
 	@RequestMapping("/list")
-	public String list(Model model) {
-		List<CountryDto> list = countryDao.selectList();
+	public String list(@RequestParam(required = false) String column, 
+						@RequestParam(required = false) String keyword, 
+						Model model) {
+		//목록 조회
+		List<CountryDto> list = countryDao.selectList(column, keyword);
 		
 		model.addAttribute("list", list);
 		return "/WEB-INF/views/country/list.jsp";
