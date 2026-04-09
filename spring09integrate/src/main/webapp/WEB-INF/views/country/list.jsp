@@ -5,7 +5,7 @@
 
 <!-- 제목 -->
 <h1>국가 목록 및 검색</h1>
-
+<a href="./insert">신규 등록하기</a>
 <!-- 검색창 -->
 <form action="./list">
 <!-- 	<input type="text" name="column"> -->
@@ -19,6 +19,7 @@
 	<button>검색</button>
 </form>
 
+<a href="./insert">신규 등록하기</a>
 
 <!-- 결과출력 -->
 <h2>결과 수 : ${list.size()}</h2>
@@ -33,3 +34,5 @@
 												 pattern="#,##0"></fmt:formatNumber> 명
 	</div>
 </c:forEach>
+
+

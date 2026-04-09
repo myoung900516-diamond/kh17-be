@@ -7,7 +7,7 @@
 
 <!-- 등록링크 -->
 <a href="./insert">신규 등록하기</a>
-<a href="./list">목록 조회하기</a>
+
 
 <form action="./list" method="post">
 	<select name = "column">
@@ -35,7 +35,7 @@
 	</div>
 </c:forEach>
 
-<a href="./insert">추가 등록하기</a>
+<a href="./list">목록 조회하기</a>
 
 
 
