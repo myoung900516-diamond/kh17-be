@@ -39,6 +39,5 @@
 							<td>미국 텍사스</td>
 					</tr>
 		</tbody>
-		
 </table>
 
