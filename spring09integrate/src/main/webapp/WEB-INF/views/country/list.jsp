@@ -24,15 +24,41 @@
 <!-- 결과출력 -->
 <h2>결과 수 : ${list.size()}</h2>
 
-<c:forEach var="countryDto" items="${list}">
-	<hr>
-	<div><!-- 비어있는 영역(자동 줄바뀜) -->
-			<h3>[${countryDto.countryRegion}] ${countryDto.countryName}</h3>
-			수도 : ${countryDto.countryCapital}     <br>
+
+<table border="1" width="700">
+	<thead>
+			<tr align="center">
+					<th>번호</th>
+					<th>대륙</th>
+					<th>이름</th>
+					<th>수도</th>
+					<th>인구</th>
+			</tr>
+	</thead>
+	<tbody align="center">
+			<c:forEach var="countryDto" items="${list}">
+			<tr>
+					<td>${countryDto.countryNo}</td>
+					<td>${countryDto.countryRegion}</td>
+					<td>${countryDto.countryName}</td>
+					<td>${countryDto.countryCapital}</td>
+					<td align="right">
+						<fmt:formatNumber value="${countryDto.countryPopulation}"></fmt:formatNumber>명
+					</td>
+			</tr>
+			</c:forEach>
+	</tbody>
+</table>
+
+<%-- <c:forEach var="countryDto" items="${list}"> --%>
+<!-- 	<hr> -->
+<!-- 	<div>비어있는 영역(자동 줄바뀜) -->
+<%-- 			<h3>[${countryDto.countryRegion}] ${countryDto.countryName}</h3> --%>
+<%-- 			수도 : ${countryDto.countryCapital}     <br> --%>
 <%-- 			인구 : ${countryDto.countryPopulation} 명 <br> --%>
-			인구 : <fmt:formatNumber value="${countryDto.countryPopulation}"
-												 pattern="#,##0"></fmt:formatNumber> 명
-	</div>
-</c:forEach>
+<%-- 			인구 : <fmt:formatNumber value="${countryDto.countryPopulation}" --%>
+<%-- 												 pattern="#,##0"></fmt:formatNumber> 명 --%>
+<!-- 	</div> -->
+<%-- </c:forEach> --%>
 
 

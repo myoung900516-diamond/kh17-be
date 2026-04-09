@@ -23,19 +23,54 @@
 
 <!-- 출력값 -->
 <h2> 강좌 수 : ${list.size()}</h2>
-	<c:forEach  var="lectureDto" items = "${list}">
-	<hr>
-	<div>
-	<h3>${lectureDto.lectureNo}.[${lectureDto.lectureTitle}] </h3><br>
-			카테고리 : ${lectureDto.lectureCategory} /
-			수업시간 : ${lectureDto.lectureDuration}H /
-			수강료 :   <fmt:formatNumber value="${lectureDto.lecturePrice}"
-													pattern= "#,##0"></fmt:formatNumber> 원 /
-			강의형태 :${lectureDto.lectureType} <br>
-	</div>
-</c:forEach>
 
-<a href="./list">목록 조회하기</a>
+<table border="1" width="700">
+	<thead align="center">
+				<tr>
+					<th>강좌번호</th>
+					<th>강좌명</th>
+					<th>카테고리</th>
+					<th>강의기간</th>
+					<th>수강료</th>
+					<th>강의형태</th>
+				</tr>
+	</thead>
+	<tbody align="center">
+		<c:forEach var="lectureDto" items="${list}">
+				<tr>
+					<td>${lectureDto.lectureNo}</td>
+					<td>${lectureDto.lectureTitle}</td>
+					<td>${lectureDto.lectureCategory}</td>
+					<td>${lectureDto.lectureDuration}</td>
+					<td align="right">
+						<fmt:formatNumber value="${lectureDto.lecturePrice}" pattern="#,##0">
+						</fmt:formatNumber>
+						</td>
+					<td>${lectureDto.lectureType}</td>
+				</tr>
+		</c:forEach>
+	</tbody>
+</table>
+
+
+
+
+
+
+
+<%-- 	<c:forEach  var="lectureDto" items = "${list}"> --%>
+<!-- 	<hr> -->
+<!-- 	<div> -->
+<%-- 	<h3>${lectureDto.lectureNo}.[${lectureDto.lectureTitle}] </h3><br> --%>
+<%-- 			카테고리 : ${lectureDto.lectureCategory} / --%>
+<%-- 			수업시간 : ${lectureDto.lectureDuration}H / --%>
+<%-- 			수강료 :   <fmt:formatNumber value="${lectureDto.lecturePrice}" --%>
+<%-- 													pattern= "#,##0"></fmt:formatNumber> 원 / --%>
+<%-- 			강의형태 :${lectureDto.lectureType} <br> --%>
+<!-- 	</div> -->
+<%-- </c:forEach> --%>
+
+<!-- <a href="./list">목록 조회하기</a> -->
 
 
 
