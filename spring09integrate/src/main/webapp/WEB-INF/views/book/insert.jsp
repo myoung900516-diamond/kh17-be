@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <h1>도서 정보 입력하기</h1>
 <form action = "./insert" method = "post">
 	도서제목 <input type="text" name="bookTitle" required><br><br>
@@ -20,5 +21,8 @@
 			<option>추리소설</option>
 			<option>자기계발</option>
 		</select><br><br>
-		<button>등록하기</button>
+		<button>등록하기</button><br><br>
 </form>
+
+<a href="./list">목록 조회</a>
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

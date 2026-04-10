@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <h1>강좌정보목록조회</h1>
 
@@ -11,12 +12,12 @@
 
 <form action="./list" method="get">
 	<select name = "column">
-		<option value= "lecture_title" ${param.column == "lecture_name" ? "selected": ""}>강의명</option>
+		<option value= "lecture_title" ${param.column == "lecture_title" ? "selected": ""}>강의명</option>
 		<option value= "lecture_category" ${param.column == "lecture_category" ? "selected": ""}>카테고리</option>
 <%-- 		<option value= "lecture_price" ${param.column == "lecture_price" ? "selected": ""}>수강료</option> --%>
 		<option value= "lecture_type" ${param.column == "lecture_type" ? "selected": ""}>강의형태</option>
 	</select>
-	<input type="text", name="keyword" placeholder = "강좌명 입력"
+	<input type="text" name="keyword" placeholder = "강의명 입력"
 							value="${param.keyword}" required>
 	<button>검색</button>
 </form>
@@ -90,7 +91,7 @@
 
 
 
-
+<jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
 
 
 

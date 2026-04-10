@@ -1,0 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+    <h1>kh정보교육원 웹개발 수업과정</h1>
+<a href="/">HOME</a>
+<a href="/country/list">국가정보</a>
+<a href="/lecture/list">강좌정보</a>
+<a href="/book/list">도서정보</a>
+<a href="#">회원가입</a>
+<a href="#">로그인</a>
+    <hr>
+<div style="min-height: 250px">
