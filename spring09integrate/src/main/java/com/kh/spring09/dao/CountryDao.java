@@ -34,7 +34,7 @@ public class CountryDao {
 	//수정메소드
 	public boolean update(CountryDto countryDto) {
 		String sql = "update country "
-				+ "		set country_region=?, country_name=? "
+				+ "		set country_region=?, country_name=?, "
 				+ "		country_capital=?, country_population=? "
 				+ "		where country_no=? ";
 		Object[] params = {

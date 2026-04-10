@@ -73,7 +73,27 @@ public class CountryController {
 		return "/WEB-INF/views/country/notfound.jsp";
 	}
 	
-	
+	//삭제매핑
+	@RequestMapping("/delete")
+	public String delete(@RequestParam int countryNo){
+		CountryDto countryDto = countryDao.selectOne(countryNo);
+		if(countryDto == null) throw new TargetNotfoundException("존재하지 않는 국가");
+		countryDao.delete(countryNo);
+		return "redirect:./list";
+	}
+	//수정매핑
+	@GetMapping("/edit")
+	public String edit(@RequestParam int countryNo, Model model) {
+		CountryDto countryDto = countryDao.selectOne(countryNo);
+		if(countryDto == null) throw new TargetNotfoundException("존재하지 않는 국가");
+		model.addAttribute("countryDto", countryDto);
+		return "/WEB-INF/views/country/edit.jsp";
+	}
+	@PostMapping("/edit")
+	public String edit(@ModelAttribute CountryDto countryDto) {
+		countryDao.update(countryDto);
+		return "redirect:./detail?countryNo=" + countryDto.getCountryNo();
+	}
 	
 	
 	

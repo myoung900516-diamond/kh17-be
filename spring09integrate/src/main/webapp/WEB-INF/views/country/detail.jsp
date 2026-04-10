@@ -19,5 +19,7 @@
 
 <h2>
 <a href="./list">목록으로 이동</a><br>
-<a href="./insert">신규 등록하기</a>
+<a href="./insert">신규 등록하기</a><br>
+<a href="./edit?countryNo=${countryDto.countryNo}">수정하기</a><br>
+<a href="./delete?countryNo=${countryDto.countryNo}">삭제하기</a>
 </h2>

@@ -50,6 +50,30 @@ public class LectureController {
 		model.addAttribute("lectureDto", lectureDto);
 		return "/WEB-INF/views/lecture/detail.jsp";
 	}
+	@RequestMapping("/delete")
+	public String delete(@RequestParam int lectureNo) {
+		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
+			if(lectureDto == null) throw new TargetNotfoundException("존재하지 않는 강좌");
+			lectureDao.delete(lectureNo);
+		return "redirect:./list";
+		}
+	@GetMapping("/edit")
+	public String edit(@RequestParam int lectureNo, Model model ) {
+		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
+		if(lectureDto == null) throw new TargetNotfoundException("존재하지 않는 강좌");
+		
+		model.addAttribute("lectureDto", lectureDto);
+		return "/WEB-INF/views/lecture/edit.jsp";
+	}
+	@PostMapping("/edit")
+	public String edit(@ModelAttribute LectureDto lectureDto) {
+		lectureDao.update(lectureDto);
+		return "redirect:./detail?lectureNo="+lectureDto.getLectureNo();
+	}
+	
+	
+	
+}
 
 	
 	
@@ -66,5 +90,3 @@ public class LectureController {
 	
 	
 	
-	
-}
