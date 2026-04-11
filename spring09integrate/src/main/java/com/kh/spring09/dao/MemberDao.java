@@ -21,20 +21,16 @@ public class MemberDao {
 		String sql = "insert into member("
 				+ "member_id, member_email, member_password, member_nickname, "
 				+ "member_birth, member_contact, member_post, member_address1, "
-				+ "member_address2, member_level, member_message, "
-				+ "member_join, member_login, member_change, member_block, "
-				+ "member_point) "
+				+ "member_address2, member_message"
+				+ ") "
 				+ "values("
-				+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+				+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 		Object[] params = {
 				memberDto.getMemberId(), memberDto.getMemberEmail(), 
 				memberDto.getMemberPassword(), memberDto.getMemberNickname(), 
 				memberDto.getMemberBirth(), memberDto.getMemberContact(), 
 				memberDto.getMemberPost(), memberDto.getMemberAddress1(), 
-				memberDto.getMemberAddress2(), memberDto.getMemberLevel(), 
-				memberDto.getMemberMessage(), memberDto.getMemberJoin(), 
-				memberDto.getMemberLogin(), memberDto.getMemberChange(), 
-				memberDto.getMemberBlock(), memberDto.getMemberPoint() 
+				memberDto.getMemberAddress2(), memberDto.getMemberMessage()
 				};
 		jdbcTemplate.update(sql, params);
 	}
@@ -44,8 +40,7 @@ public class MemberDao {
 				+ "set member_email=?, member_password=?, member_nickname=?, "
 				+ "member_birth=?, member_contact=?, member_post=?, member_address1=?, "
 				+ "member_address2=?, member_level=?, member_message=?, "
-				+ "member_join=?, member_login=?, member_change=?, member_block=?, "
-				+ "member_point=? "
+				+ "member_login=current_timestamp, member_block=?, member_point=? "
 				+ "where member_id = ? ";
 		Object[] params = {
 				memberDto.getMemberEmail(), 
@@ -53,9 +48,8 @@ public class MemberDao {
 				memberDto.getMemberBirth(), memberDto.getMemberContact(), 
 				memberDto.getMemberPost(), memberDto.getMemberAddress1(), 
 				memberDto.getMemberAddress2(), memberDto.getMemberLevel(), 
-				memberDto.getMemberMessage(), memberDto.getMemberJoin(), 
-				memberDto.getMemberLogin(), memberDto.getMemberChange(), 
-				memberDto.getMemberBlock(), memberDto.getMemberPoint(), 
+				memberDto.getMemberMessage(), memberDto.getMemberBlock(), 
+				memberDto.getMemberPoint(), 
 				memberDto.getMemberId(),};
 		return jdbcTemplate.update(sql, params) > 0 ;
 	}
@@ -84,18 +78,23 @@ public class MemberDao {
 		String sql = "select * from member "
 				+ "where instr( "+column+", ?) >0 order by member_id asc";
 		Object[] params = {keyword};
-		MemberMapper memberMapper = new MemberMapper();
 		return jdbcTemplate.query(sql, memberMapper, params);
 	}
 	
 	public MemberDto selectOne(String member_id) {
 		String sql = "select * from member where member_id=?";
 		Object[] params = {member_id};
-		MemberMapper memberMapper = new MemberMapper();
 		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper,params);
 			return list.isEmpty() ? null : list.get(0);
 	}
-	
+	public boolean login(String memberId, String memberPassword) {
+		String sql = "update member "
+				+ "set member_login=current_timestamp "
+				+ "where member_id = ? and member_password=?";
+		Object[] params = {memberId, memberPassword};
+	    return jdbcTemplate.update(sql, params)>0;
+
+	}
 	
 
 }
