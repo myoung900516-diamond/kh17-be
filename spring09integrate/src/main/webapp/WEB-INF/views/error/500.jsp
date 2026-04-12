@@ -6,5 +6,5 @@
 
 
 <h1>${message == null ? "일시적인 오류가 발생했습니다" : message}</h1>
-<a href="/">홈으로</a>
+<!-- <a href="/">홈으로</a> -->
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

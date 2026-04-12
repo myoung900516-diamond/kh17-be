@@ -18,15 +18,18 @@ public class MemberController {
 	@Autowired
 	private MemberDao memberDao;
 	
+	//회원가입
 	@GetMapping("/join")
 	public String join() {
 		return "/WEB-INF/views/member/join.jsp";
 	}
+	//회원가입
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberDto memberDto) {
 		memberDao.insert(memberDto);
 		return "redirect:./joinFinish";
 	}
+	//회원가입완료
 	@RequestMapping("/joinFinish")
 	public String joinFinish() {
 		return "/WEB-INF/views/member/joinFinish.jsp";
@@ -45,10 +48,12 @@ public class MemberController {
 //		memberDao.update(memberDto);
 //		return "redirect:/";
 //	}
+	//로그인
 	@GetMapping("/login")
 	public String login() {
 		return "/WEB-INF/views/member/login.jsp";
 	}
+	//로그인
 	@PostMapping("/login")
 	public String login(@RequestParam String memberId, 
 						@RequestParam String memberPassword) {

@@ -4,10 +4,10 @@
 <h1>회원 등록 페이지</h1>
 <hr>
 <form action="./join" method="post">
-아아디<input type="text" name="memberId"><br><br>
-비밀번호<input type="text" name="memberPassword"><br><br>
-이메일<input type="text" name="memberEmail"><br><br>
-닉네임<input type="text" name="memberNickname"><br><br>
+아아디*<input type="text" name="memberId"><br><br>
+비밀번호*<input type="text" name="memberPassword"><br><br>
+이메일*<input type="text" name="memberEmail"><br><br>
+닉네임*<input type="text" name="memberNickname"><br><br>
 생년월일<input type="text" name="memberBirth"><br><br>
 휴대폰<input type="text" name="memberContact"><br><br>
 우편번호<input type="text" name="memberPost"><br><br>
