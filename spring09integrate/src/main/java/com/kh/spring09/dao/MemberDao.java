@@ -81,19 +81,27 @@ public class MemberDao {
 		return jdbcTemplate.query(sql, memberMapper, params);
 	}
 	
-	public MemberDto selectOne(String member_id) {
+	public MemberDto selectOne(String memberId) {
 		String sql = "select * from member where member_id=?";
-		Object[] params = {member_id};
+		Object[] params = {memberId};
 		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper,params);
 			return list.isEmpty() ? null : list.get(0);
 	}
-	public boolean login(String memberId, String memberPassword) {
+	public boolean updateMemberLogin(String memberId) {
 		String sql = "update member "
-				+ "set member_login=current_timestamp "
-				+ "where member_id = ? and member_password=?";
-		Object[] params = {memberId, memberPassword};
+				+ "set member_login=systimestamp "
+				+ "where member_id = ?";
+		Object[] params = {memberId};
 	    return jdbcTemplate.update(sql, params)>0;
-
+	}
+	
+//	public boolean updateMemberPassword(String memberId, String changePw) {
+		public boolean updateMemberPassword(MemberDto memberDto) {
+		String sql = "update member "
+				+ "set member_password= ?, member_change=systimestamp "
+				+ "where member_id = ?";
+		Object[] params = {memberDto.getMemberPassword(), memberDto.getMemberId()};
+		return jdbcTemplate.update(sql, params)>0;
 	}
 	
 

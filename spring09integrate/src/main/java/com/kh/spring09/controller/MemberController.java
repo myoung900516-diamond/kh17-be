@@ -2,6 +2,7 @@ package com.kh.spring09.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,7 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09.dao.MemberDao;
 import com.kh.spring09.dto.MemberDto;
-import com.kh.spring09.exception.TargetNotfoundException;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("/member")
@@ -50,16 +52,95 @@ public class MemberController {
 		return "/WEB-INF/views/member/login.jsp";
 	}
 	@PostMapping("/login")
-	public String login(@RequestParam String memberId, 
-						@RequestParam String memberPassword) {
-		boolean findDto = memberDao.login(memberId, memberPassword);
-		if(findDto == false) throw new TargetNotfoundException("회원정보를 잘못 입력하였습니다");
+	public String login(@ModelAttribute MemberDto memberDto, 
+								HttpSession session) {
+		MemberDto findMemberDto = memberDao.selectOne(memberDto.getMemberId());
+		if(findMemberDto == null) {
+				return "redirect:./login?error"; //redirect는 GET만 가능
+		}
 //		if(!memberDto.getMemberId().equals(memberId) || 
 //			!memberDto.getMemberPassword().equals(memberPassword))
 //		throw new TargetNotfoundException("회원정보를 잘못 입력하였습니다");
 //		if(memberDto.getMemberId().equals(memberId) && 
 //				memberDto.getMemberPassword().equals(memberPassword))
+		
+		boolean isPasswordValid = memberDto.getMemberPassword()
+												.equals(findMemberDto.getMemberPassword());
+		if(!isPasswordValid) {
+			return "redirect:./login?error";
+		}
+		//회원 차단이 y라면
+		if(findMemberDto.getMemberBlock().equals("Y")) {
+			return "redirect:./block";//차단페이지로 이동
+		}
+		//-로그인시간 갱신
+		memberDao.updateMemberLogin(findMemberDto.getMemberId());
+		
+		//-세션에 로그인 되었음을 표시 
+		session.setAttribute("loginId", findMemberDto.getMemberId());
+		session.setAttribute("loginLevel", findMemberDto.getMemberLevel());
 		return "redirect:/";
 	}
+	//로그아웃
+	@RequestMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("loginId");
+		session.removeAttribute("loginLevel");
+		return "redirect:/";
+	}
+	@RequestMapping("/block")
+	public String block() {
+		return "/WEB-INF/views/member/block.jsp";
+	}
+	
+	//마이페이지
+	//세션에 들어있는 아이디를 이용해서 현재 회원의 모든 정보를 화면에 전달 
+	@RequestMapping("/mypage")
+	public String mypage(HttpSession session, Model model) {
+		//session에 존재하는 현재 사용자 영역에 저장된 loginId라는 이름의 값을 불러오세요! 
+		String loginId = (String) session.getAttribute("loginId"); //다운캐스팅
+		MemberDto memberDto = memberDao.selectOne(loginId);
+		model.addAttribute("memberDto", memberDto);
+		return "/WEB-INF/views/member/mypage.jsp";
+	}
+	
+	@GetMapping("/password")
+	public String password() {
+		return "/WEB-INF/views/member/password.jsp";
+	}
+	@PostMapping("/password")
+	public String password(@RequestParam String originPw, @RequestParam String changePw, 
+									HttpSession session) {
+		if(originPw.equals(changePw)) return "redirect:./password?error";
+		
+		String loginId = (String) session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(loginId);
+		
+		if(!memberDto.getMemberPassword().equals(originPw)) {
+			return "redirect:./password?error";
+		}
+		
+//        memberDto.getMemberPassword();
+//        model.addAttribute("memberDto",memberDto);
+//
+//			boolean isPasswordValid = memberDto.getMemberPassword()
+//														.equals(memberDto.getMemberPassword());
+//			if(!isPasswordValid) {
+//			return "redirect:./password";
+//			}
+			memberDto.setMemberPassword(changePw);
+			memberDao.updateMemberPassword(memberDto);
+			return "redirect:./passwordFinish";	
+	}
+	@RequestMapping("/passwordFinish")
+	public String passwordFinish() {
+		return "/WEB-INF/views/member/passwordFinish.jsp";
+	}
+	
+	
+	
+	
+	
+	
 
 }
