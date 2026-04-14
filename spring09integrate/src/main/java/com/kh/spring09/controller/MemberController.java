@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09.dao.MemberDao;
+import com.kh.spring09.dao.MemberExitDao;
 import com.kh.spring09.dto.MemberDto;
+import com.kh.spring09.dto.MemberExitDto;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -19,6 +21,8 @@ import jakarta.servlet.http.HttpSession;
 public class MemberController {
 	@Autowired
 	private MemberDao memberDao;
+	@Autowired
+	private MemberExitDao memberExitDao;
 	
 	@GetMapping("/join")
 	public String join() {
@@ -54,7 +58,8 @@ public class MemberController {
 	@PostMapping("/login")
 	public String login(@ModelAttribute MemberDto memberDto, 
 								HttpSession session) {
-		MemberDto findMemberDto = memberDao.selectOne(memberDto.getMemberId());
+//		MemberDto findMemberDto = memberDao.selectOne(memberDto.getMemberId());
+		MemberExitDto findMemberDto = memberExitDao.selectOne(memberDto.getMemberId());
 		if(findMemberDto == null) {
 				return "redirect:./login?error"; //redirect는 GET만 가능
 		}
@@ -73,6 +78,10 @@ public class MemberController {
 		if(findMemberDto.getMemberBlock().equals("Y")) {
 			return "redirect:./block";//차단페이지로 이동
 		}
+		
+		//탈퇴 예정인 회원이라면? (탈퇴 버튼 누른 사람)
+		if(findMemberDto.isWaitForDelete()) return "redirect:./waiting";
+		
 		//-로그인시간 갱신
 		memberDao.updateMemberLogin(findMemberDto.getMemberId());
 		
@@ -91,6 +100,11 @@ public class MemberController {
 	@RequestMapping("/block")
 	public String block() {
 		return "/WEB-INF/views/member/block.jsp";
+	}
+	
+	@RequestMapping("/waiting")
+	public String waiting() {
+		return "/WEB-INF/views/member/waiting.jsp";
 	}
 	
 	//마이페이지
@@ -176,7 +190,8 @@ public class MemberController {
 //		memberDto.setMemberId(loginId);
 		//반드시 같이 실행되어야함
 		//아주 강함 결합도를 가지고 있음
-		memberDao.delete(loginId);
+//		memberDao.delete(loginId);//
+		memberExitDao.insert(loginId);
 		session.removeAttribute("loginId");
 		session.removeAttribute("loginLevel");
 		
