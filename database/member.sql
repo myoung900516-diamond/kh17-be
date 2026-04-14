@@ -102,5 +102,18 @@ primary key(member_exit_id)
 );
 
 
+--뷰 생성 : 회원 <- 삭제대기 정보 
+create VIEW  member_with_exit as
+select member.*, member_exit.member_exit_time from member 
+		left outer join member_exit on member.member_id = member_exit.member_exit_id;
+
+--뷰 생성: 회원 + 삭제 대기정보
+create VIEW  member_wait_exit as
+select member.*, member_exit.member_exit_time from member 
+		inner join member_exit on member.member_id = member_exit.member_exit_id;
+
+commit;
+
+
 
 
