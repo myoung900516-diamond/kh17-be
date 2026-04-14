@@ -21,7 +21,7 @@
 	<li>최종변경일 : <fmt:formatDate value = "${memberDto.memberChange}" pattern="y년 M월 d일 E a h시 m분"/></li>
 </ul>
 <h2><a href="./password">비밀번호 변경하기</a></h2>
-<h2><a href="#">개인정보 변경하기</a></h2>
-<h2><a href="#">회원 탈퇴하기</a></h2>
+<h2><a href="./edit">개인정보 변경하기</a></h2>
+<h2><a href="./goodbye">회원 탈퇴하기</a></h2>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

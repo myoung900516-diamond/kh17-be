@@ -37,20 +37,16 @@ public class MemberDao {
 	
 	public boolean update(MemberDto memberDto) {
 		String sql = "update member "
-				+ "set member_email=?, member_password=?, member_nickname=?, "
-				+ "member_birth=?, member_contact=?, member_post=?, member_address1=?, "
-				+ "member_address2=?, member_level=?, member_message=?, "
-				+ "member_login=current_timestamp, member_block=?, member_point=? "
+				+ "set member_email=?, member_nickname=?, member_birth=?, "
+				+ "member_contact=?, member_post=?, member_address1=?, "
+				+ "member_address2=?, member_message=? "
 				+ "where member_id = ? ";
 		Object[] params = {
-				memberDto.getMemberEmail(), 
-				memberDto.getMemberPassword(), memberDto.getMemberNickname(), 
+				memberDto.getMemberEmail(), memberDto.getMemberNickname(), 
 				memberDto.getMemberBirth(), memberDto.getMemberContact(), 
 				memberDto.getMemberPost(), memberDto.getMemberAddress1(), 
-				memberDto.getMemberAddress2(), memberDto.getMemberLevel(), 
-				memberDto.getMemberMessage(), memberDto.getMemberBlock(), 
-				memberDto.getMemberPoint(), 
-				memberDto.getMemberId(),};
+				memberDto.getMemberAddress2(), memberDto.getMemberMessage(), 
+				memberDto.getMemberId()};
 		return jdbcTemplate.update(sql, params) > 0 ;
 	}
 	public boolean delete(String memberId) {
@@ -103,6 +99,17 @@ public class MemberDao {
 		Object[] params = {memberDto.getMemberPassword(), memberDto.getMemberId()};
 		return jdbcTemplate.update(sql, params)>0;
 	}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	
 
 }

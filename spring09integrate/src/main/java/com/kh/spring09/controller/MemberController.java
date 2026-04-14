@@ -136,6 +136,70 @@ public class MemberController {
 	public String passwordFinish() {
 		return "/WEB-INF/views/member/passwordFinish.jsp";
 	}
+	@GetMapping("/edit")
+	public String edit(Model model, HttpSession session) {
+		String loginId = (String) session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(loginId);
+		model.addAttribute("memberDto", memberDto);
+		return "/WEB-INF/views/member/edit.jsp";
+	}
+	
+	@PostMapping("/edit")
+	public String edit(HttpSession session, @ModelAttribute MemberDto memberDto) {
+		String loginId = (String) session.getAttribute("loginId");
+		
+		MemberDto findMemberDto = memberDao.selectOne(loginId);
+		boolean valid = findMemberDto.getMemberPassword().equals(memberDto.getMemberPassword());
+		if(!valid) return "redirect:./edit?error";
+		
+		memberDto.setMemberId(loginId);
+		memberDao.update(memberDto);
+		
+		return "redirect:./mypage";
+	}
+	@GetMapping("/goodbye")
+	public String goodbye() {
+//			HttpSession session, Model model) {
+//		String loginId = (String)session.getAttribute("loginId");
+//		MemberDto memberDto = memberDao.selectOne(loginId);
+//		model.addAttribute("memberDto", memberDto);
+		return "/WEB-INF/views/member/goodbye.jsp";
+	}
+	@PostMapping("/goodbye")
+	public String goodbye(HttpSession session, @RequestParam String memberPassword) {
+		String loginId = (String) session.getAttribute("loginId");
+		
+		MemberDto memberDto = memberDao.selectOne(loginId);
+		boolean valid = memberDto.getMemberPassword().equals(memberPassword);
+		if(!valid) return "redirect:./goodbye?error";
+		
+//		memberDto.setMemberId(loginId);
+		//반드시 같이 실행되어야함
+		//아주 강함 결합도를 가지고 있음
+		memberDao.delete(loginId);
+		session.removeAttribute("loginId");
+		session.removeAttribute("loginLevel");
+		
+		return "redirect:./goodbyeFinish";
+	}
+	
+	@RequestMapping("/goodbyeFinish")
+	public String goodbyeFinish() {
+		return "/WEB-INF/views/member/goodbyeFinish.jsp";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
