@@ -93,3 +93,14 @@ SELECT SYSTIMESTAMP FROM DUAL;
 update member set member_block ='Y' where member_id='a12345';
 commit;
 
+--회원 삭제 대기 테이블
+--회원 한 명당 딱 1번만 등록 가능 (1:1관계)
+create table member_exit(
+member_exit_id references member(member_id) on delete cascade not null,
+member_exit_time timestamp default systimestamp not null,
+primary key(member_exit_id)
+);
+
+
+
+
