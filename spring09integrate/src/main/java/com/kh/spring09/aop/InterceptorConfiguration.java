@@ -23,8 +23,8 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 		registry.addInterceptor(memberOnlyInterceptor).addPathPatterns(
 				"/book/**", 
 				"/lecture/insert*",
-				"/lecture/edit*",
-				"/lecture/delete*"
+				"/lecture/edit",
+				"/lecture/delete"
 				);
 		
 		//주소(Path Patterns)작성 규칙
