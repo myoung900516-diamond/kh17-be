@@ -22,10 +22,15 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 		registry.addInterceptor(testInterceptor).addPathPatterns("/**");
 		registry.addInterceptor(memberOnlyInterceptor).addPathPatterns(
 				"/book/**", 
-				"/lecture/insert*",
-				"/lecture/edit",
-				"/lecture/delete"
-				);
+//				"/lecture/insert*",
+//				"/lecture/edit",
+//				"/lecture/delete"
+				"/lecture/**"
+				)
+				.excludePathPatterns(
+						"/lecture/list",
+						"/lecture/detail"
+						);
 		
 		//주소(Path Patterns)작성 규칙
 		//-spring 표현식 규칙을 따른다 
