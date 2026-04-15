@@ -1,5 +1,10 @@
 package com.kh.spring09.controller;
 
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -102,6 +107,19 @@ public class MemberController {
 		//-세션에 로그인 되었음을 표시 
 		session.setAttribute("loginId", findMemberDto.getMemberId());
 		session.setAttribute("loginLevel", findMemberDto.getMemberLevel());
+		
+		//비밀번호변경한 시간을 비교해서 일정기간 이상이면 비밀번호 변경 안내 페이지로 리다이렉트
+		Timestamp last = findMemberDto.getMemberChange();
+		if(last == null) {
+			last = findMemberDto.getMemberJoin();
+		}
+		LocalDateTime lastChange = findMemberDto.getMemberChange().toLocalDateTime();
+		LocalDateTime current = LocalDateTime.now();
+		Duration duration = Duration.between(lastChange, current);
+		if(duration.toHours() >= 1) {
+			return "redirect:./notice";
+		}
+		
 		return "redirect:/";
 	}
 	//로그아웃
@@ -129,6 +147,11 @@ public class MemberController {
 		String loginId = (String) session.getAttribute("loginId"); //다운캐스팅
 		MemberDto memberDto = memberDao.selectOne(loginId);
 		model.addAttribute("memberDto", memberDto);
+		
+		List<MemberHistoryDto> loginHistory = 
+								memberHistoryDao.selectList(loginId, 1, 10);
+		model.addAttribute("loginHistory", loginHistory);
+		
 		return "/WEB-INF/views/member/mypage.jsp";
 	}
 	
@@ -217,7 +240,38 @@ public class MemberController {
 		return "/WEB-INF/views/member/goodbyeFinish.jsp";
 	}
 	
+	@RequestMapping("/history")
+	public String history(HttpSession session, 
+								@RequestParam(required = false) String beginDate, 
+								@RequestParam(required = false) String endDate, 
+								@RequestParam(required = false, defaultValue = "1") int page, 
+								@RequestParam(required = false, defaultValue = "20") int size, 
+								Model model) {
+		String loginId = (String) session.getAttribute("loginId");
+		
+		int endRow = page * size;
+		int beginRow = endRow - (size-1);
+		
+//		MemberHistoryDto memberHistoryDto = new MemberHistoryDto();
+//		memberHistoryDto.setMemberHistoryOrigin(loginId); 
+		List<MemberHistoryDto> loginhistory = 
+					memberHistoryDao.selectList(loginId, beginDate, endDate, beginRow, endRow);
+		model.addAttribute("loginhistory", loginhistory);
+		return "/WEB-INF/views/member/history.jsp";
+	}
 	
+	@RequestMapping("/notice")
+	public String notice() {
+		return "/WEB-INF/views/member/notice";
+	}
+	
+	@RequestMapping("/later")
+	public String later(HttpSession session) {
+		String loginId = (String)session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(loginId);
+		memberDao.updateMemberPassword(memberDto);
+		return "redirect:/";
+	}
 	
 	
 	
