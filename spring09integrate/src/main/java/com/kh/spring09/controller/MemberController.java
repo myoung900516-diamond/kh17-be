@@ -113,10 +113,10 @@ public class MemberController {
 		if(last == null) {
 			last = findMemberDto.getMemberJoin();
 		}
-		LocalDateTime lastChange = findMemberDto.getMemberChange().toLocalDateTime();
+		LocalDateTime lastChange = last.toLocalDateTime();
 		LocalDateTime current = LocalDateTime.now();
 		Duration duration = Duration.between(lastChange, current);
-		if(duration.toHours() >= 1) {
+		if(duration.toDays() >= 30) {
 			return "redirect:./notice";
 		}
 		
@@ -262,7 +262,7 @@ public class MemberController {
 	
 	@RequestMapping("/notice")
 	public String notice() {
-		return "/WEB-INF/views/member/notice";
+		return "/WEB-INF/views/member/notice.jsp";
 	}
 	
 	@RequestMapping("/later")
