@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09.dao.MemberDao;
 import com.kh.spring09.dao.MemberExitDao;
+import com.kh.spring09.dao.MemberHistoryDao;
 import com.kh.spring09.dto.MemberDto;
 import com.kh.spring09.dto.MemberExitDto;
+import com.kh.spring09.dto.MemberHistoryDto;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -23,6 +26,8 @@ public class MemberController {
 	private MemberDao memberDao;
 	@Autowired
 	private MemberExitDao memberExitDao;
+	@Autowired
+	private MemberHistoryDao memberHistoryDao;
 	
 	@GetMapping("/join")
 	public String join() {
@@ -57,6 +62,8 @@ public class MemberController {
 	}
 	@PostMapping("/login")
 	public String login(@ModelAttribute MemberDto memberDto, 
+//							 @RequestHeader("User-Agent") String userAgent, //아이피 주소를 불러 올 수 없어서 못씀 
+							 HttpServletRequest request,
 								HttpSession session) {
 //		MemberDto findMemberDto = memberDao.selectOne(memberDto.getMemberId());
 		MemberExitDto findMemberDto = memberExitDao.selectOne(memberDto.getMemberId());
@@ -84,6 +91,13 @@ public class MemberController {
 		
 		//-로그인시간 갱신
 		memberDao.updateMemberLogin(findMemberDto.getMemberId());
+		//로그인 이력 생성
+		MemberHistoryDto memberHistoryDto = new MemberHistoryDto();
+		//정보 입력
+		memberHistoryDto.setMemberHistoryOrigin(findMemberDto.getMemberId());
+		memberHistoryDto.setMemberHistoryAddress(request.getRemoteAddr());
+		memberHistoryDto.setMemberHistoryAgent(request.getHeader("User-Agent"));
+		memberHistoryDao.insert(memberHistoryDto);
 		
 		//-세션에 로그인 되었음을 표시 
 		session.setAttribute("loginId", findMemberDto.getMemberId());
