@@ -14,6 +14,8 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 	private TestInterceptor testInterceptor;
 	@Autowired
 	private MemberOnlyInterceptor memberOnlyInterceptor;
+	@Autowired
+	private MasterOnlyInterceptor masterOnlyInterceptor;
 
 	//가져온 인터셉터를 특정 주소에서 일하도록 설정 
 	@Override
@@ -25,7 +27,7 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 //				"/lecture/insert*",
 //				"/lecture/edit",
 //				"/lecture/delete"
-				"/lecture/**", 
+				"/lecture/**",
 				"/member/**"
 				)
 				.excludePathPatterns(
@@ -35,6 +37,9 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 						"/member/login", 
 						"/member/goodbyeFinish"
 						);
+		registry.addInterceptor(masterOnlyInterceptor).addPathPatterns(
+				"/admin/**"
+				);
 		
 		//주소(Path Patterns)작성 규칙
 		//-spring 표현식 규칙을 따른다 

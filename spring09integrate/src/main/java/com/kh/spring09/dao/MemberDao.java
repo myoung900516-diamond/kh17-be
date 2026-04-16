@@ -62,8 +62,8 @@ public class MemberDao {
 	}
 	
 	public List<MemberDto> selectList(String column, String keyword){ 
-		if(column == null || keyword == null) return selectList();
-		if(column.isEmpty()||keyword.isEmpty()) return selectList();
+		if(column == null || keyword == null) return List.of();
+		if(column.isEmpty()||keyword.isEmpty()) return List.of();
 		
 		Set<String> allowlist = Set.of(
 				"member_id", "member_email", "member_password", "member_nickname", 
@@ -99,6 +99,25 @@ public class MemberDao {
 		Object[] params = {memberDto.getMemberPassword(), memberDto.getMemberId()};
 		return jdbcTemplate.update(sql, params)>0;
 	}
+		public boolean updateForMaster(MemberDto memberDto) {
+			String sql = "update member "
+					+ "set member_level=?, member_point=? "
+					+ "where member_id=? ";
+			Object[] params = {memberDto.getMemberLevel(), memberDto.getMemberPoint(), 
+										memberDto.getMemberId() };
+			return jdbcTemplate.update(sql, params)>0;
+		}
+		public void block(String memberId) {
+			 String sql = "update member set member_block = 'Y' where member_id = ?";
+			 Object[] params = {memberId};
+			    jdbcTemplate.update(sql, params);
+		}
+
+		public void unblock(String memberId) {
+			 String sql = "update member set member_block = 'N' where member_id = ?";
+			 Object[] params = {memberId};
+			    jdbcTemplate.update(sql, params);
+		}
 		
 		
 		
