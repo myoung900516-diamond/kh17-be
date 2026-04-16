@@ -21,6 +21,21 @@ public class ErrorController {
 		model.addAttribute("message", e.getMessage());
 		return "/WEB-INF/views/error/500.jsp";
 	}
+	@ExceptionHandler(TargetNotfoundException.class)
+	public String notFound(Exception e, Model model) {
+		model.addAttribute("message", e.getMessage());
+		return "/WEB-INF/views/error/404.jsp";
+	}
+	@ExceptionHandler(WhoAreYouException.class)
+	public String unauthorize(Exception e, Model model) {
+		model.addAttribute("message", e.getMessage());
+		return "/WEB-INF/views/error/401.jsp";
+	}
+	@ExceptionHandler(GetOutException.class)
+	public String forbidden(Exception e, Model model) {
+		model.addAttribute("message", e.getMessage());
+		return "/WEB-INF/views/error/403.jsp";
+	}
 }
 
 

@@ -25,11 +25,15 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 //				"/lecture/insert*",
 //				"/lecture/edit",
 //				"/lecture/delete"
-				"/lecture/**"
+				"/lecture/**", 
+				"/member/**"
 				)
 				.excludePathPatterns(
-						"/lecture/list",
-						"/lecture/detail"
+						"/lecture/list", "/lecture/detail", 
+						"/member/join*", 
+//						"/member/joinfinish", 
+						"/member/login", 
+						"/member/goodbyeFinish"
 						);
 		
 		//주소(Path Patterns)작성 규칙

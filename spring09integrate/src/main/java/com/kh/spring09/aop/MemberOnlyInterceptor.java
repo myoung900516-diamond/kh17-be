@@ -3,6 +3,8 @@ package com.kh.spring09.aop;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.kh.spring09.exception.WhoAreYouException;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -17,7 +19,14 @@ public class MemberOnlyInterceptor  implements HandlerInterceptor{
 		HttpSession session = request.getSession();
 		String loginId = (String) session.getAttribute("loginId");
 		String loginLevel = (String) session.getAttribute("loginLevel");
-		if(loginId == null || loginLevel == null) return false;
+		if(loginId == null || loginLevel == null) {
+//			return "redirect:/member/login";
+//			response.sendRedirect("/member/login");
+//			response.sendError(401);
+//			return false;
+			throw new WhoAreYouException();
+		}
+		
 		return true;
 	}
 	
