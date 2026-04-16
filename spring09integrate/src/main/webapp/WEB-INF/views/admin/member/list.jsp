@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <h1>회원 목록 검색</h1>
@@ -16,9 +17,11 @@
 							value="${param.keyword}" required>
 <button>검색</button>
 </form>
+<c:if test="${param.column != null && param.keyword != null}">
 
 <h2>결과 수: ${list.size()}</h2>
 
+<c:if test="${list.size() > 0}"></c:if>
 
 <table border="1" width="850">
 		<thead>
@@ -40,7 +43,7 @@
 						<td>${memberDto.memberNickname}</td>
 						<td>${memberDto.memberEmail}</td>
 						<td>${memberDto.memberContact}</td>
-						<td>${memberDto.memberJoin}</td>
+						<td><fmt:formatDate value = "${memberDto.memberJoin}" pattern="yyyy-MM-dd E a h시 m분"/></td>
 						<td>${memberDto.memberLevel}</td>
 						<td>${memberDto.memberBlock}</td>
 						<td><a href="./detail?memberId=${memberDto.memberId}"><button>조회</button></a></td>
@@ -48,7 +51,7 @@
 			</c:forEach>
 		</tbody>
 </table>
-
+</c:if>
 
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

@@ -29,19 +29,19 @@ public class CountryController {
 //	@RequestMapping(value = "/insert", method = RequestMethod.GET)
 	@GetMapping("/insert")
 	public String insert1() {
-		return "/WEB-INF/views/country/insert.jsp";
+		return "country/insert";
 	}
 //	@RequestMapping(value = "/insert", method = RequestMethod.POST)
 	@PostMapping("/insert")
 	public String insert2(@ModelAttribute CountryDto countryDto) {
 		countryDao.insert(countryDto);
-//		return "/WEB-INF/views/country/insert2.jsp";
+//		return "country/insert2";
 //		return "redirect:/country/insert3";//절대경로
 		return "redirect:./insertComplete";//상대경로
 	}
 	@RequestMapping("/insertComplete")
 	public String insert3() {
-		return "/WEB-INF/views/country/insertComplete.jsp";
+		return "country/insertComplete";
 	}
 	
 	//목록 및 검색에 대한 매핑
@@ -53,7 +53,7 @@ public class CountryController {
 		List<CountryDto> list = countryDao.selectList(column, keyword);
 		
 		model.addAttribute("list", list);
-		return "/WEB-INF/views/country/list.jsp";
+		return "country/list";
 	}
 	//상세조회 매핑
 	@RequestMapping("/detail")
@@ -65,12 +65,12 @@ public class CountryController {
 //			return "redirect:./notfound";
 		}
 		model.addAttribute("countryDto", countryDto);
-		return "/WEB-INF/views/country/detail.jsp";
+		return "country/detail";
 	}
 	//오류매핑
 	@RequestMapping("/notfound")
 	public String notfound() {
-		return "/WEB-INF/views/country/notfound.jsp";
+		return "country/notfound";
 	}
 	
 	//삭제매핑
@@ -87,7 +87,7 @@ public class CountryController {
 		CountryDto countryDto = countryDao.selectOne(countryNo);
 		if(countryDto == null) throw new TargetNotfoundException("존재하지 않는 국가");
 		model.addAttribute("countryDto", countryDto);
-		return "/WEB-INF/views/country/edit.jsp";
+		return "country/edit";
 	}
 	@PostMapping("/edit")
 	public String edit(@ModelAttribute CountryDto countryDto) {

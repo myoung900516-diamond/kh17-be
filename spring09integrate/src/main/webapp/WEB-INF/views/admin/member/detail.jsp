@@ -18,17 +18,21 @@
  		<li>상태메세지 : ${memberDto.memberMessage}</li>
  		<li>차단여부 : ${memberDto.memberBlock}
  			<button>
- 				<a href="./block?memberId=${memberDto.memberId}">차단설정/해제</a>
+ 				<a href="./block?memberId=${memberDto.memberId}">
+ 				  ${memberDto.memberBlock == 'Y' ? '해제' : '차단'}</a>
  			</button>
  		</li>
- 		<li>포인트 : ${memberDto.memberPoint}</li>
+ 		<li>포인트 : <fmt:formatNumber value = "${memberDto.memberPoint}" pattern="#,##0"/></li>
  		<li>가입일 : <fmt:formatDate value = "${memberDto.memberJoin}" pattern="y년 M월 d일 E a h시 m분"/></li>
 		<li>최종로그인 : <fmt:formatDate value = "${memberDto.memberLogin}" pattern="y년 M월 d일 E a h시 m분"/></li>
 		<li>최종변경일 : <fmt:formatDate value = "${memberDto.memberChange}" pattern="y년 M월 d일 E a h시 m분"/></li>
+		<c:if test="${memberDto.isWaitForDelete()}">
+        <li>탈퇴신청일 : <fmt:formatDate value = "${memberDto.memberExitTime}" pattern="y년 M월 d일 E a h시 m분"/></li> 
+		</c:if>
  </ul>
- 
- 		[최근 로그인 이력 ]
- <table border="1">
+ <h1></h1><a href="./edit?memberId=${memberDto.memberId}">회원정보변경</a><br></h1>
+ 	<h1>	[최근 로그인 이력 ] </h1>
+ <table border="1" width="1200">
 	<thead>
 			<tr>
 				<th>일시</th>
@@ -49,6 +53,6 @@
  
  <h2>
 <a href="./list">검색으로 이동</a><br>
-<a href="./edit?memberId=${memberDto.memberId}">회원정보변경</a><br>
+
 </h2>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

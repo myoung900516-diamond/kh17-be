@@ -36,7 +36,7 @@ public class MemberController {
 	
 	@GetMapping("/join")
 	public String join() {
-		return "/WEB-INF/views/member/join.jsp";
+		return "member/join";
 	}
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberDto memberDto) {
@@ -45,7 +45,7 @@ public class MemberController {
 	}
 	@RequestMapping("/joinFinish")
 	public String joinFinish() {
-		return "/WEB-INF/views/member/joinFinish.jsp";
+		return "member/joinFinish";
 	}
 //	@GetMapping("/login")
 //	public String login(@RequestParam(required = false) String memberId, 
@@ -54,7 +54,7 @@ public class MemberController {
 //		MemberDto memberDto = memberDao.selectOne(memberId);
 //		if(memberDto == null) throw new TargetNotfoundException("회원정보를 잘못 입력하였습니다");
 //		model.addAttribute("memberDto", memberDto);
-//		return "/WEB-INF/views/member/login.jsp";
+//		return "member/login";
 //	}
 //	@PostMapping("/login")
 //	public String login(@ModelAttribute MemberDto memberDto) {
@@ -63,7 +63,7 @@ public class MemberController {
 //	}
 	@GetMapping("/login")
 	public String login() {
-		return "/WEB-INF/views/member/login.jsp";
+		return "member/login";
 	}
 	@PostMapping("/login")
 	public String login(@ModelAttribute MemberDto memberDto, 
@@ -131,12 +131,12 @@ public class MemberController {
 	}
 	@RequestMapping("/block")
 	public String block() {
-		return "/WEB-INF/views/member/block.jsp";
+		return "member/block";
 	}
 	
 	@RequestMapping("/waiting")
 	public String waiting() {
-		return "/WEB-INF/views/member/waiting.jsp";
+		return "member/waiting";
 	}
 	
 	//마이페이지
@@ -152,12 +152,12 @@ public class MemberController {
 								memberHistoryDao.selectList(loginId, 1, 10);
 		model.addAttribute("loginHistory", loginHistory);
 		
-		return "/WEB-INF/views/member/mypage.jsp";
+		return "member/mypage";
 	}
 	
 	@GetMapping("/password")
 	public String password() {
-		return "/WEB-INF/views/member/password.jsp";
+		return "member/password";
 	}
 	@PostMapping("/password")
 	public String password(@RequestParam String originPw, @RequestParam String changePw, 
@@ -185,14 +185,14 @@ public class MemberController {
 	}
 	@RequestMapping("/passwordFinish")
 	public String passwordFinish() {
-		return "/WEB-INF/views/member/passwordFinish.jsp";
+		return "member/passwordFinish";
 	}
 	@GetMapping("/edit")
 	public String edit(Model model, HttpSession session) {
 		String loginId = (String) session.getAttribute("loginId");
 		MemberDto memberDto = memberDao.selectOne(loginId);
 		model.addAttribute("memberDto", memberDto);
-		return "/WEB-INF/views/member/edit.jsp";
+		return "member/edit";
 	}
 	
 	@PostMapping("/edit")
@@ -214,7 +214,7 @@ public class MemberController {
 //		String loginId = (String)session.getAttribute("loginId");
 //		MemberDto memberDto = memberDao.selectOne(loginId);
 //		model.addAttribute("memberDto", memberDto);
-		return "/WEB-INF/views/member/goodbye.jsp";
+		return "member/goodbye";
 	}
 	@PostMapping("/goodbye")
 	public String goodbye(HttpSession session, @RequestParam String memberPassword) {
@@ -237,7 +237,7 @@ public class MemberController {
 	
 	@RequestMapping("/goodbyeFinish")
 	public String goodbyeFinish() {
-		return "/WEB-INF/views/member/goodbyeFinish.jsp";
+		return "member/goodbyeFinish";
 	}
 	
 	@RequestMapping("/history")
@@ -257,12 +257,12 @@ public class MemberController {
 		List<MemberHistoryDto> loginhistory = 
 					memberHistoryDao.selectList(loginId, beginDate, endDate, beginRow, endRow);
 		model.addAttribute("loginhistory", loginhistory);
-		return "/WEB-INF/views/member/history.jsp";
+		return "member/history";
 	}
 	
 	@RequestMapping("/notice")
 	public String notice() {
-		return "/WEB-INF/views/member/notice.jsp";
+		return "member/notice";
 	}
 	
 	@RequestMapping("/later")

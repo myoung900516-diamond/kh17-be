@@ -10,36 +10,44 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class InterceptorConfiguration implements WebMvcConfigurer {
 			//등록한 인터셉터를 가져오도록 설정하고 
-	@Autowired
-	private TestInterceptor testInterceptor;
+//	@Autowired
+//	private TestInterceptor testInterceptor;
 	@Autowired
 	private MemberOnlyInterceptor memberOnlyInterceptor;
 	@Autowired
 	private MasterOnlyInterceptor masterOnlyInterceptor;
+	@Autowired
+	private MasterDenyInterceptor masterDenyInterceptor;
 
 	//가져온 인터셉터를 특정 주소에서 일하도록 설정 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
 		//래지스트리에 testInterceptor가 모든 주소에서 일할 수 있다고 작성해두세요
-		registry.addInterceptor(testInterceptor).addPathPatterns("/**");
+//		registry.addInterceptor(testInterceptor).addPathPatterns("/**");
 		registry.addInterceptor(memberOnlyInterceptor).addPathPatterns(
-				"/book/**", 
+				"/book/**"
 //				"/lecture/insert*",
 //				"/lecture/edit",
 //				"/lecture/delete"
-				"/lecture/**",
-				"/member/**"
+				,"/lecture/**"
+				,"/member/**"
+				,"/admin/**"
 				)
 				.excludePathPatterns(
-						"/lecture/list", "/lecture/detail", 
-						"/member/join*", 
+						"/lecture/list"
+						,"/lecture/detail"
+						,"/member/join*"
 //						"/member/joinfinish", 
-						"/member/login", 
-						"/member/goodbyeFinish"
+						,"/member/login"
+						,"/member/goodbyeFinish"
 						);
-		registry.addInterceptor(masterOnlyInterceptor).addPathPatterns(
-				"/admin/**"
+		registry.addInterceptor(masterOnlyInterceptor).addPathPatterns("/admin/**"	);
+		registry.addInterceptor(masterDenyInterceptor).addPathPatterns(
+				"/admin/member/detail"
+				,"/admin/member/edit"
+				,"/admin/member/block"
 				);
+		
 		
 		//주소(Path Patterns)작성 규칙
 		//-spring 표현식 규칙을 따른다 

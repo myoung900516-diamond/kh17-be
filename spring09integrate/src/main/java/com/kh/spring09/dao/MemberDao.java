@@ -17,6 +17,11 @@ public class MemberDao {
 	@Autowired
 	private MemberMapper memberMapper;
 	
+	private Set<String> allowColumns = Set.of( 
+					"member_id", "member_email",  "member_nickname", 
+					"member_contact"
+			);
+	
 	public void insert(MemberDto memberDto) {
 		String sql = "insert into member("
 				+ "member_id, member_email, member_password, member_nickname, "
@@ -55,24 +60,22 @@ public class MemberDao {
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
-	public List<MemberDto> selectList(){
-		String sql = "select * from member order by member_id asc";
-		MemberMapper memberMapper = new MemberMapper();
-		return jdbcTemplate.query(sql, memberMapper);
-	}
+//	public List<MemberDto> selectList(){
+//		String sql = "select * from member order by member_id asc";
+//		MemberMapper memberMapper = new MemberMapper();
+//		return jdbcTemplate.query(sql, memberMapper);
+//	}
 	
 	public List<MemberDto> selectList(String column, String keyword){ 
 		if(column == null || keyword == null) return List.of();
 		if(column.isEmpty()||keyword.isEmpty()) return List.of();
 		
-		Set<String> allowlist = Set.of(
-				"member_id", "member_email", "member_password", "member_nickname", 
-				"member_birth", "member_contact", "member_post", "member_address1", 
-				"member_address2", "member_level", "member_block");
+
 		//질문: 가입날짜별로 조회는? 200포인트대 회원 조회는? 왜 문자열로만 조회하나? 
-		if(allowlist.contains(column)==false) return List.of();
+		if(!allowColumns.contains(column)) return List.of();
 		String sql = "select * from member "
-				+ "where instr( "+column+", ?) >0 order by member_id asc";
+				+ "where instr( "+column+", ?) >0 and member_level != '마스터' "
+						+ "order by "+column+" asc, member_id asc";
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, memberMapper, params);
 	}
@@ -99,12 +102,18 @@ public class MemberDao {
 		Object[] params = {memberDto.getMemberPassword(), memberDto.getMemberId()};
 		return jdbcTemplate.update(sql, params)>0;
 	}
-		public boolean updateForMaster(MemberDto memberDto) {
+		public boolean updateByMaster(MemberDto memberDto) {
 			String sql = "update member "
-					+ "set member_level=?, member_point=? "
+					+ "set member_email=?, member_nickname=?, member_birth=?, "
+					+ "member_contact=?, member_post=?, member_address1=?, "
+					+ "member_address2=?, member_level=?, member_point=?, member_message=? "
 					+ "where member_id=? ";
-			Object[] params = {memberDto.getMemberLevel(), memberDto.getMemberPoint(), 
-										memberDto.getMemberId() };
+			Object[] params = {memberDto.getMemberEmail(), memberDto.getMemberNickname(), 
+					memberDto.getMemberBirth(), memberDto.getMemberContact(), 
+					memberDto.getMemberPost(), memberDto.getMemberAddress1(), 
+					memberDto.getMemberAddress2(), memberDto.getMemberLevel(), 
+					memberDto.getMemberPoint(), memberDto.getMemberMessage(), 
+					memberDto.getMemberId() };
 			return jdbcTemplate.update(sql, params)>0;
 		}
 		public void block(String memberId) {
