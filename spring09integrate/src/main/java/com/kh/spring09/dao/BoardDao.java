@@ -52,15 +52,34 @@ public class BoardDao {
 		};
 		return jdbcTemplate.update(sql, params)>0;
 	}
+	
+	public int sequence() {
+		String sql = "select board_seq.nextval from dual";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	
 	public boolean insert(BoardDto boardDto) {
-		String sql = "insert into board(board_no, board_title, board_content, "
+		String sql = "insert into board(board_no, board_head, board_title, board_content, "
 				+ "board_writer"
-				+ ") values( board_seq.nextval, ?, ?, ?"
+				+ ") values( board_seq.nextval, ?, ?, ?, ?"
 				+ ")";
 		Object[] params = {
-				boardDto.getBoardTitle(), boardDto.getBoardContent(), 
+				boardDto.getBoardHead(), boardDto.getBoardTitle(), 
+				boardDto.getBoardContent(), 
 				boardDto.getBoardWriter() 
 		};
+		return jdbcTemplate.update(sql, params)>0;
+	}
+	public boolean delete(int boardNo) {
+		String sql="delete board where board_no =?";
+		Object[] params = {boardNo};
+		return jdbcTemplate.update(sql, params)>0;
+	}
+	public boolean readCount(int boardNo) {
+		String sql="update board "
+				+ "set board_readcount = board_readcount + 1 "
+				+ "where board_no = ?";
+		Object[] params = {boardNo};
 		return jdbcTemplate.update(sql, params)>0;
 	}
 

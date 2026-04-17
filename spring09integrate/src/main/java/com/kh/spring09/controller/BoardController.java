@@ -59,9 +59,16 @@ public class BoardController {
 	}
 	@PostMapping("/write")
 	public String write(@ModelAttribute BoardDto boardDto, HttpSession session) {
+//		int seq = boardDao.sequence();
 		String loginId = (String)session.getAttribute("loginId");
 		boardDto.setBoardWriter(loginId);
+//		boardDto.setBoardNo(seq);
 		boardDao.insert(boardDto);
+		return "redirect:./detail?boardNo=" + (boardDao.sequence()-1);
+	}
+	@RequestMapping("/delete")
+	public String delete(@RequestParam int boardNo) {
+		boardDao.delete(boardNo);
 		return "redirect:./list";
 	}
 	

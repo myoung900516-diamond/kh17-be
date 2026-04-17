@@ -18,6 +18,10 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 	private MasterOnlyInterceptor masterOnlyInterceptor;
 	@Autowired
 	private MasterDenyInterceptor masterDenyInterceptor;
+	@Autowired
+	private BoardReadInterceptor boardReadInterceptor;
+	@Autowired
+	private BoardOwnerInterceptor boardOwnderInterceptor;
 
 	//가져온 인터셉터를 특정 주소에서 일하도록 설정 
 	@Override
@@ -32,6 +36,9 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 				,"/lecture/**"
 				,"/member/**"
 				,"/admin/**"
+				,"/board/write"
+//				,"/board/edit"
+//				,"/board/delete"
 				)
 				.excludePathPatterns(
 						"/lecture/list"
@@ -40,6 +47,8 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 //						"/member/joinfinish", 
 						,"/member/login"
 						,"/member/goodbyeFinish"
+//						,"/board/list"
+//						,"/board/detail"
 						);
 		registry.addInterceptor(masterOnlyInterceptor).addPathPatterns("/admin/**"	);
 		registry.addInterceptor(masterDenyInterceptor).addPathPatterns(
@@ -47,7 +56,11 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 				,"/admin/member/edit"
 				,"/admin/member/block"
 				);
-		
+		registry.addInterceptor(boardReadInterceptor).addPathPatterns("/board/detail");
+		registry.addInterceptor(boardOwnderInterceptor).addPathPatterns(
+				"/board/edit"
+				,"/board/delete"
+				);
 		
 		//주소(Path Patterns)작성 규칙
 		//-spring 표현식 규칙을 따른다 

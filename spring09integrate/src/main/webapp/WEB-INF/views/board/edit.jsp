@@ -3,6 +3,7 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <form action="./edit" method="post">
+<input type="hidden" name="boardNo" value="${boardDto.boardNo}">
 [제목] <input type="text" name="boardTitle" value="${boardDto.boardTitle}" required>
 <hr>
 [내용] <br>

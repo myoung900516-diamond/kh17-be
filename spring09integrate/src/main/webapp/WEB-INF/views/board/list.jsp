@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
     <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
     
     <h1>게시판 목록</h1>
+    <hr>
  
 <table board="1" width="900">
 		<thead align="left">
@@ -20,6 +22,26 @@
 				</tr>
 		</thead>
 		<tbody align="left">
+		
+					<c:forEach var="boardDto" items="${list}">
+			<c:if test="${boardDto.boardHead=='공지'}">
+						<tr>
+								<td>${boardDto.boardNo}</td>
+								<td>${boardDto.boardHead}</td>
+								<td>
+									<a href="./detail?boardNo=${boardDto.boardNo}">
+									${boardDto.boardTitle}</a>
+								</td>
+								<td>${boardDto.boardWriter}</td>
+								<td>${boardDto.boardWtimeString}</td>
+								<td>${boardDto.boardReadcount}</td>
+								<td>${boardDto.boardLikecount}</td>
+								<td>${boardDto.boardReplycount}</td>
+						</tr>
+			</c:if>
+					</c:forEach>
+
+		
 			<c:forEach var="boardDto" items="${list}">
 				<tr>
 						<td>${boardDto.boardNo}</td>
@@ -29,7 +51,7 @@
 							${boardDto.boardTitle}</a>
 							</td>
 						<td>${boardDto.boardWriter}</td>
-						<td>${boardDto.boardWtime}</td>
+						<td>${boardDto.boardWtimeString}</td>
 						<td>${boardDto.boardReadcount}</td>
 						<td>${boardDto.boardLikecount}</td>
 						<td>${boardDto.boardReplycount}</td>

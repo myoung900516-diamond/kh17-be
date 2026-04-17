@@ -23,9 +23,12 @@
 	<a href="./write">글쓰기</a>
 </button>
 <c:if test="${loginId == boardDto.boardWriter}">
-<button>
-	<a href="./edit?boardNo=${boardDto.boardNo}">수정</a>
-</button>
+	<button>
+		<a href="./edit?boardNo=${boardDto.boardNo}">수정</a>
+	</button>
+	<button>
+		<a href="./delete?boardNo=${boardDto.boardNo}">삭제</a>
+	</button>
 </c:if>
 
 
