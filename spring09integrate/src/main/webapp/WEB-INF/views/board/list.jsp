@@ -32,7 +32,7 @@
 									<a href="./detail?boardNo=${boardDto.boardNo}">
 									${boardDto.boardTitle}</a>
 								</td>
-								<td>${boardDto.boardWriter}</td>
+								<td><a href="/member/detail">${boardDto.boardWriter}</a></td>
 								<td>${boardDto.boardWtimeString}</td>
 								<td>${boardDto.boardReadcount}</td>
 								<td>${boardDto.boardLikecount}</td>
@@ -50,7 +50,7 @@
 							<a href="./detail?boardNo=${boardDto.boardNo}">
 							${boardDto.boardTitle}</a>
 							</td>
-						<td>${boardDto.boardWriter}</td>
+						<td><a href="/member/detail">${boardDto.boardWriter}</a></td>
 						<td>${boardDto.boardWtimeString}</td>
 						<td>${boardDto.boardReadcount}</td>
 						<td>${boardDto.boardLikecount}</td>

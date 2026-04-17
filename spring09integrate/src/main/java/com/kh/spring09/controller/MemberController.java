@@ -272,6 +272,14 @@ public class MemberController {
 		memberDao.updateMemberPassword(memberDto);
 		return "redirect:/";
 	}
+	@RequestMapping("/detail")
+	public String detail(HttpSession session, Model model) {
+		String loginId = (String)session.getAttribute("loginId");
+		MemberDto memberDto = memberDao.selectOne(loginId);
+		memberDto.setMemberId(loginId);
+		model.addAttribute("memberDto", memberDto);
+		return "member/detail";
+	}
 
 	
 	

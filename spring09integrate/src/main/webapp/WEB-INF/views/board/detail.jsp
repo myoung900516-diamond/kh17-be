@@ -8,7 +8,7 @@
 <button><a href="./list">목록</a></button><br>
 [구분] : ${boardDto.boardHead}[제목] : ${boardDto.boardTitle}
 <hr>
-[작성자] : ${boardDto.boardWriter} <br>
+[작성자] : <a href="/member/detail">${boardDto.boardWriter}</a> <br>
 [작성일] : ${boardDto.boardWtime} <br> 
  [조회수] : ${boardDto.boardReadcount}
 <hr>
