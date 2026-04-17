@@ -24,7 +24,7 @@ public class LectureController {
 //	@RequestMapping("/insert1")
 	@GetMapping("/insert")
 	public String insert() {
-		return "/WEB-INF/views/lecture/insert.jsp";
+		return "lecture/insert";
 	}
 //	@RequestMapping("/insert2")
 	@PostMapping("/insert")
@@ -34,13 +34,13 @@ public class LectureController {
 	}
 	@RequestMapping("/insertComplete")
 	public String insertComplete() {
-		return "/WEB-INF/views/lecture/insertComplete.jsp";
+		return "lecture/insertComplete";
 	}
 	@RequestMapping("/list")
 	public String list(@RequestParam(required = false) String column, @RequestParam(required = false) String keyword, Model model) {
 		List<LectureDto> list = lectureDao.selectList(column, keyword);
 		model.addAttribute("list", list);
-		return "/WEB-INF/views/lecture/list.jsp";
+		return "lecture/list";
 	}
 	@RequestMapping("/detail")
 	public String detail(@RequestParam int lectureNo, Model model) {
@@ -48,7 +48,7 @@ public class LectureController {
 		if(lectureDto == null)
 			throw new TargetNotfoundException("존재하지 않는 강좌 정보");
 		model.addAttribute("lectureDto", lectureDto);
-		return "/WEB-INF/views/lecture/detail.jsp";
+		return "lecture/detail";
 	}
 	@RequestMapping("/delete")
 	public String delete(@RequestParam int lectureNo) {
@@ -63,7 +63,7 @@ public class LectureController {
 		if(lectureDto == null) throw new TargetNotfoundException("존재하지 않는 강좌");
 		
 		model.addAttribute("lectureDto", lectureDto);
-		return "/WEB-INF/views/lecture/edit.jsp";
+		return "lecture/edit";
 	}
 	@PostMapping("/edit")
 	public String edit(@ModelAttribute LectureDto lectureDto) {

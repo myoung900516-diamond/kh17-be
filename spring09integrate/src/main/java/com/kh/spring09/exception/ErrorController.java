@@ -19,7 +19,22 @@ public class ErrorController {
 	public String error(Exception e, Model model) {
 		e.printStackTrace();//오류 로그를 서버에 출력하고
 		model.addAttribute("message", e.getMessage());
-		return "/WEB-INF/views/error/500.jsp";
+		return "error/500";
+	}
+	@ExceptionHandler(TargetNotfoundException.class)
+	public String notFound(Exception e, Model model) {
+		model.addAttribute("message", e.getMessage());
+		return "error/404";
+	}
+	@ExceptionHandler(WhoAreYouException.class)
+	public String unauthorize(Exception e, Model model) {
+		model.addAttribute("message", e.getMessage());
+		return "error/401";
+	}
+	@ExceptionHandler(GetOutException.class)
+	public String forbidden(Exception e, Model model) {
+		model.addAttribute("message", e.getMessage());
+		return "error/403";
 	}
 }
 

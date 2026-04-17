@@ -23,7 +23,7 @@ public class BookController {
 	
 	@GetMapping("/insert")
 	public String insert() {
-		return "/WEB-INF/views/book/insert.jsp";
+		return "book/insert";
 	}
 	@PostMapping("/insert")
 	public String insert(@ModelAttribute BookDto bookDto) {
@@ -32,7 +32,7 @@ public class BookController {
 	}
 	@RequestMapping("/insertComplete")
 	public String insertComplete() {
-		return "/WEB-INF/views/book/insertComplete.jsp";
+		return "book/insertComplete";
 	}
 	@RequestMapping("/list")
 	public String list(@RequestParam(required = false) String column, 
@@ -40,14 +40,14 @@ public class BookController {
 			Model model) {
 		List<BookDto> list = bookDao.selectList(column, keyword);
 		model.addAttribute("list", list);
-		return "/WEB-INF/views/book/list.jsp";
+		return "book/list";
 	}
 	@RequestMapping("/detail")
 	public String detail(@RequestParam int bookId, Model model) {
 		BookDto bookDto = bookDao.selectOne(bookId);
 		if(bookDto == null) throw new TargetNotfoundException("존재하지 않는 도서정보");
 		model.addAttribute("bookDto", bookDto);
-		return "/WEB-INF/views/book/detail.jsp";
+		return "book/detail";
 	}
 	@RequestMapping("/delete")
 	public String delete(@RequestParam int bookId) {
@@ -61,7 +61,7 @@ public class BookController {
 		BookDto bookDto =bookDao.selectOne(bookId);
 		if(bookDto == null) throw new TargetNotfoundException("존재하지 않는 도서 정보");
 		model.addAttribute("bookDto", bookDto);
-		return "/WEB-INF/views/book/edit.jsp";
+		return "book/edit";
 	}
 	@PostMapping("/edit")
 	public String edit(@ModelAttribute BookDto bookDto) {

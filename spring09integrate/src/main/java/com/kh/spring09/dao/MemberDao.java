@@ -17,6 +17,11 @@ public class MemberDao {
 	@Autowired
 	private MemberMapper memberMapper;
 	
+	private Set<String> allowColumns = Set.of( 
+					"member_id", "member_email",  "member_nickname", 
+					"member_contact"
+			);
+	
 	public void insert(MemberDto memberDto) {
 		String sql = "insert into member("
 				+ "member_id, member_email, member_password, member_nickname, "
@@ -37,20 +42,16 @@ public class MemberDao {
 	
 	public boolean update(MemberDto memberDto) {
 		String sql = "update member "
-				+ "set member_email=?, member_password=?, member_nickname=?, "
-				+ "member_birth=?, member_contact=?, member_post=?, member_address1=?, "
-				+ "member_address2=?, member_level=?, member_message=?, "
-				+ "member_login=current_timestamp, member_block=?, member_point=? "
+				+ "set member_email=?, member_nickname=?, member_birth=?, "
+				+ "member_contact=?, member_post=?, member_address1=?, "
+				+ "member_address2=?, member_message=? "
 				+ "where member_id = ? ";
 		Object[] params = {
-				memberDto.getMemberEmail(), 
-				memberDto.getMemberPassword(), memberDto.getMemberNickname(), 
+				memberDto.getMemberEmail(), memberDto.getMemberNickname(), 
 				memberDto.getMemberBirth(), memberDto.getMemberContact(), 
 				memberDto.getMemberPost(), memberDto.getMemberAddress1(), 
-				memberDto.getMemberAddress2(), memberDto.getMemberLevel(), 
-				memberDto.getMemberMessage(), memberDto.getMemberBlock(), 
-				memberDto.getMemberPoint(), 
-				memberDto.getMemberId(),};
+				memberDto.getMemberAddress2(), memberDto.getMemberMessage(), 
+				memberDto.getMemberId()};
 		return jdbcTemplate.update(sql, params) > 0 ;
 	}
 	public boolean delete(String memberId) {
@@ -59,42 +60,84 @@ public class MemberDao {
 		return jdbcTemplate.update(sql, params) > 0;
 	}
 	
-	public List<MemberDto> selectList(){
-		String sql = "select * from member order by member_id asc";
-		MemberMapper memberMapper = new MemberMapper();
-		return jdbcTemplate.query(sql, memberMapper);
-	}
+//	public List<MemberDto> selectList(){
+//		String sql = "select * from member order by member_id asc";
+//		MemberMapper memberMapper = new MemberMapper();
+//		return jdbcTemplate.query(sql, memberMapper);
+//	}
 	
 	public List<MemberDto> selectList(String column, String keyword){ 
-		if(column == null || keyword == null) return selectList();
-		if(column.isEmpty()||keyword.isEmpty()) return selectList();
+		if(column == null || keyword == null) return List.of();
+		if(column.isEmpty()||keyword.isEmpty()) return List.of();
 		
-		Set<String> allowlist = Set.of(
-				"member_id", "member_email", "member_password", "member_nickname", 
-				"member_birth", "member_contact", "member_post", "member_address1", 
-				"member_address2", "member_level", "member_block");
+
 		//질문: 가입날짜별로 조회는? 200포인트대 회원 조회는? 왜 문자열로만 조회하나? 
-		if(allowlist.contains(column)==false) return List.of();
+		if(!allowColumns.contains(column)) return List.of();
 		String sql = "select * from member "
-				+ "where instr( "+column+", ?) >0 order by member_id asc";
+				+ "where instr( "+column+", ?) >0 and member_level != '마스터' "
+						+ "order by "+column+" asc, member_id asc";
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, memberMapper, params);
 	}
 	
-	public MemberDto selectOne(String member_id) {
+	public MemberDto selectOne(String memberId) {
 		String sql = "select * from member where member_id=?";
-		Object[] params = {member_id};
+		Object[] params = {memberId};
 		List<MemberDto> list = jdbcTemplate.query(sql, memberMapper,params);
 			return list.isEmpty() ? null : list.get(0);
 	}
-	public boolean login(String memberId, String memberPassword) {
+	public boolean updateMemberLogin(String memberId) {
 		String sql = "update member "
-				+ "set member_login=current_timestamp "
-				+ "where member_id = ? and member_password=?";
-		Object[] params = {memberId, memberPassword};
+				+ "set member_login=systimestamp "
+				+ "where member_id = ?";
+		Object[] params = {memberId};
 	    return jdbcTemplate.update(sql, params)>0;
-
 	}
+	
+//	public boolean updateMemberPassword(String memberId, String changePw) {
+		public boolean updateMemberPassword(MemberDto memberDto) {
+		String sql = "update member "
+				+ "set member_password= ?, member_change=systimestamp "
+				+ "where member_id = ?";
+		Object[] params = {memberDto.getMemberPassword(), memberDto.getMemberId()};
+		return jdbcTemplate.update(sql, params)>0;
+	}
+		public boolean updateByMaster(MemberDto memberDto) {
+			String sql = "update member "
+					+ "set member_email=?, member_nickname=?, member_birth=?, "
+					+ "member_contact=?, member_post=?, member_address1=?, "
+					+ "member_address2=?, member_level=?, member_point=?, member_message=? "
+					+ "where member_id=? ";
+			Object[] params = {memberDto.getMemberEmail(), memberDto.getMemberNickname(), 
+					memberDto.getMemberBirth(), memberDto.getMemberContact(), 
+					memberDto.getMemberPost(), memberDto.getMemberAddress1(), 
+					memberDto.getMemberAddress2(), memberDto.getMemberLevel(), 
+					memberDto.getMemberPoint(), memberDto.getMemberMessage(), 
+					memberDto.getMemberId() };
+			return jdbcTemplate.update(sql, params)>0;
+		}
+		public void block(String memberId) {
+			 String sql = "update member set member_block = 'Y' where member_id = ?";
+			 Object[] params = {memberId};
+			    jdbcTemplate.update(sql, params);
+		}
+
+		public void unblock(String memberId) {
+			 String sql = "update member set member_block = 'N' where member_id = ?";
+			 Object[] params = {memberId};
+			    jdbcTemplate.update(sql, params);
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	
 
 }

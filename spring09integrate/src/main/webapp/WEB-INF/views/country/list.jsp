@@ -17,7 +17,7 @@
 	</select>
 	<input type="text" name="keyword" placeholder="검색어입력"
 						value="${param.keyword}" required>
-	<button>검색</button>
+	<button>검색🔍</button>
 </form>
 
 
