@@ -22,42 +22,53 @@
 				</tr>
 		</thead>
 		<tbody align="left">
-					<c:forEach var="boardDto" items="${list}">
-			<c:if test="${boardDto.boardHead=='공지'}">
-						<tr>
-								<td>${boardDto.boardNo}</td>
-								<td>${boardDto.boardHead}</td>
-								<td>
-<!-- 									<span></span> -->
-									<a href="./detail?boardNo=${boardDto.boardNo}">
+<!-- 		공지사항 -->
+<%-- 					<c:forEach var="boardDto" items="${list}"> --%>
+<%-- 					<c:forEach var="boardDto" items="${noticeList}"> --%>
+<%-- 			<c:if test="${boardDto.boardHead=='공지'}"> --%>
+<!-- 						<tr bgcolor="#6a89cc"> -->
+<%-- 								<td>${boardDto.boardNo}</td> --%>
+<%-- 								<td>${boardDto.boardHead}</td> --%>
+<!-- 								<td> -->
+<!-- <!-- 									<span></span> --> -->
+<%-- 									<a href="./detail?boardNo=${boardDto.boardNo}"> --%>
 									
-									${boardDto.boardTitle}</a>
-									
-									<c:if test="${boardDto.boardReplycount > 0}">
-										(${boardDto.boardReplycount})</c:if>
-								</td>
-								<td><a href="/member/detail">${boardDto.boardWriter}</a></td>
-								<td>${boardDto.boardWtimeString}</td>
-								<td>${boardDto.boardReadcount}</td>
-								<td>${boardDto.boardLikecount}</td>
-						</tr>
-			</c:if>
-					</c:forEach>
+<%-- 									${boardDto.boardTitle}</a> --%>
+<!-- 									수정되었다면 수정됨 표시 -->
+<%-- 									<c:if test="${boardDto.boardEtime != null}"> --%>
+<!-- 									(수정됨) -->
+<%-- 									</c:if> --%>
+<%-- 									<c:if test="${boardDto.boardReplycount > 0}"> --%>
+<%-- 										(${boardDto.boardReplycount})</c:if> --%>
+<!-- 								</td> -->
+<%-- 								<td><a href="/member/detail">${boardDto.boardWriter}</a></td> --%>
+<%-- 								<td>${boardDto.boardWtimeString}</td> --%>
+<%-- 								<td>${boardDto.boardReadcount}</td> --%>
+<%-- 								<td>${boardDto.boardLikecount}</td> --%>
+<!-- 						</tr> -->
+<%-- 			</c:if> --%>
+<%-- 					</c:forEach> --%>
 
-		
-			<c:forEach var="boardDto" items="${list}">
-				<tr>
+<!-- 일반게시글 -->
+<!-- 		varStatus를 쓰면 반복문의 상태를 알 수 있다(index, count, first, last) -->
+			<c:forEach var="boardDto" items="${list}" varStatus="stat">
+<%-- 				<tr bgcolor="${boardDto.boardHead == '공지'? '#6a89cc' : ''}"> --%>
+					<tr bgcolor="${stat.index < noticeCount ? '#6a89cc' : '' }">
 						<td>${boardDto.boardNo}</td>
 						<td>${boardDto.boardHead}</td>
 						<td>
 							<a href="./detail?boardNo=${boardDto.boardNo}">
 							${boardDto.boardTitle}</a>
+									<!-- 수정되었다면 수정됨 표시 -->
+									<c:if test="${boardDto.boardEtime != null}">
+									(수정됨)
+									</c:if>
 							
 							<c:if test="${boardDto.boardReplycount > 0}">
 										(${boardDto.boardReplycount})</c:if>
 										
 							</td>
-						<td><a href="/member/detail">${boardDto.boardWriter}</a></td>
+						<td><a href="/member/detail?memberId=${boardDto.boardWriter}">${boardDto.boardWriter}</a></td>
 						<td>${boardDto.boardWtimeString}</td>
 						<td>${boardDto.boardReadcount}</td>
 						<td>${boardDto.boardLikecount}</td>
@@ -72,8 +83,9 @@
 
 <c:if test="${sessionScope.loginId != null}">
 <button>
-	<a href="./write">글쓰기</a></c:if>
+	<a href="./write">글쓰기</a>
 </button>
+	</c:if>
 
 <form action="./list" method="get">
 		<select name="column">

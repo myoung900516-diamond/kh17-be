@@ -37,6 +37,12 @@ public class BoardDao {
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, boardMapper, params);
 	}
+	
+	public List<BoardDto> selectNoticeList(){
+		String sql = "select * from board_list where board_head = '공지' order by board_no desc";
+		return jdbcTemplate.query(sql, boardMapper);
+	}
+	
 	public BoardDto selectOne(long boardNo) {
 		String sql = "select * from board where board_no = ?";
 		Object[] params = {boardNo};
@@ -61,12 +67,18 @@ public class BoardDao {
 		List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
 		return list.isEmpty()? null : list.get(0);
 	}
+	public List<BoardDto> selectListByBoardWriter(String boardWriter) {
+		String sql = "select * from board_list where board_writer=? "
+						+ "order by board_no desc";
+		Object[] params = {boardWriter};
+		return jdbcTemplate.query(sql, boardMapper, params);
+	}
 	public boolean update(BoardDto boardDto) {
 		String sql="update board "
-				+ "set board_title=?, board_content=?, board_etime=systimestamp "
+				+ "set board_title=?, board_head=?, board_content=?, board_etime=systimestamp "
 				+ "where board_no =?";
 		Object[] params = {
-				boardDto.getBoardTitle(), boardDto.getBoardContent(), 
+				boardDto.getBoardTitle(), boardDto.getBoardHead(), boardDto.getBoardContent(), 
 				boardDto.getBoardNo() 
 		};
 		return jdbcTemplate.update(sql, params)>0;

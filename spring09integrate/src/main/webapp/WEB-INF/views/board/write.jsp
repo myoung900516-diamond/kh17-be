@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@  taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <h1>신규 글 작성</h1>
@@ -12,7 +13,10 @@
 <!-- 						<option value="유머">유머</option> -->
 <!-- 						<option value="자유">자유</option> -->
 <!-- 						<option value="정보">정보</option> -->
+<!-- 공지는 관리자에게만 보이도록 해야함  -->
+						<c:if test="${sessionScope.loginLevel == '마스터'}">
 						<option>공지</option>
+						</c:if>
 						<option>유머</option>
 						<option>자유</option>
 						<option>정보</option>

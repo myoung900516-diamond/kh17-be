@@ -1,5 +1,6 @@
 package com.kh.spring09.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09.dao.BoardDao;
 import com.kh.spring09.dto.BoardDto;
+import com.kh.spring09.exception.GetOutException;
 import com.kh.spring09.exception.TargetNotfoundException;
 
 import jakarta.servlet.http.HttpSession;
@@ -27,14 +29,27 @@ public class BoardController {
 	public String list(@RequestParam(required = false) String column, 
 							@RequestParam(required = false) String keyword, 
 							Model model) {
-		List<BoardDto> list = boardDao.selectList(column, keyword);
+		//공지사항 게시글
+//		List<BoardDto> noticeList = boardDao.selectList("board_head", "공지");
+		List<BoardDto> noticeList = boardDao.selectNoticeList();
+//		model.addAttribute("noticeList", noticeList);
+		
+//		List<BoardDto> list = boardDao.selectList(column, keyword);
+//		model.addAttribute("list", list);
+		
+		List<BoardDto> boardlist = boardDao.selectList(column, keyword);
+		List<BoardDto> list = new ArrayList<>();
+		list.addAll(noticeList);
+		list.addAll(boardlist);
 		model.addAttribute("list", list);
+		model.addAttribute("noticeCount", noticeList.size());
+		
 		return "board/list"; //뷰리졸버(View Resolver)
 	}
 	@RequestMapping("/detail")
-	public String detail(@RequestParam long boardNo, Model model, HttpSession session) {
-		String loginId = (String) session.getAttribute("loginId");
-		model.addAttribute("loginId", loginId);
+	public String detail(@RequestParam long boardNo, Model model) {
+//		String loginId = (String) session.getAttribute("loginId");
+//		model.addAttribute("loginId", loginId);
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if(boardDto == null) throw new TargetNotfoundException();
 		model.addAttribute("boardDto", boardDto);
@@ -48,12 +63,21 @@ public class BoardController {
 	@GetMapping("/edit")
 	public String edit(@RequestParam long boardNo, Model model) {
 		BoardDto boardDto = boardDao.selectOne(boardNo);
+		if(boardDto == null) throw new TargetNotfoundException("존재하지 않는 게시글");
 		model.addAttribute("boardDto", boardDto);
 		return "board/edit";
 	}
 	
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute BoardDto boardDto) {
+	public String edit(@ModelAttribute BoardDto boardDto, HttpSession session) {
+		if(boardDto.getBoardHead() != null && boardDto.getBoardHead().equals("공지")) {
+			String loginLevel = (String)session.getAttribute("loginLevel");
+			if(!loginLevel.equals("마스터")) {
+				throw new GetOutException();
+			}
+		}		
+		BoardDto findBoardDto = boardDao.selectOne(boardDto.getBoardNo());
+		if(findBoardDto == null) throw new TargetNotfoundException("존재하지 않는 게시글");
 		boardDao.update(boardDto);
 		return "redirect:./detail?boardNo=" + boardDto.getBoardNo();
 	}
@@ -65,6 +89,14 @@ public class BoardController {
 	public String write(@ModelAttribute BoardDto boardDto, HttpSession session) {
 //		int seq = boardDao.sequence();
 		String loginId = (String)session.getAttribute("loginId");
+		//작성한 글이 "공지"라면 "마스터 " 인지를 반드시 확인 
+		if(boardDto.getBoardHead() != null && boardDto.getBoardHead().equals("공지")) {
+			String loginLevel = (String)session.getAttribute("loginLevel");
+			if(!loginLevel.equals("마스터")) {
+				throw new GetOutException();
+			}
+		}
+		
 		boardDto.setBoardWriter(loginId);
 		long seq = boardDao.sequence();
 		boardDto.setBoardNo(seq);
@@ -74,6 +106,8 @@ public class BoardController {
 	}
 	@RequestMapping("/delete")
 	public String delete(@RequestParam long boardNo) {
+		BoardDto boardDto = boardDao.selectOne(boardNo);
+		if(boardDto == null) throw new TargetNotfoundException("존재하지 않는 게시글");
 		boardDao.delete(boardNo);
 		return "redirect:./list";
 	}

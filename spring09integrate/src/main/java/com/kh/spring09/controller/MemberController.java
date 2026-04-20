@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kh.spring09.dao.BoardDao;
 import com.kh.spring09.dao.MemberDao;
 import com.kh.spring09.dao.MemberExitDao;
 import com.kh.spring09.dao.MemberHistoryDao;
+import com.kh.spring09.dto.BoardDto;
 import com.kh.spring09.dto.MemberDto;
 import com.kh.spring09.dto.MemberExitDto;
 import com.kh.spring09.dto.MemberHistoryDto;
+import com.kh.spring09.exception.TargetNotfoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -33,6 +36,8 @@ public class MemberController {
 	private MemberExitDao memberExitDao;
 	@Autowired
 	private MemberHistoryDao memberHistoryDao;
+	@Autowired
+	private BoardDao boardDao;
 	
 	//회원가입
 	@GetMapping("/join")
@@ -277,14 +282,26 @@ public class MemberController {
 		memberDao.updateMemberPassword(memberDto);
 		return "redirect:/";
 	}
+	//다른 사람의 정보를 보기 위한 매핑
 	@RequestMapping("/detail")
-	public String detail(HttpSession session, Model model) {
-		String loginId = (String)session.getAttribute("loginId");
-		MemberDto memberDto = memberDao.selectOne(loginId);
-		memberDto.setMemberId(loginId);
+	public String detail(@RequestParam String memberId, Model model) {
+		MemberDto memberDto = memberDao.selectOne(memberId);
+		if(memberDto == null) {
+			throw new TargetNotfoundException("존재하지 않는 회원");
+		}
+		//만약 관리자는 못본다면 memberDto의 등급을 확인해서 차단(GetOutException 처리)
 		model.addAttribute("memberDto", memberDto);
+		List<BoardDto> boardList = boardDao.selectListByBoardWriter(memberId);
+		model.addAttribute("boardList", boardList);
 		return "member/detail";
 	}
+//	public String detail(HttpSession session, Model model) {
+//		String loginId = (String)session.getAttribute("loginId");
+//		MemberDto memberDto = memberDao.selectOne(loginId);
+//		memberDto.setMemberId(loginId);
+//		model.addAttribute("memberDto", memberDto);
+//		return "member/detail";
+//	}
 
 	
 	
