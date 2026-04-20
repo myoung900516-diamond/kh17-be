@@ -68,7 +68,13 @@
 										(${boardDto.boardReplycount})</c:if>
 										
 							</td>
-						<td><a href="/member/detail?memberId=${boardDto.boardWriter}">${boardDto.boardWriter}</a></td>
+						<td><c:if test="${boardDto.boardWriter == null}" >
+						(탈퇴한 사용자)
+						</c:if>
+						<c:if test="${boardDto.boardWriter != null}">
+						<a href="/member/detail?memberId=${boardDto.boardWriter}">${boardDto.boardWriter}</a>
+						</c:if>
+						</td>
 						<td>${boardDto.boardWtimeString}</td>
 						<td>${boardDto.boardReadcount}</td>
 						<td>${boardDto.boardLikecount}</td>

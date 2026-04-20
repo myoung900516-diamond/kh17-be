@@ -16,7 +16,12 @@
 </c:if>
 </h1>
 <!-- <hr> -->
-<a href="/member/detail?memberId=${boardDto.boardWriter}">${boardDto.boardWriter}</a> <br>
+	<c:if test="${boardDto.boardWriter == null}" >(탈퇴한 사용자)</c:if>
+	<c:if test="${boardDto.boardWriter != null}">
+						<a href="/member/detail?memberId=${boardDto.boardWriter}">${boardDto.boardWriter}</a>
+	</c:if>
+						
+<br>
 
 <fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd HH:mm"></fmt:formatDate>
 &nbsp;&nbsp;&nbsp;&nbsp;
