@@ -77,3 +77,21 @@ commit;
 
 
 
+--이전글번호를 구하는 방법
+
+select * from board 
+	where board_no=(
+		select max(board_no)
+		from board 
+		where board_no < 10
+		);
+
+--다음글
+select * from board 
+	where board_no=(
+		select min(board_no)
+		from board 
+		where board_no > 10
+		);
+
+
