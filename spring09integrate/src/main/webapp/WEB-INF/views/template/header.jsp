@@ -23,7 +23,7 @@ loginLevel : ${sessionScope.loginLevel}
 		<a href="/country/list">국가정보</a>
 		<a href="/lecture/list">강좌정보</a>
 		<a href="/book/list">도서정보</a>
-		<a href="/board/list">게시판</a>
+		<a href="/board/list">자유게시판</a>
 		<a href="/member/join">회원가입</a>
 		<a href="/member/login">로그인</a>
 </c:if>
@@ -35,7 +35,7 @@ loginLevel : ${sessionScope.loginLevel}
 		<a href="/country/list">국가정보</a>
 		<a href="/lecture/list">강좌정보</a>
 		<a href="/book/list">도서정보</a>
-		<a href="/board/list">게시판</a>
+		<a href="/board/list">자유게시판</a>
 		<a href="/member/mypage">마이페이지</a>
 		<a href="/member/logout">로그아웃</a>
 		
@@ -46,7 +46,7 @@ loginLevel : ${sessionScope.loginLevel}
 		<a href="/country/list">국가정보</a>
 		<a href="/lecture/list">강좌정보</a>
 		<a href="/book/list">도서정보</a>
-		<a href="/board/list">게시판</a>
+		<a href="/board/list">자유게시판</a>
 		<a href="/member/logout">로그아웃</a>
 		<a href="/admin/member/list">회원관리</a>
 		

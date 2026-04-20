@@ -1,26 +1,42 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 
 
-<button><a href="./list">목록</a></button><br>
-[구분] : ${boardDto.boardHead}[제목] : ${boardDto.boardTitle}
-<hr>
-[작성자] : <a href="/member/detail">${boardDto.boardWriter}</a> <br>
-[작성일] : ${boardDto.boardWtime} <br> 
+<h1>
+	<c:if test="${boardDto.boardHead != null}">
+[구분] : ${boardDto.boardHead}</c:if>
+[제목] : ${boardDto.boardTitle}
+</h1>
+<!-- <hr> -->
+<a href="/member/detail">${boardDto.boardWriter}</a> <br>
+
+<fmt:formatDate value="${boardDto.boardWtime}" pattern="yyyy-MM-dd HH:mm"></fmt:formatDate>
+&nbsp;&nbsp;&nbsp;&nbsp;
  [조회수] : ${boardDto.boardReadcount}
 <hr>
-[내용]: ${boardDto.boardContent}
-<br>
+<div style="min-height: 250px">
 
-좋아요 ${boardDto.boardLikecount} 댓글 ${boardDto.boardReplycount}
+<pre>[내용]: ${boardDto.boardContent}</pre>
+</div>
+<br><br>
+
+좋아요 ${boardDto.boardLikecount} 
+댓글 ${boardDto.boardReplycount}
 
 <br>
 <hr>
+
+이전글 : <a href="./detail?boardNo=${prevBoardDto.boardNo}"> ${prevBoardDto.boardTitle}</a>
+<br>
+다음글 : <a href="./detail?boardNo=${prevNextDto.boardNo}">${nextBoardDto.boardTitle}</a>
+<hr>
 <button>
-	<a href="./write">글쓰기</a>
+<c:if test="${sessionScope.loginId != null}">
+	<a href="./write">글쓰기</a></c:if>
 </button>
 <c:if test="${loginId == boardDto.boardWriter}">
 	<button>
@@ -30,6 +46,7 @@
 		<a href="./delete?boardNo=${boardDto.boardNo}">삭제</a>
 	</button>
 </c:if>
+<button><a href="./list">목록</a></button><br>
 
 
 

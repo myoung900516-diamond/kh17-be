@@ -20,8 +20,9 @@ public class BoardDao {
 	private Set<String> allowColumns = Set.of(
 			"board_title", "board_writer"
 			);
+	
 	public List<BoardDto> selectList(){
-		String sql = "select * from board order by board_wtime desc";
+		String sql = "select * from board_list order by board_no desc";
 		return jdbcTemplate.query(sql, boardMapper);
 	}
 			
@@ -29,15 +30,33 @@ public class BoardDao {
 	public List<BoardDto> selectList(String column, String keyword){
 		if(column == null || keyword == null) return selectList();
 		
-		if(!allowColumns.contains(column)) return List.of();
+		if(!allowColumns.contains(column)) return selectList();
 		
-		String sql = "select * from board "
+		String sql = "select * from board_list "
 				+ "where instr("+column+", ?) >0 order by board_wtime desc";
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, boardMapper, params);
 	}
-	public BoardDto selectOne(int boardNo) {
+	public BoardDto selectOne(long boardNo) {
 		String sql = "select * from board where board_no = ?";
+		Object[] params = {boardNo};
+		List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
+		return list.isEmpty()? null : list.get(0);
+	}
+	//이전글 정보
+	public BoardDto selectPreviousOne(long boardNo) {
+		String sql = "select * from board where board_no = ("
+						+ "select max(board_no) from board where board_no < ?"
+						+ ")";
+		Object[] params = {boardNo};
+		List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
+		return list.isEmpty()? null : list.get(0);
+	}
+	
+	public BoardDto selectNextOne(long boardNo) {
+		String sql = "select * from board where board_no = ("
+				+ "select min(board_no) from board where board_no > ?"
+				+ ")";
 		Object[] params = {boardNo};
 		List<BoardDto> list = jdbcTemplate.query(sql, boardMapper, params);
 		return list.isEmpty()? null : list.get(0);
@@ -52,30 +71,31 @@ public class BoardDao {
 		};
 		return jdbcTemplate.update(sql, params)>0;
 	}
-	
-	public int sequence() {
+	//시퀀스 번호 생성을 먼저하고 등록을 나중에 
+	public long sequence() {
 		String sql = "select board_seq.nextval from dual";
-		return jdbcTemplate.queryForObject(sql, int.class);
+		return jdbcTemplate.queryForObject(sql, long.class);
 	}
 	
 	public boolean insert(BoardDto boardDto) {
 		String sql = "insert into board(board_no, board_head, board_title, board_content, "
 				+ "board_writer"
-				+ ") values( board_seq.nextval, ?, ?, ?, ?"
+				+ ") values( ?, ?, ?, ?, ?"
 				+ ")";
 		Object[] params = {
+				boardDto.getBoardNo(), 
 				boardDto.getBoardHead(), boardDto.getBoardTitle(), 
 				boardDto.getBoardContent(), 
 				boardDto.getBoardWriter() 
 		};
 		return jdbcTemplate.update(sql, params)>0;
 	}
-	public boolean delete(int boardNo) {
+	public boolean delete(long boardNo) {
 		String sql="delete board where board_no =?";
 		Object[] params = {boardNo};
 		return jdbcTemplate.update(sql, params)>0;
 	}
-	public boolean readCount(int boardNo) {
+	public boolean readCount(long boardNo) {
 		String sql="update board "
 				+ "set board_readcount = board_readcount + 1 "
 				+ "where board_no = ?";

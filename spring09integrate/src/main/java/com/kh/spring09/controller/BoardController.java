@@ -29,20 +29,24 @@ public class BoardController {
 							Model model) {
 		List<BoardDto> list = boardDao.selectList(column, keyword);
 		model.addAttribute("list", list);
-		return "board/list";
+		return "board/list"; //뷰리졸버(View Resolver)
 	}
 	@RequestMapping("/detail")
-	public String detail(@RequestParam int boardNo, Model model, HttpSession session) {
+	public String detail(@RequestParam long boardNo, Model model, HttpSession session) {
 		String loginId = (String) session.getAttribute("loginId");
 		model.addAttribute("loginId", loginId);
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		if(boardDto == null) throw new TargetNotfoundException();
 		model.addAttribute("boardDto", boardDto);
+		//이전글 다음글 
+		model.addAttribute("prevBoardDto", boardDao.selectPreviousOne(boardNo));
+		model.addAttribute("nextBoardDto", boardDao.selectNextOne(boardNo));
 		return "board/detail";
 	}
 	
+	
 	@GetMapping("/edit")
-	public String edit(@RequestParam int boardNo, Model model) {
+	public String edit(@RequestParam long boardNo, Model model) {
 		BoardDto boardDto = boardDao.selectOne(boardNo);
 		model.addAttribute("boardDto", boardDto);
 		return "board/edit";
@@ -62,12 +66,14 @@ public class BoardController {
 //		int seq = boardDao.sequence();
 		String loginId = (String)session.getAttribute("loginId");
 		boardDto.setBoardWriter(loginId);
-//		boardDto.setBoardNo(seq);
+		long seq = boardDao.sequence();
+		boardDto.setBoardNo(seq);
 		boardDao.insert(boardDto);
-		return "redirect:./detail?boardNo=" + (boardDao.sequence()-1);
+//		return "redirect:./detail?boardNo=" + (boardDao.sequence()-1);
+		return "redirect:./detail?boardNo=" + seq;
 	}
 	@RequestMapping("/delete")
-	public String delete(@RequestParam int boardNo) {
+	public String delete(@RequestParam long boardNo) {
 		boardDao.delete(boardNo);
 		return "redirect:./list";
 	}
