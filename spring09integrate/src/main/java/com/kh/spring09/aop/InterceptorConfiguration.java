@@ -18,10 +18,16 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 	private MasterOnlyInterceptor masterOnlyInterceptor;
 	@Autowired
 	private MasterDenyInterceptor masterDenyInterceptor;
-	@Autowired
-	private BoardReadInterceptor boardReadInterceptor;
+//	@Autowired
+//	private BoardReadInterceptor boardReadInterceptor;
 	@Autowired
 	private BoardOwnerInterceptor boardOwnderInterceptor;
+//	@Autowired
+//	private BoardReadInterceptor2 boardReadInterceptor2;
+//	@Autowired
+//	private BoardReadInterceptor3 boardReadInterceptor3;
+	@Autowired
+	private BoardReadInterceptor4 boardReadInterceptor4;
 
 	//가져온 인터셉터를 특정 주소에서 일하도록 설정 
 	@Override
@@ -56,12 +62,14 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 				,"/admin/member/edit"
 				,"/admin/member/block"
 				);
-		registry.addInterceptor(boardReadInterceptor).addPathPatterns("/board/detail");
+//		registry.addInterceptor(boardReadInterceptor).addPathPatterns("/board/detail");
 		registry.addInterceptor(boardOwnderInterceptor).addPathPatterns(
 				"/board/edit"
 				,"/board/delete"
 				);
-		
+//		registry.addInterceptor(boardReadInterceptor2).addPathPatterns("/board/detail");
+//		registry.addInterceptor(boardReadInterceptor3).addPathPatterns("/board/detail");
+		registry.addInterceptor(boardReadInterceptor4).addPathPatterns("/board/detail");
 		//주소(Path Patterns)작성 규칙
 		//-spring 표현식 규칙을 따른다 
 		//-*을 1개 또는 2개까지 사용할 수 있다

@@ -89,7 +89,7 @@ public class BoardDao {
 		return jdbcTemplate.queryForObject(sql, long.class);
 	}
 	
-	public boolean insert(BoardDto boardDto) {
+	public void insert(BoardDto boardDto) {
 		String sql = "insert into board(board_no, board_head, board_title, board_content, "
 				+ "board_writer"
 				+ ") values( ?, ?, ?, ?, ?"
@@ -100,14 +100,14 @@ public class BoardDao {
 				boardDto.getBoardContent(), 
 				boardDto.getBoardWriter() 
 		};
-		return jdbcTemplate.update(sql, params)>0;
+		jdbcTemplate.update(sql, params);
 	}
 	public boolean delete(long boardNo) {
 		String sql="delete board where board_no =?";
 		Object[] params = {boardNo};
 		return jdbcTemplate.update(sql, params)>0;
 	}
-	public boolean readCount(long boardNo) {
+	public boolean updateBoardReadcount(long boardNo) {
 		String sql="update board "
 				+ "set board_readcount = board_readcount + 1 "
 				+ "where board_no = ?";
