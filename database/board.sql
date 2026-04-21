@@ -95,3 +95,12 @@ select * from board
 		);
 
 
+--게시글 조회이력을 저장할 테이블 
+--관계 테이블(relation), 개체간의 관계를 기록하는 용도의 테이블(회원이 게시글을 조회한다)
+
+create table board_read(
+member_id references member(member_id) on delete cascade not null,
+board_no references board(board_no) on delete cascade not null,
+read_time timestamp default systimestamp not null,
+primary key(member_id, board_no) --복합키 설정
+);
