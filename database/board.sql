@@ -104,3 +104,49 @@ board_no references board(board_no) on delete cascade not null,
 read_time timestamp default systimestamp not null,
 primary key(member_id, board_no) --복합키 설정
 );
+
+
+
+--페이징 구현을 위한 더미데이터 
+BEGIN
+    FOR i IN 1..3000 LOOP
+        INSERT INTO board (
+            board_no,
+            board_head,
+            board_title,
+            board_content,
+            board_writer,
+            board_wtime,
+            board_etime,
+            board_readcount,
+            board_likecount,
+            board_replycount
+        ) VALUES (
+            board_seq.NEXTVAL,
+            CASE MOD(i, 4)
+                WHEN 0 THEN '공지'
+                WHEN 1 THEN '유머'
+                WHEN 2 THEN '자유'
+                ELSE '정보'
+            END,
+            '제목 ' || i,
+            '내용 ' || i || ' 입니다. 더미 데이터 생성 중...',
+            -- writer는 실제 member 테이블에 존재하는 값이어야 함
+            (SELECT member_id FROM (
+                SELECT member_id FROM member ORDER BY DBMS_RANDOM.VALUE
+            ) WHERE ROWNUM = 1),
+            SYSTIMESTAMP - NUMTODSINTERVAL(TRUNC(DBMS_RANDOM.VALUE(0, 30)), 'DAY'),
+            NULL,
+            TRUNC(DBMS_RANDOM.VALUE(0, 1000)),
+            TRUNC(DBMS_RANDOM.VALUE(0, 500)),
+            TRUNC(DBMS_RANDOM.VALUE(0, 100))
+        );
+    END LOOP;
+
+    COMMIT;
+END;
+
+--공지글은 삭제 
+
+update board set board_head = null where board_head='공지';
+commit;
