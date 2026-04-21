@@ -30,7 +30,7 @@
 <%-- 								<td>${boardDto.boardNo}</td> --%>
 <%-- 								<td>${boardDto.boardHead}</td> --%>
 <!-- 								<td> -->
-<!-- <!-- 									<span></span> --> -->
+<!-- <!-- 									<span></span> --> 
 <%-- 									<a href="./detail?boardNo=${boardDto.boardNo}"> --%>
 									
 <%-- 									${boardDto.boardTitle}</a> --%>
@@ -83,8 +83,26 @@
 		</tbody>
 </table>
 
-
-<h2>&lt; 1 2 3 4 5 6 7 8 9 10 &gt;</h2>
+<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
+<!-- <h2> -->
+<%-- <c:if test="${pageVO.hasPrevious()}"> --%>
+<%-- <a href="./list?page=${pageVO.getPreviousBlock()}&${pageVO.getSearchParams()}">&lt;</a></c:if> --%>
+<%-- <c:forEach var="i" begin="${pageVO.getBeginBlock()}" end="${pageVO.getEndBlock()}" step="1"> --%>
+<%-- <a href="./list?page=${i}&${pageVO.getSearchParams()}">${i}</a>  --%>
+<%-- </c:forEach> --%>
+<%-- <c:if test="${pageVO.hasNext()}"> --%>
+<%-- <a href="./list?page=${pageVO.getNextBlock()}&${pageVO.getSearchParams()}">&gt;</a></c:if> --%>
+<%-- <a href="./list?page=2&size=${size}${searchParams}">2</a>  --%>
+<%-- <a href="./list?page=3&size=${size}${searchParams}">3</a>  --%>
+<%-- <a href="./list?page=4&size=${size}${searchParams}">4</a>  --%>
+<%-- <a href="./list?page=5&size=${size}${searchParams}">5</a>  --%>
+<%-- <a href="./list?page=6&size=${size}${searchParams}">6</a>  --%>
+<%-- <a href="./list?page=7&size=${size}${searchParams}">7</a>  --%>
+<%-- <a href="./list?page=8&size=${size}${searchParams}">8</a>  --%>
+<%-- <a href="./list?page=9&size=${size}${searchParams}">9</a>  --%>
+<%-- <a href="./list?page=10&size=${size}${searchParams}">10</a>  --%>
+<!--  &gt; -->
+<!-- </h2> -->
 <!-- html 특수문자 코드표 -->
 
 <c:if test="${sessionScope.loginId != null}">

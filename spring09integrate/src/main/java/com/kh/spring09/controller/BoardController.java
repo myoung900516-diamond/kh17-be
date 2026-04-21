@@ -16,6 +16,7 @@ import com.kh.spring09.dao.BoardDao;
 import com.kh.spring09.dto.BoardDto;
 import com.kh.spring09.exception.GetOutException;
 import com.kh.spring09.exception.TargetNotfoundException;
+import com.kh.spring09.vo.PageVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -26,9 +27,14 @@ public class BoardController {
 	private BoardDao boardDao;
 	
 	@RequestMapping("/list")
-	public String list(@RequestParam(required = false) String column, 
-							@RequestParam(required = false) String keyword, 
-							Model model) {
+	public String list(
+//							@RequestParam(required = false) String column, 
+//							@RequestParam(required = false) String keyword, 
+//							Model model, 
+//							@RequestParam(required = false, defaultValue= "1") int page, 
+//							@RequestParam(required=false, defaultValue= "10")  int size 
+							Model model, @ModelAttribute PageVO pageVO
+			) {
 		//공지사항 게시글
 //		List<BoardDto> noticeList = boardDao.selectList("board_head", "공지");
 		List<BoardDto> noticeList = boardDao.selectNoticeList();
@@ -37,13 +43,33 @@ public class BoardController {
 //		List<BoardDto> list = boardDao.selectList(column, keyword);
 //		model.addAttribute("list", list);
 		
-		List<BoardDto> boardlist = boardDao.selectList(column, keyword);
+//		List<BoardDto> boardlist = boardDao.selectList(column, keyword, page, size);
+		List<BoardDto> boardlist = boardDao.selectList(pageVO);
 		List<BoardDto> list = new ArrayList<>();
 		list.addAll(noticeList);
 		list.addAll(boardlist);
 		model.addAttribute("list", list);
 		model.addAttribute("noticeCount", noticeList.size());
 		
+		//페이징을 위해 추가로 전달할 값이 있다면 전달해야 한다
+//		model.addAttribute("page", page);
+//		model.addAttribute("size", size);
+//		int beginBlock=(page-1) / 10 * 10 + 1;
+//		int endBlock= beginBlock +9;
+//		model.addAttribute("beginBlock", beginBlock);
+//		int count = boardDao.count(column, keyword);
+//		model.addAttribute("count", count);
+//		int pageCount = (count - 1) / size +1;
+//		model.addAttribute("endBlock", Math.min(pageCount, endBlock));
+//		model.addAttribute("pageCount", pageCount);
+//		
+//		if(column != null && keyword != null) {
+//		model.addAttribute("searchParams", 
+//								"&column="+column+"&keyword="+keyword+"");
+//		}
+		int count = boardDao.count(pageVO);
+		pageVO.setCount(count);
+		model.addAttribute("pageVO", pageVO);
 		return "board/list"; //뷰리졸버(View Resolver)
 	}
 	@RequestMapping("/detail")

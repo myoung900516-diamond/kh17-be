@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.spring09.dto.BoardDto;
 import com.kh.spring09.mapper.BoardMapper;
+import com.kh.spring09.vo.PageVO;
 
 @Repository
 public class BoardDao {
@@ -25,18 +26,80 @@ public class BoardDao {
 		String sql = "select * from board_list order by board_no desc";
 		return jdbcTemplate.query(sql, boardMapper);
 	}
-			
-	
-	public List<BoardDto> selectList(String column, String keyword){
-		if(column == null || keyword == null) return selectList();
+	public List<BoardDto> selectList(int page, int size){
+		String sql = "select * from ( "
+							+ "select rownum rn, TMP.* from( "
+									+ "select * from board_list order by board_no desc "
+							+ ")TMP "
+						+ ")where rn between ? and ?";
+		int beginRow = page*size - (size-1);
+		int endRow = page*size;
+		Object[] params = {beginRow, endRow};
 		
-		if(!allowColumns.contains(column)) return selectList();
-		
-		String sql = "select * from board_list "
-				+ "where instr("+column+", ?) >0 order by board_wtime desc";
-		Object[] params = {keyword};
+//		select * from (
+//				select rownum rn, TMP.* from(
+//						내가 원하는 데이터 조회 구문
+//						)TMP
+//				)where rn between ? and ?
 		return jdbcTemplate.query(sql, boardMapper, params);
 	}
+			
+	
+//	public List<BoardDto> selectList(String column, String keyword){
+//		if(column == null || keyword == null) return selectList();
+//		
+//		if(!allowColumns.contains(column)) return selectList();
+//		
+//		String sql = "select * from board_list "
+//				+ "where instr("+column+", ?) >0 order by board_wtime desc";
+//		Object[] params = {keyword};
+//		return jdbcTemplate.query(sql, boardMapper, params);
+//	}
+	
+//	public List<BoardDto> selectList(String column, String keyword, int page, int size){
+//		if(column == null || keyword == null) return selectList(page, size);
+//		
+//		if(!allowColumns.contains(column)) return selectList(page, size);
+//		
+//		String sql = "select * from ( "
+//				+ "select rownum rn, TMP.* from( "
+//				+ "select * from board_list "
+//				+ "where instr("+column+", ?) >0 order by board_wtime desc"
+//						+ ")TMP "
+//						+ ")where rn between ? and ?";
+//		int beginRow = page*size - (size-1);
+//		int endRow = page*size;
+//		Object[] params = {keyword, beginRow, endRow};
+		
+//		select * from (
+//		select rownum rn, TMP.* from(
+//				내가 원하는 데이터 조회 구문
+//				)TMP
+//		)where rn between ? and ?
+		
+//		return jdbcTemplate.query(sql, boardMapper, params);
+//	}
+	public List<BoardDto> selectList(PageVO pageVO){
+		if(pageVO.isList())
+			return selectList(pageVO.getPage(), pageVO.getSize());
+		
+		if(!allowColumns.contains(pageVO.getColumn())) 
+			return selectList(pageVO.getPage(), pageVO.getSize());
+		
+		String sql = "select * from ( "
+				+ "select rownum rn, TMP.* from( "
+				+ "select * from board_list "
+				+ "where instr("+pageVO.getColumn()+", ?) >0 order by board_wtime desc"
+						+ ")TMP "
+						+ ")where rn between ? and ?";
+//		int beginRow = page*size - (size-1);
+//		int endRow = page*size;
+		Object[] params = {pageVO.getKeyword(), 
+								pageVO.getBeginRownum(), 
+								pageVO.getEndRownum()};
+		return jdbcTemplate.query(sql, boardMapper, params);
+	}
+		
 	
 	public List<BoardDto> selectNoticeList(){
 		String sql = "select * from board_list where board_head = '공지' order by board_no desc";
@@ -115,7 +178,26 @@ public class BoardDao {
 		return jdbcTemplate.update(sql, params)>0;
 	}
 
-	
+	//목록과 검색의 상황별 카운트 메소드
+	//-> 화면에서 마지막 페이지가 어딘지 알기 위해 필요한 데이터
+	public int count() {
+		String sql= "select count(*) from board";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	public int count(String column, String keyword) {
+		if(column == null || keyword == null) return count();
+		
+		String sql = "select count(*) from board where instr("+column+", ?) >0 ";
+		Object[] params = {keyword};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
+	public int count(PageVO pageVO) {
+		if(pageVO.isList()) return count();
+		
+		String sql = "select count(*) from board where instr("+pageVO.getColumn()+", ?) >0 ";
+		Object[] params = {pageVO.getKeyword()};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
 	
 	
 	
