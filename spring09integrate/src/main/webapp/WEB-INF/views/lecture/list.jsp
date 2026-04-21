@@ -23,7 +23,8 @@
 </form>
 
 <!-- 출력값 -->
-<h2> 강좌 수 : ${list.size()}</h2>
+<%-- <h2> 강좌 수 : ${list.size()}</h2> --%>
+ ${pageVO.getBeginRownum()}-${pageVO.getEndRownum()}/${pageVO.count}
 
 <table border="1" width="700">
 	<thead align="center">
@@ -64,7 +65,7 @@
 	</tbody>
 </table>
 
-
+<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
 
 
 

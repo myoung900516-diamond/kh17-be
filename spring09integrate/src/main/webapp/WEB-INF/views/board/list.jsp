@@ -8,7 +8,7 @@
     <h1>자유게시판</h1>
     타인에 대한 무분별한 비방글은 예고 없이 삭제될 수 있습니다
     <hr>
- 
+ ${pageVO.getBeginRownum()}-${pageVO.getEndRownum()}/${pageVO.count}
 <table border="1" width="900">
 		<thead align="center">
 				<tr>

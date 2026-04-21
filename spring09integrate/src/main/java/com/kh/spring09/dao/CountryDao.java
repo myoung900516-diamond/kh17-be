@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.spring09.dto.CountryDto;
 import com.kh.spring09.mapper.CountryMapper;
+import com.kh.spring09.vo.PageVO;
 
 @Repository//DB나 파일을 제어하기 위한 도구(영속성을 가진 대상 제어 도구)
 public class CountryDao {
@@ -16,6 +17,10 @@ public class CountryDao {
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private CountryMapper countryMapper;
+	private Set<String> allowColumns = Set.of(
+			"country_region", "country_name", "country_capital"
+			);
+	
 	
 	//필요한 기능을 메소드로 구현
 	
@@ -70,12 +75,70 @@ public class CountryDao {
 		Object[] params = {keyword};
 		return jdbcTemplate.query(sql, countryMapper, params);//(주의)홀더는 맨 마지막!!!! 
 	}
+	public List<CountryDto> selectList(int beginRownum, int endRownum){
+		String sql = "select * from ( "
+							+ "select rownum rn, TMP.* from( "
+									+ "select * from country order by country_no desc "
+							+ ")TMP "
+						+ ")where rn between ? and ?";
+//		int beginRow = page*size - (size-1);
+//		int endRow = page*size;
+		Object[] params = {beginRownum, endRownum};
+		
+//		select * from (
+//				select rownum rn, TMP.* from(
+//						내가 원하는 데이터 조회 구문
+//						)TMP
+//				)where rn between ? and ?
+		return jdbcTemplate.query(sql, countryMapper, params);
+	}
+	public List<CountryDto> selectList(PageVO pageVO){
+		if(pageVO.isList())
+			return selectList(pageVO.getBeginRownum(), pageVO.getEndRownum());
+		
+		if(!allowColumns.contains(pageVO.getColumn())) 
+			return List.of();
+		
+		String sql = "select * from ( "
+				+ "select rownum rn, TMP.* from( "
+				+ "select * from country "
+				+ "where instr("+pageVO.getColumn()+", ?) >0 order by country_no desc"
+						+ ")TMP "
+						+ ")where rn between ? and ?";
+//		int beginRow = page*size - (size-1);
+//		int endRow = page*size;
+		Object[] params = {pageVO.getKeyword(), 
+								pageVO.getBeginRownum(), 
+								pageVO.getEndRownum()};
+		return jdbcTemplate.query(sql, countryMapper, params);
+	}
 	
 	public CountryDto selectOne(int countryNo) {
 		String sql = "select * from country where country_no= ?";
 		Object[] params = {countryNo};
 		List<CountryDto> list = jdbcTemplate.query(sql, countryMapper, params); //일단 목록으로조회하고 
 		return list.isEmpty() ? null : list.get(0);
+	}
+	public int count() {
+		String sql= "select count(*) from country";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	public int count(String column, String keyword) {
+		if(column == null || keyword == null) return count();
+		
+		String sql = "select count(*) from country where instr("+column+", ?) >0 ";
+		Object[] params = {keyword};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
+	public int count(PageVO pageVO) {
+		if(pageVO.isList()) return count();
+		
+		Set<String> allowList = Set.of("country_region", "country_name", "country_capital");
+		if(allowList.contains(pageVO.getColumn()) == false) return 0;
+		
+		String sql = "select count(*) from country where instr("+pageVO.getColumn()+", ?) >0 ";
+		Object[] params = {pageVO.getKeyword()};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 	
 	

@@ -6,13 +6,15 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-
+import com.kh.spring09.Spring09integrateApplication;
 import com.kh.spring09.dto.BoardDto;
 import com.kh.spring09.mapper.BoardMapper;
 import com.kh.spring09.vo.PageVO;
 
 @Repository
 public class BoardDao {
+
+    private final Spring09integrateApplication spring09integrateApplication;
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
@@ -21,6 +23,10 @@ public class BoardDao {
 	private Set<String> allowColumns = Set.of(
 			"board_title", "board_writer"
 			);
+
+    BoardDao(Spring09integrateApplication spring09integrateApplication) {
+        this.spring09integrateApplication = spring09integrateApplication;
+    }
 	
 	public List<BoardDto> selectList(){
 		String sql = "select * from board_list order by board_no desc";
@@ -184,15 +190,16 @@ public class BoardDao {
 		String sql= "select count(*) from board";
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
-	public int count(String column, String keyword) {
-		if(column == null || keyword == null) return count();
-		
-		String sql = "select count(*) from board where instr("+column+", ?) >0 ";
-		Object[] params = {keyword};
-		return jdbcTemplate.queryForObject(sql, int.class, params);
-	}
+//	public int count(String column, String keyword) {
+//		if(column == null || keyword == null) return count();
+//		
+//		String sql = "select count(*) from board where instr("+column+", ?) >0 ";
+//		Object[] params = {keyword};
+//		return jdbcTemplate.queryForObject(sql, int.class, params);
+//	}
 	public int count(PageVO pageVO) {
 		if(pageVO.isList()) return count();
+		if(!allowColumns.contains(pageVO.getColumn())) return count();
 		
 		String sql = "select count(*) from board where instr("+pageVO.getColumn()+", ?) >0 ";
 		Object[] params = {pageVO.getKeyword()};

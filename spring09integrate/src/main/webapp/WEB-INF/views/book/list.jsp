@@ -5,7 +5,8 @@
  <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <h1>도서 정보 목록 조회</h1>
 
-<h2>결과 수 : ${list.size()}</h2>
+<%-- <h2>결과 수 : ${list.size()}</h2> --%>
+
 
 <a href="./insert">신규 등록</a>
 <a href="./list">전체 목록</a>
@@ -22,7 +23,7 @@
 	<button>검색🔍</button>
 </form>
 
-
+ ${pageVO.getBeginRownum()}-${pageVO.getEndRownum()}/${pageVO.count}
 <table border="1" width="1000">
 	<thead>
 		<tr>
@@ -63,5 +64,6 @@
 		</c:forEach>
 	</tbody>
 </table>
+<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

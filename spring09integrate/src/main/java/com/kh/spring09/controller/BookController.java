@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.kh.spring09.dao.BookDao;
 import com.kh.spring09.dto.BookDto;
 import com.kh.spring09.exception.TargetNotfoundException;
+import com.kh.spring09.vo.PageVO;
 
 @Controller
 @RequestMapping("/book")
@@ -35,11 +36,15 @@ public class BookController {
 		return "book/insertComplete";
 	}
 	@RequestMapping("/list")
-	public String list(@RequestParam(required = false) String column, 
-							@RequestParam(required = false) String keyword,
+	public String list(@ModelAttribute PageVO pageVO,
+//							@RequestParam(required = false) String column, 
+//							@RequestParam(required = false) String keyword,
 			Model model) {
-		List<BookDto> list = bookDao.selectList(column, keyword);
+		List<BookDto> list = bookDao.selectList(pageVO);
 		model.addAttribute("list", list);
+		int count = bookDao.count(pageVO);
+		pageVO.setCount(count);
+		model.addAttribute("pageVO", pageVO);
 		return "book/list";
 	}
 	@RequestMapping("/detail")

@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.spring09.dto.BoardDto;
 import com.kh.spring09.dto.BookDto;
 import com.kh.spring09.mapper.BookMapper;
+import com.kh.spring09.vo.PageVO;
 
 @Repository
 public class BookDao {
@@ -16,6 +18,10 @@ public class BookDao {
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
 	private BookMapper bookMapper;
+	private Set<String> allowColumns = Set.of(
+			"book_title", "book_author", "book_publication_date", 
+			"book_publisher", "book_genre"
+			);
 	
 	
 	public void insert(BookDto bookDto){
@@ -74,12 +80,61 @@ public class BookDao {
 		return jdbcTemplate.query(sql, bookMapper, params);
 		
 	}
+	
+	public List<BookDto> selectList(int page, int size){
+		String sql = "select * from ( "
+							+ "select rownum rn, TMP.* from( "
+									+ "select * from book order by book_id desc "
+							+ ")TMP "
+						+ ")where rn between ? and ?";
+		int beginRow = page*size - (size-1);
+		int endRow = page*size;
+		Object[] params = {beginRow, endRow};
+		
+
+		return jdbcTemplate.query(sql, bookMapper, params);
+	}
+			
+	
+
+	public List<BookDto> selectList(PageVO pageVO){
+		if(pageVO.isList())
+			return selectList(pageVO.getPage(), pageVO.getSize());
+		
+		if(!allowColumns.contains(pageVO.getColumn())) 
+			return selectList(pageVO.getPage(), pageVO.getSize());
+		
+		String sql = "select * from ( "
+				+ "select rownum rn, TMP.* from( "
+				+ "select * from book "
+				+ "where instr("+pageVO.getColumn()+", ?) >0 order by book_id desc"
+						+ ")TMP "
+						+ ")where rn between ? and ?";
+
+		Object[] params = {pageVO.getKeyword(), 
+								pageVO.getBeginRownum(), 
+								pageVO.getEndRownum()};
+		return jdbcTemplate.query(sql, bookMapper, params);
+	}
+	
 	public BookDto selectOne(int bookId) {
 		String sql = "select * from book where book_id = ? ";
 		Object[] params = {bookId};
 		List<BookDto> list = jdbcTemplate.query(sql, bookMapper, params);
 		return list.isEmpty() ? null : list.get(0);
 		
+	}
+	public int count() {
+		String sql= "select count(*) from book";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	public int count(PageVO pageVO) {
+		if(pageVO.isList()) return count();
+		if(!allowColumns.contains(pageVO.getColumn())) return count();
+		
+		String sql = "select count(*) from book where instr("+pageVO.getColumn()+", ?) >0 ";
+		Object[] params = {pageVO.getKeyword()};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 	
 	

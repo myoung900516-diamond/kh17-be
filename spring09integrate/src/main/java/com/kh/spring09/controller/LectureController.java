@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.kh.spring09.dao.LectureDao;
+import com.kh.spring09.dto.CountryDto;
 import com.kh.spring09.dto.LectureDto;
 import com.kh.spring09.exception.TargetNotfoundException;
+import com.kh.spring09.vo.PageVO;
 
 @Controller
 @RequestMapping("/lecture")
@@ -37,9 +39,17 @@ public class LectureController {
 		return "lecture/insertComplete";
 	}
 	@RequestMapping("/list")
-	public String list(@RequestParam(required = false) String column, @RequestParam(required = false) String keyword, Model model) {
-		List<LectureDto> list = lectureDao.selectList(column, keyword);
+	public String list(@ModelAttribute PageVO pageVO,
+//			@RequestParam(required = false) String column, @RequestParam(required = false) String keyword, 
+			Model model) {
+//		List<LectureDto> list = lectureDao.selectList(column, keyword);
+//		model.addAttribute("list", list);
+		
+		List<LectureDto> list = lectureDao.selectList(pageVO);
 		model.addAttribute("list", list);
+		int count = lectureDao.count(pageVO);
+		pageVO.setCount(count);
+		model.addAttribute("pageVO", pageVO);
 		return "lecture/list";
 	}
 	@RequestMapping("/detail")

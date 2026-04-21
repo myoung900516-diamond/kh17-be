@@ -22,8 +22,8 @@
 
 
 <!-- 결과출력 -->
-<h2>결과 수 : ${list.size()}</h2>
-
+<%-- <h2>결과 수 : ${list.size()}</h2> --%>
+ ${pageVO.getBeginRownum()}-${pageVO.getEndRownum()}/${pageVO.count}
 
 <table border="1" width="700">
 	<thead>
@@ -64,5 +64,6 @@
 <%-- 												 pattern="#,##0"></fmt:formatNumber> 명 --%>
 <!-- 	</div> -->
 <%-- </c:forEach> --%>
+<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
 
