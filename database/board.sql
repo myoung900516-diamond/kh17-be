@@ -180,4 +180,10 @@ board_group not null,
 board_depth default 0 not null
 );
 
+--답변형 게시글 목록 조회 명령 
+
+select * from board_list
+connect by prior board_no=board_parent
+start with board_parent is null
+order siblings by board_group desc, board_no asc;
 
