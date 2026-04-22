@@ -32,23 +32,43 @@ public class BoardDao {
 		String sql = "select * from board_list order by board_no desc";
 		return jdbcTemplate.query(sql, boardMapper);
 	}
-	public List<BoardDto> selectList(int page, int size){
-		String sql = "select * from ( "
-							+ "select rownum rn, TMP.* from( "
-									+ "select * from board_list order by board_no desc "
-							+ ")TMP "
-						+ ")where rn between ? and ?";
-		int beginRow = page*size - (size-1);
-		int endRow = page*size;
-		Object[] params = {beginRow, endRow};
-		
+//	public List<BoardDto> selectList(int page, int size){
+//		String sql = "select * from ( "
+//							+ "select rownum rn, TMP.* from( "
+//									+ "select * from board_list order by board_no desc "
+//							+ ")TMP "
+//						+ ")where rn between ? and ?";
+//		int beginRow = page*size - (size-1);
+//		int endRow = page*size;
+//		Object[] params = {beginRow, endRow};
+//		
 //		select * from (
 //				select rownum rn, TMP.* from(
 //						내가 원하는 데이터 조회 구문
 //						)TMP
 //				)where rn between ? and ?
-		return jdbcTemplate.query(sql, boardMapper, params);
-	}
+//		return jdbcTemplate.query(sql, boardMapper, params);
+//	}
+
+	
+	//트리정렬
+	public List<BoardDto> selectList(int page, int size){
+	String sql = "select * from ( "
+						+ "select rownum rn, TMP.* from( "
+								+ "select * from board_list "
+								+ "connect by prior board_no=board_parent "
+								+ "start with board_parent is null "
+								+ "order siblings by board_group desc, board_no asc "
+						+ ")TMP "
+					+ ")where rn between ? and ?";
+	int beginRow = page*size - (size-1);
+	int endRow = page*size;
+	Object[] params = {beginRow, endRow};
+	
+
+	return jdbcTemplate.query(sql, boardMapper, params);
+}
+
 			
 	
 //	public List<BoardDto> selectList(String column, String keyword){
@@ -85,6 +105,8 @@ public class BoardDao {
 		
 //		return jdbcTemplate.query(sql, boardMapper, params);
 //	}
+	
+	//트리정렬
 	public List<BoardDto> selectList(PageVO pageVO){
 		if(pageVO.isList())
 			return selectList(pageVO.getPage(), pageVO.getSize());
@@ -95,7 +117,10 @@ public class BoardDao {
 		String sql = "select * from ( "
 				+ "select rownum rn, TMP.* from( "
 				+ "select * from board_list "
-				+ "where instr("+pageVO.getColumn()+", ?) >0 order by board_wtime desc"
+				+ "where instr("+pageVO.getColumn()+", ?) >0 "
+						+ "connect by prior board_no=board_parent "
+						+ "start with board_parent is null "
+						+ "order siblings by board_group desc, board_no asc "
 						+ ")TMP "
 						+ ")where rn between ? and ?";
 //		int beginRow = page*size - (size-1);
@@ -158,16 +183,30 @@ public class BoardDao {
 		return jdbcTemplate.queryForObject(sql, long.class);
 	}
 	
+//	public void insert(BoardDto boardDto) {
+//		String sql = "insert into board(board_no, board_head, board_title, board_content, "
+//				+ "board_writer"
+//				+ ") values( ?, ?, ?, ?, ?"
+//				+ ")";
+//		Object[] params = {
+//				boardDto.getBoardNo(), 
+//				boardDto.getBoardHead(), boardDto.getBoardTitle(), 
+//				boardDto.getBoardContent(), 
+//				boardDto.getBoardWriter() 
+//		};
+//		jdbcTemplate.update(sql, params);
+//	}
 	public void insert(BoardDto boardDto) {
 		String sql = "insert into board(board_no, board_head, board_title, board_content, "
-				+ "board_writer"
-				+ ") values( ?, ?, ?, ?, ?"
+				+ "board_writer, board_group, board_parent, board_depth "
+				+ ") values( ?, ?, ?, ?, ?, ?, ?, ? "
 				+ ")";
 		Object[] params = {
 				boardDto.getBoardNo(), 
 				boardDto.getBoardHead(), boardDto.getBoardTitle(), 
 				boardDto.getBoardContent(), 
-				boardDto.getBoardWriter() 
+				boardDto.getBoardWriter(), boardDto.getBoardGroup(), 
+				boardDto.getBoardParent(), boardDto.getBoardDepth() 
 		};
 		jdbcTemplate.update(sql, params);
 	}

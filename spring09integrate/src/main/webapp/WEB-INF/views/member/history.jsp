@@ -16,7 +16,7 @@
 <hr>
 
 <h1>로그인 이력</h1>
-${pageVO.getBeginRownum()}-${pageVO.getEndRownum()}/${pageVO.count}
+
 <table border="1" width="1200">
 	<thead>
 			<tr>
@@ -40,5 +40,5 @@ ${pageVO.getBeginRownum()}-${pageVO.getEndRownum()}/${pageVO.count}
 
 
 
-<jsp:include page="/WEB-INF/views/template/pagination.jsp"></jsp:include>
+<jsp:include page="/WEB-INF/views/template/loginhistorypagination.jsp"></jsp:include>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

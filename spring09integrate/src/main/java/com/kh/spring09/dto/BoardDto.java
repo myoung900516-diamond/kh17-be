@@ -20,6 +20,10 @@ public class BoardDto {
 	private long boardLikecount;
 	private long boardReplycount;
 	
+	private long boardGroup;
+	private Long boardParent;//null 가능
+	private long boardDepth;
+	
 	public String getBoardWtimeString() {
 //	    if(boardWtime == null) return "";
 	    	//작성일을 localdatetime형태로 불러온다 

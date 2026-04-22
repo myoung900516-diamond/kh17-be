@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.spring09.dto.MemberHistoryDto;
 import com.kh.spring09.mapper.MemberHistoryMapper;
+import com.kh.spring09.vo.HistoryPageVO;
 import com.kh.spring09.vo.PageVO;
 
 @Repository
@@ -44,7 +45,7 @@ public class MemberHistoryDao {
 		return jdbcTemplate.query(sql, memberHistoryMapper, params);
 	}
 	
-	public List<MemberHistoryDto> selectList(String memberHistoryOrigin, PageVO pageVO){
+	public List<MemberHistoryDto> selectList(String memberHistoryOrigin, HistoryPageVO historyPageVO){
 //		String sql = "select * from ( "
 //				+ "select * from member_history "
 //					+ "where member_history_origin = ? "
@@ -55,7 +56,7 @@ public class MemberHistoryDao {
 //					+ ") where rownum <=100";
 //		System.out.println("beginDate = " + beginDate+", endDate = " + endDate);
 		
-		if(pageVO.getColumn() == null || pageVO.getKeyword() == null) return List.of();
+		if(historyPageVO.getBeginDate() == null || historyPageVO.getEndDate() == null) return List.of();
 		
 		String sql = "select * from ("
 						+ "select rownum RN, TMP.* from ("
@@ -66,20 +67,20 @@ public class MemberHistoryDao {
 									+ "order by member_history_time desc, member_history_no desc"
 								+ ")TMP"
 						+ ") where RN between ? and ? ";
-		Object[] params = {memberHistoryOrigin, pageVO.getColumn(), pageVO.getKeyword(), 
-									pageVO.getBeginRownum(), pageVO.getEndRownum()};
+		Object[] params = {memberHistoryOrigin, historyPageVO.getBeginDate(), historyPageVO.getEndDate(), 
+									historyPageVO.getBeginRownum(), historyPageVO.getEndRownum()};
 		return jdbcTemplate.query(sql, memberHistoryMapper, params);
 	}
 	public int count() {
 		String sql= "select count(*) from member_history";
 		return jdbcTemplate.queryForObject(sql, int.class);
 	}
-	public int count(PageVO pageVO) {
-		if(pageVO.isList()) return count();
+	public int count(HistoryPageVO historyPageVO) {
+		if(historyPageVO.isList()) return count();
 //		if(!allowColumns.contains(pageVO.getColumn())) return count();
 		
-		String sql = "select count(*) from member_history where instr("+pageVO.getColumn()+", ?) >0 ";
-		Object[] params = {pageVO.getKeyword()};
+		String sql = "select count(*) from member_history where instr("+historyPageVO.getBeginDate()+", ?) >0 ";
+		Object[] params = {historyPageVO.getEndDate()};
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 	

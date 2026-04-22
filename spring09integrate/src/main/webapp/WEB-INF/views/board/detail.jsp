@@ -44,10 +44,13 @@
 다음글 : <a href="./detail?boardNo=${prevNextDto.boardNo}">${nextBoardDto.boardTitle}</a>
 <hr>
 <c:if test="${sessionScope.loginId != null}">
-<button>
-	<a href="./write">글쓰기</a>
-</button>
-	</c:if>
+	<button>
+		<a href="./write">글쓰기</a>
+	</button>
+	<button>
+		<a href="./write?boardParent=${boardDto.boardNo}">답글쓰기</a>
+	</button>
+</c:if>
 <!-- 비회원이 탈퇴한 글을 볼 때 본인으로 판정되는 걸 제거하기 위한 추가 검사 코드 -->
 <c:if test="${boardDto.boardWriter != null && sessionScope.loginId == boardDto.boardWriter}">
 	<button>

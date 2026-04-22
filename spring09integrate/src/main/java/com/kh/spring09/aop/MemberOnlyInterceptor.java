@@ -25,8 +25,8 @@ public class MemberOnlyInterceptor  implements HandlerInterceptor{
 //			response.sendError(401);
 //			return false;
 			throw new WhoAreYouException();
+//			System.out.println("멤버온니 인터셉터가 실행되었습니다");
 		}
-		System.out.println("멤버온니 인터셉터가 실행되었습니다");
 		return true;
 	}
 	

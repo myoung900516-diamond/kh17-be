@@ -123,9 +123,22 @@ public class BoardController {
 			}
 		}
 		
-		boardDto.setBoardWriter(loginId);
 		long seq = boardDao.sequence();
 		boardDto.setBoardNo(seq);
+		boardDto.setBoardWriter(loginId);
+		
+		if(boardDto.getBoardParent()==null) {//새글이라면
+			boardDto.setBoardGroup(seq);
+		}
+		else {//답글이라면
+			BoardDto findBoardDto = boardDao.selectOne(boardDto.getBoardParent());
+			boardDto.setBoardGroup(findBoardDto.getBoardGroup());
+			boardDto.setBoardParent(findBoardDto.getBoardNo());
+			boardDto.setBoardDepth(findBoardDto.getBoardDepth()+1);
+		}
+		
+		
+		
 		boardDao.insert(boardDto);
 //		return "redirect:./detail?boardNo=" + (boardDao.sequence()-1);
 		return "redirect:./detail?boardNo=" + seq;

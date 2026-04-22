@@ -9,7 +9,7 @@
     타인에 대한 무분별한 비방글은 예고 없이 삭제될 수 있습니다
     <hr>
  ${pageVO.getBeginRownum()}-${pageVO.getEndRownum()}/${pageVO.count}
-<table border="1" width="900">
+<table border="1" width="1200">
 		<thead align="center">
 				<tr>
 						<th>번호</th>
@@ -19,6 +19,11 @@
 						<th>작성일</th>
 						<th>조회수</th>
 						<th>좋아요</th>
+<!-- 						확인용 컬럼(나중에 지울 예정) -->
+						<th>no</th>
+						<th>group</th>
+						<th>parent</th>
+						<th>depth</th>
 				</tr>
 		</thead>
 		<tbody align="left">
@@ -57,6 +62,11 @@
 						<td>${boardDto.boardNo}</td>
 						<td>${boardDto.boardHead}</td>
 						<td>
+						<c:if test="${boardDto.boardDepth > 0}">
+							<c:forEach var="i" begin="1" end="${boardDto.boardDepth}" step="1">&nbsp;&nbsp;&nbsp;
+							</c:forEach>
+								→
+						</c:if>
 							<a href="./detail?boardNo=${boardDto.boardNo}">
 							${boardDto.boardTitle}</a>
 									<!-- 수정되었다면 수정됨 표시 -->
@@ -78,6 +88,10 @@
 						<td>${boardDto.boardWtimeString}</td>
 						<td>${boardDto.boardReadcount}</td>
 						<td>${boardDto.boardLikecount}</td>
+						<td>${boardDto.boardNo}</td>
+						<td>${boardDto.boardGroup}</td>
+						<td>${boardDto.boardParent}</td>
+						<td>${boardDto.boardDepth}</td>
 				</tr>
 			</c:forEach>
 		</tbody>

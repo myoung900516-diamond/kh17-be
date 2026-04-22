@@ -23,7 +23,7 @@ import com.kh.spring09.dto.MemberDto;
 import com.kh.spring09.dto.MemberExitDto;
 import com.kh.spring09.dto.MemberHistoryDto;
 import com.kh.spring09.exception.TargetNotfoundException;
-import com.kh.spring09.vo.PageVO;
+import com.kh.spring09.vo.HistoryPageVO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -257,7 +257,7 @@ public class MemberController {
 //								@RequestParam(required = false) String endDate, 
 //								@RequestParam(required = false, defaultValue = "1") int page, 
 //								@RequestParam(required = false, defaultValue = "20") int size, 
-								@ModelAttribute PageVO pageVO,
+								@ModelAttribute HistoryPageVO historyPageVO,
 								Model model) {
 		String loginId = (String) session.getAttribute("loginId");
 		
@@ -268,11 +268,11 @@ public class MemberController {
 //		memberHistoryDto.setMemberHistoryOrigin(loginId); 
 		List<MemberHistoryDto> loginhistory = 
 //					memberHistoryDao.selectList(loginId, beginDate, endDate, beginRow, endRow);
-		memberHistoryDao.selectList(loginId, pageVO);
+		memberHistoryDao.selectList(loginId, historyPageVO);
 		model.addAttribute("loginhistory", loginhistory);
-		int count = memberHistoryDao.count(pageVO);
-		pageVO.setCount(count);
-		model.addAttribute("pageVO", pageVO);
+		int count = memberHistoryDao.count(historyPageVO);
+		historyPageVO.setCount(count);
+		model.addAttribute("historyPageVO", historyPageVO);
 		return "member/history";
 	}
 	
