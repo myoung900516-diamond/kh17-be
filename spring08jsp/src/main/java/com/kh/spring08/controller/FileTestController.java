@@ -1,6 +1,5 @@
 package com.kh.spring08.controller;
 
-import java.io.File;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.kh.spring08.dao.AttachDao;
-import com.kh.spring08.dto.AttachDto;
+import com.kh.spring08.service.AttachService;
 
 @Controller
 @RequestMapping("/filetest")
 public class FileTestController {
+//	@Autowired
+//	private AttachDao attachDao;
 	@Autowired
-	private AttachDao attachDao;
+	private AttachService attachService;
 	
 	@GetMapping("/uploadTest")
 	public String uploadTest() {
@@ -36,21 +36,26 @@ public class FileTestController {
 		System.out.println("파일크기 = " + attach.getSize());
 		//byte[] data = attach.getBytes();
 		//System.out.println("데이터 = " + Arrays.toString(data));
-		
-		int attachNo = attachDao.sequence();
-		AttachDto attachDto = new AttachDto();
-		attachDto.setAttachNo(attachNo);
-		attachDto.setAttachName(attach.getOriginalFilename());
-		attachDto.setAttachType(attach.getContentType());
-		attachDto.setAttachSize(attach.getSize());
-		attachDao.insert(attachDto);
-		
-		//업로드된 파일을 저장하는 코드
-		File dir = new File("D:/upload");
-		dir.mkdirs();
+//		
+//		int attachNo = attachDao.sequence();
+//		AttachDto attachDto = new AttachDto();
+//		attachDto.setAttachNo(attachNo);
+//		attachDto.setAttachName(attach.getOriginalFilename());
+//		attachDto.setAttachType(attach.getContentType());
+//		attachDto.setAttachSize(attach.getSize());
+//		attachDao.insert(attachDto);
+//		
+//		//업로드된 파일을 저장하는 코드
+//		File dir = new File("D:/upload");
+//		dir.mkdirs();
 //		File target = new File(dir, attach.getOriginalFilename());
-		File target = new File(dir, String.valueOf(attachNo));
-		attach.transferTo(target);
+//		File target = new File(dir, String.valueOf(attachNo));
+//		attach.transferTo(target);
+//		(주의) required 설정 여부와 상관없이 파일은 선택하지 않아도 MultipartFile 객체가 생긴다 
+//		if(attach != null) {
+		if(!attach.isEmpty()) {
+		attachService.save(attach);
+		}
 		return "redirect:./uploadTest";
 	}
 
