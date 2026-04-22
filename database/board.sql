@@ -150,3 +150,26 @@ END;
 
 update board set board_head = null where board_head='공지';
 commit;
+
+--board테이블을 개조(항목추가)
+--가장 편한 방법은 테이블을 지웠다가 항목을 추가해서 다시 생성하는 것 
+--데이터가 이미 있다면 혹은 외래키가 있다면 어려울 수 있음 
+--형식 : alter 종류 이름 옵션
+
+--DDL commit roleback 안되는 명령들 
+alter table board add (
+board_group number,
+board_parent references board(board_no) on delete cascade,
+board_depth number
+);
+
+select * from board;
+
+update board set board_group = board_no, board_depth=0;
+
+alter table board modify(
+board_group not null,
+board_depth default 0 not null
+);
+
+
