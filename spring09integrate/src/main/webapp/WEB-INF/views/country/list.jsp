@@ -44,6 +44,7 @@
 						<a href="./detail?countryNo=${countryDto.countryNo}">
 								${countryDto.countryName}
 						</a>
+						
 					</td>
 					<td>${countryDto.countryCapital}</td>
 					<td align="right">

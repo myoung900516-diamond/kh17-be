@@ -1,5 +1,6 @@
 package com.kh.spring09.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring09.dao.LectureDao;
-import com.kh.spring09.dto.CountryDto;
 import com.kh.spring09.dto.LectureDto;
 import com.kh.spring09.exception.TargetNotfoundException;
+import com.kh.spring09.service.AttachService;
 import com.kh.spring09.vo.PageVO;
 
 @Controller
@@ -22,6 +24,8 @@ import com.kh.spring09.vo.PageVO;
 public class LectureController {
 	@Autowired
 	private LectureDao lectureDao;
+	@Autowired
+	private AttachService attachService;
 	
 //	@RequestMapping("/insert1")
 	@GetMapping("/insert")
@@ -30,8 +34,16 @@ public class LectureController {
 	}
 //	@RequestMapping("/insert2")
 	@PostMapping("/insert")
-	public String insert(@ModelAttribute LectureDto lectureDto) {
+	public String insert(@ModelAttribute LectureDto lectureDto, 
+							@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
+		int lectureNo = lectureDao.sequence();
+		lectureDto.setLectureNo(lectureNo);
 		lectureDao.insert(lectureDto);
+		
+		if(!attach.isEmpty()) {
+			int attachNo = attachService.save(attach);
+			lectureDao.connect(lectureNo, attachNo);
+		}
 		return "redirect:./insertComplete";
 	}
 	@RequestMapping("/insertComplete")

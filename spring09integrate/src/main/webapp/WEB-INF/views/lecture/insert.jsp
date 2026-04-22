@@ -3,7 +3,7 @@
     <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <h1>강좌 정보 등록하기</h1>
 
-<form action="./insert" method = "post">
+<form action="./insert" method = "post" enctype="multipart/form-data">
 	제목       <input type="text" name="lectureTitle" placeholder="정보처리 산업기사 필기" required><br><br>
 <!-- 	카테고리 <input type="text" name="lectureCategory" required><br><br> -->
 	카테고리
@@ -25,6 +25,7 @@
 		<option>오프라인</option>
 		<option>혼합</option>
 	</select><br><br>
+	이미지 등록 <input type="file" name="attach" accept="image/png, image/jpeg"><br><br>
 	<button>등록하기</button>
 </form>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

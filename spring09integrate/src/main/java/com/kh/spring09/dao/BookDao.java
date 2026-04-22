@@ -23,16 +23,19 @@ public class BookDao {
 			"book_publisher", "book_genre"
 			);
 	
-	
+	public int sequence() {
+		String sql = "select book_seq.nextval from dual";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
 	public void insert(BookDto bookDto){
 		
 		String sql = "insert into book("
 				+ "book_id, book_title, book_author, book_publication_date, "
 				+ "book_price, book_publisher, book_page_count, book_genre"
 				+ ")"
-				+ "values(book_seq.nextval, ?, ?, ?, ?, ?, ?, ?)";
+				+ "values(?, ?, ?, ?, ?, ?, ?, ?)";
 		
-		Object[] params = {
+		Object[] params = {bookDto.getBookId(), 
 			bookDto.getBookTitle(), bookDto.getBookAuthor(), bookDto.getBookPublicationDate(),
 			bookDto.getBookPrice(), bookDto.getBookPublisher(), bookDto.getBookPageCount(), 
 			bookDto.getBookGenre()};
@@ -135,6 +138,11 @@ public class BookDao {
 		String sql = "select count(*) from book where instr("+pageVO.getColumn()+", ?) >0 ";
 		Object[] params = {pageVO.getKeyword()};
 		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
+	public void connect(int bookId, int attachNo) {
+		String sql = "insert into book_cover(book_id, attach_no) values(?, ?)";
+		Object[] params = {bookId, attachNo};
+		jdbcTemplate.update(sql, params);
 	}
 	
 	

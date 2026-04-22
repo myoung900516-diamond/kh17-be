@@ -17,7 +17,7 @@ public class AttachService {
 	private AttachDao attachDao;
 	
 	//서비스는 매소드의 정해진 형태가 없다 
-	public void save(MultipartFile attach) throws IllegalStateException, IOException{
+	public int save(MultipartFile attach) throws IllegalStateException, IOException{
 		int attachNo = attachDao.sequence();
 		AttachDto attachDto = new AttachDto();
 		attachDto.setAttachNo(attachNo);
@@ -32,6 +32,7 @@ public class AttachService {
 //		File target = new File(dir, attach.getOriginalFilename());
 		File target = new File(dir, String.valueOf(attachNo));
 		attach.transferTo(target);
+		return attachNo;
 	}
 
 }

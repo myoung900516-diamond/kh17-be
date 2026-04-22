@@ -25,13 +25,18 @@ public class LectureDao {
 			"lecture_title", "lecture_category", "lecture_type"
 			);
 	
+	public int sequence() {
+		String sql = "select lecture_seq.nextval from dual";
+		return jdbcTemplate.queryForObject(sql, int.class);
+	}
+	
 	public void insert(LectureDto lectureDto) {
 		String sql = "insert into lecture("
 				+ "lecture_no, lecture_title, lecture_category, lecture_duration,"
 				+ "lecture_price, lecture_type) "
 				+ "values("
-				+ "lecture_seq.nextval, ?, ?, ?, ?, ?)";
-		Object[] params = {
+				+ "?, ?, ?, ?, ?, ?)";
+		Object[] params = {lectureDto.getLectureNo(), 
 				lectureDto.getLectureTitle(), lectureDto.getLectureCategory(),
 				lectureDto.getLectureDuration(), lectureDto.getLecturePrice(),
 				lectureDto.getLectureType()
@@ -130,6 +135,13 @@ public class LectureDao {
 		Object[] params = {pageVO.getKeyword()};
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
+	public void connect(int lectureNo, int attachNo) {
+	String sql = "insert into lecture_image(lecture_image_no, lecture_no, attach_no"
+						+ ") values(lecture_image_seq.nextval, ?, ?)";
+	Object[] params = {lectureNo, attachNo};
+	jdbcTemplate.update(sql, params);
+	}
+	
 	
 
 }
