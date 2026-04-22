@@ -47,6 +47,14 @@ select
 	board_readcount, board_likecount, board_replycount 
 from board;
 
+--답변형 게시글을 위해 테이블을 변경하고 뷰도 바꿈 
+select
+	board_no, board_head, board_title, 
+	board_writer, board_wtime, board_etime, 
+	board_readcount, board_likecount, board_replycount, 
+	board_group, board_parent, board_depth
+from board;
+
 insert into board values(board_seq.nextval, '자유', '자유 게시글 3', '자유로운 이야기 3', 'testuser2', systimestamp, null, 5, 2, 1);
 insert into board values(board_seq.nextval, '정보', '정보 공유 4', '유용한 정보 4', 'adminuser1', systimestamp, null, 7, 3, 1);
 
