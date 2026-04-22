@@ -51,6 +51,14 @@ commit;
 
 select * from lecture;
 
+--강좌 이미지 테이블 
+create table lecture_image(
+lecture_image_no number primary key not null,
+lecture_no references lecture(lecture_no) on delete cascade not null,
+attach_no references attach(attach_no) on delete cascade not null
+);
+
+
 create table print_service(
 print_serviece_no number primary key,
 --print_service_no number not null,

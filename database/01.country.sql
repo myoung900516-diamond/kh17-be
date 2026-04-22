@@ -14,3 +14,11 @@ check(country_region in ('아시아', '유럽', '북아메리카', '남아메리
 --name은 정규표현식으로 한글만 가능하게 검사하도록 처리 : regexp_like(항목, '검사식')
 check(regexp_like(country_name, '^[가-힣]+$'))
 );
+
+--국기 테이블
+create table country_flag(
+country_no references country(country_no) on delete cascade not null,
+attach_no references attach(attach_no) on delete cascade not null,
+--primary key(country_no)--한 국가는 이미지를 한개밖에 못쓰게 된다 
+primary key(country_no, attach_no)--한 국가는 같은 이미지를 한개 밖에 못쓰게 된다
+);
