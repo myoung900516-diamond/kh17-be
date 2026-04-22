@@ -71,16 +71,22 @@ public class MemberHistoryDao {
 									historyPageVO.getBeginRownum(), historyPageVO.getEndRownum()};
 		return jdbcTemplate.query(sql, memberHistoryMapper, params);
 	}
-	public int count() {
-		String sql= "select count(*) from member_history";
-		return jdbcTemplate.queryForObject(sql, int.class);
+	public int count(String memberHistoryOrigin) {
+		String sql= "select count(*) from member_history "
+					+ "where member_history_origin = ? ";
+		Object[] params = {memberHistoryOrigin};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
-	public int count(HistoryPageVO historyPageVO) {
-		if(historyPageVO.isList()) return count();
+	public int count(String memberHistoryOrigin, HistoryPageVO historyPageVO) {
+//		if(historyPageVO.isList()) return ;
 //		if(!allowColumns.contains(pageVO.getColumn())) return count();
 		
-		String sql = "select count(*) from member_history where instr("+historyPageVO.getBeginDate()+", ?) >0 ";
-		Object[] params = {historyPageVO.getEndDate()};
+		String sql = "select count(*) from member_history "
+						+ "where member_history_origin = ? "
+						+ "and member_history_time >= "
+						+ "to_date( ?, 'YYYY-MM-DD') "
+						+ "and member_history_time < to_date( ?, 'YYYY-MM-DD') + 1";
+		Object[] params = {memberHistoryOrigin, historyPageVO.getBeginDate(), historyPageVO.getEndDate()};
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 	

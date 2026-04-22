@@ -10,14 +10,17 @@ public class HistoryPageVO {
 	private int size = 10;
 	private int count;
 	
+	public boolean isList() {
+		return beginDate == null || endDate == null;
+	}
+	public boolean isSearch() {
+		return !isList();
+	}
 	public int getBeginRownum() {
 		return page*size-(size-1);
 	}
 	public int getEndRownum() {
 		return page*size;
-	}
-	public boolean isList() {
-		return beginDate == null || endDate == null;
 	}
 	public String getSearchParams() {
 		if(isList()) 

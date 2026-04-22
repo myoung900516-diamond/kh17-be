@@ -10,7 +10,7 @@ public class PageVO {
 	private String column;
 	private String keyword;
 	private int page = 1;
-	private int size = 20;
+	private int size = 10;
 	private int count; // 총 데이터 개수(DB에서 조회해서 채워줘야함)
 	
 	//목록인지 검색인지 판정하는 메소드

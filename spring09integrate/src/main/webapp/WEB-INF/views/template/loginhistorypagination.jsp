@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-${historyPageVO}
+<%-- ${historyPageVO} --%>
 <h2>
 <c:if test="${historyPageVO.hasPrevious()}">
 <a href="./history?page=${historyPageVO.getPreviousBlock()}&${historyPageVO.getSearchParams()}">&lt;</a></c:if>

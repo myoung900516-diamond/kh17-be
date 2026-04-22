@@ -270,7 +270,7 @@ public class MemberController {
 //					memberHistoryDao.selectList(loginId, beginDate, endDate, beginRow, endRow);
 		memberHistoryDao.selectList(loginId, historyPageVO);
 		model.addAttribute("loginhistory", loginhistory);
-		int count = memberHistoryDao.count(historyPageVO);
+		int count = memberHistoryDao.count(loginId, historyPageVO);
 		historyPageVO.setCount(count);
 		model.addAttribute("historyPageVO", historyPageVO);
 		return "member/history";
