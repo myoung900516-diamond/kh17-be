@@ -124,3 +124,11 @@ values(
 commit;
 
 select * from book;
+
+
+--도서 테이블
+create table book_cover(
+book_id references book(book_id) on delete cascade not null,
+attach_no references attach(attach_no) on delete cascade not null,
+primary key(book_id, attach_no)
+);
