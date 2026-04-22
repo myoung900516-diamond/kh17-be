@@ -35,14 +35,16 @@ public class LectureController {
 //	@RequestMapping("/insert2")
 	@PostMapping("/insert")
 	public String insert(@ModelAttribute LectureDto lectureDto, 
-							@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
+			//RequestParam에 value를 적으면 수신할 
+							@RequestParam(value="attach") List<MultipartFile> attachList) throws IllegalStateException, IOException {
 		int lectureNo = lectureDao.sequence();
 		lectureDto.setLectureNo(lectureNo);
 		lectureDao.insert(lectureDto);
-		
-		if(!attach.isEmpty()) {
-			int attachNo = attachService.save(attach);
-			lectureDao.connect(lectureNo, attachNo);
+		for(MultipartFile attach:attachList) {
+			if(!attach.isEmpty()) {
+				int attachNo = attachService.save(attach);
+				lectureDao.connect(lectureNo, attachNo);
+			}
 		}
 		return "redirect:./insertComplete";
 	}

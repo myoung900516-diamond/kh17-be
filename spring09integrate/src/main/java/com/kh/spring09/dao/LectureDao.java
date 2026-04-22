@@ -136,8 +136,8 @@ public class LectureDao {
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 	public void connect(int lectureNo, int attachNo) {
-	String sql = "insert into lecture_image(lecture_image_no, lecture_no, attach_no"
-						+ ") values(lecture_image_seq.nextval, ?, ?)";
+	String sql = "insert into lecture_image(lecture_no, attach_no"
+						+ ") values(?, ?)";
 	Object[] params = {lectureNo, attachNo};
 	jdbcTemplate.update(sql, params);
 	}

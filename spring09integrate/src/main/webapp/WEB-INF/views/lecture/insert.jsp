@@ -25,7 +25,7 @@
 		<option>오프라인</option>
 		<option>혼합</option>
 	</select><br><br>
-	이미지 등록 <input type="file" name="attach" accept="image/png, image/jpeg"><br><br>
+	이미지 등록 <input type="file" name="attach" accept=".png, .jpg" multiple><br><br>
 	<button>등록하기</button>
 </form>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
