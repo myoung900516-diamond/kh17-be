@@ -47,6 +47,14 @@ select
 	board_readcount, board_likecount, board_replycount 
 from board;
 
+--답변형 게시글을 위해 테이블을 변경하고 뷰도 바꿈 
+select
+	board_no, board_head, board_title, 
+	board_writer, board_wtime, board_etime, 
+	board_readcount, board_likecount, board_replycount, 
+	board_group, board_parent, board_depth
+from board;
+
 insert into board values(board_seq.nextval, '자유', '자유 게시글 3', '자유로운 이야기 3', 'testuser2', systimestamp, null, 5, 2, 1);
 insert into board values(board_seq.nextval, '정보', '정보 공유 4', '유용한 정보 4', 'adminuser1', systimestamp, null, 7, 3, 1);
 
@@ -150,3 +158,32 @@ END;
 
 update board set board_head = null where board_head='공지';
 commit;
+
+--board테이블을 개조(항목추가)
+--가장 편한 방법은 테이블을 지웠다가 항목을 추가해서 다시 생성하는 것 
+--데이터가 이미 있다면 혹은 외래키가 있다면 어려울 수 있음 
+--형식 : alter 종류 이름 옵션
+
+--DDL commit roleback 안되는 명령들 
+alter table board add (
+board_group number,
+board_parent references board(board_no) on delete cascade,
+board_depth number
+);
+
+select * from board;
+
+update board set board_group = board_no, board_depth=0;
+
+alter table board modify(
+board_group not null,
+board_depth default 0 not null
+);
+
+--답변형 게시글 목록 조회 명령 
+
+select * from board_list
+connect by prior board_no=board_parent
+start with board_parent is null
+order siblings by board_group desc, board_no asc;
+
