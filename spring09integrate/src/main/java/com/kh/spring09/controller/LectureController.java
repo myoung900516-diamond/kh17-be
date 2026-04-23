@@ -81,6 +81,15 @@ public class LectureController {
 	public String delete(@RequestParam int lectureNo) {
 		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
 			if(lectureDto == null) throw new TargetNotfoundException("존재하지 않는 강좌");
+			
+			try {
+				List<Integer> images = lectureDao.searchImage(lectureNo);
+				for(int attachNo:images) {
+					attachService.delete(attachNo);//Attach테이블 데이터 살제 + 파일 삭제 
+				}
+			}
+			catch(Exception e) {}
+			
 			lectureDao.delete(lectureNo);
 		return "redirect:./list";
 		}

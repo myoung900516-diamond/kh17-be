@@ -72,6 +72,11 @@ public class BookController {
 	public String delete(@RequestParam int bookId) {
 		BookDto bookDto = bookDao.selectOne(bookId);
 		if(bookDto == null) throw new TargetNotfoundException("존재하지 않는 도서정보");
+		try {
+			int attachNo = bookDao.searchCover(bookId);//국기 찾으세요~
+			attachService.delete(attachNo);//Attach테이블 데이터 살제 + 파일 삭제 
+		}
+		catch(Exception e) {}
 		bookDao.delete(bookId);
 		return "redirect:./list";
 	}
