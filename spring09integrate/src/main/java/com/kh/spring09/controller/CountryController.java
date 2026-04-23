@@ -124,7 +124,7 @@ public class CountryController {
 		try {
 			//plan a - 이미지가 존재하는 경우
 			int attachNo = countryDao.searchFlag(countryNo);
-			return "redirect:/download/legacy?attachNo=" + attachNo;
+			return "redirect:/download/modern?attachNo=" + attachNo;
 		}
 		catch(Exception e ){
 			//plan b - 이미지가 존재하지 않는 경우

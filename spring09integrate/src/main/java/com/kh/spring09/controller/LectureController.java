@@ -103,7 +103,7 @@ public class LectureController {
 		if(images.isEmpty()) {
 			return "redirect:/images/noimgpng.png";
 		}
-			return "redirect:/download/legacy?attachNo=" + images.get(0);
+			return "redirect:/download/modern?attachNo=" + images.get(0);
 		
 		
 	}
