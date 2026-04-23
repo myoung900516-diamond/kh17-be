@@ -73,7 +73,8 @@ public class BoardController {
 		return "board/list"; //뷰리졸버(View Resolver)
 	}
 	@RequestMapping("/detail")
-	public String detail(@RequestParam long boardNo, Model model) {
+	public String detail(@RequestParam long boardNo, Model model, 
+					@ModelAttribute PageVO pageVO) {
 //		String loginId = (String) session.getAttribute("loginId");
 //		model.addAttribute("loginId", loginId);
 		BoardDto boardDto = boardDao.selectOne(boardNo);
@@ -82,6 +83,7 @@ public class BoardController {
 		//이전글 다음글 
 		model.addAttribute("prevBoardDto", boardDao.selectPreviousOne(boardNo));
 		model.addAttribute("nextBoardDto", boardDao.selectNextOne(boardNo));
+		model.addAttribute("pageVO", pageVO);
 		return "board/detail";
 	}
 	
