@@ -88,6 +88,19 @@ public class BookController {
 			return "redirect:./detail?bookId=" + bookDto.getBookId();
 		
 	}
+	@RequestMapping("/cover")
+	public String cover(@RequestParam int bookId) {
+		try {
+			//plan a - 이미지가 존재하는 경우
+			int attachNo = bookDao.searchCover(bookId);
+			return "redirect:/download/legacy?attachNo=" + attachNo;
+		}
+		catch(Exception e ){
+			//plan b - 이미지가 존재하지 않는 경우
+			return "redirect:/images/noimgpng.png";
+		}
+		
+	}
 
 	
 	

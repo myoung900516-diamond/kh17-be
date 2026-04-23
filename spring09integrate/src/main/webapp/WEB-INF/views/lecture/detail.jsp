@@ -3,7 +3,7 @@
     <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
 <h1>강좌 상세 정보</h1>
-
+<img src="./image?lectureNo=${lectureDto.lectureNo}" width="200">
 <ul>
 	<li>강좌번호 : ${lectureDto.lectureNo}</li>
 	<li>강좌명 : ${lectureDto.lectureTitle}</li>

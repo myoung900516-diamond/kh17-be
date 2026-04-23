@@ -3,7 +3,7 @@
        <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <h1>회원 등록 페이지</h1>
 <hr>
-<form action="./join" method="post">
+<form action="./join" method="post" enctype="multipart/form-data">
 
 아아디*<input type="text" name="memberId" required><br><br>
 비밀번호*<input type="password" name="memberPassword" required><br><br>
@@ -17,6 +17,7 @@
 상태메세지<br>
  <textarea rows="10" cols="50" name="memberMessage"></textarea>
 <br><br>
+프로필 사진 <input type="file" name="attach" accept=".png, .jpeg"><br><br>
 <!-- <input type="text" name="memberMessage"> -->
 <button>가입하기</button>
 </form>

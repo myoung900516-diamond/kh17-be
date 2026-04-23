@@ -86,6 +86,16 @@ public class AdminMemberController {
 		memberDao.updateByMaster(memberDto);
 		return "redirect:./detail?memberId=" + memberDto.getMemberId();
 	}
+	@RequestMapping("/profile")
+	public String profile(@RequestParam String memberId) {
+		try {
+			int attachNo = memberDao.searchProfile(memberId);
+			return "redirect:/download/legacy?attachNo=" + attachNo;
+		}
+		catch(Exception e) {
+			return "redirect:/images/noimgpng.png";
+		}
+	}
 
 	
 	

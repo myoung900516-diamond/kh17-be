@@ -83,12 +83,12 @@ public class CountryController {
 //			return "redirect:./notfound";
 		}
 		model.addAttribute("countryDto", countryDto);
-		//파일번호를 찾아서...
-		try {
-			int attachNo = countryDao.searchFlag(countryNo);
-			model.addAttribute("attachNo", attachNo);
-		}
-		catch(Exception e) {}
+//		//파일번호를 찾아서...복잡해...
+//		try {
+//			int attachNo = countryDao.searchFlag(countryNo);
+//			model.addAttribute("attachNo", attachNo);
+//		}
+//		catch(Exception e) {}
 		return "country/detail";
 	}
 	//오류매핑
@@ -117,6 +117,19 @@ public class CountryController {
 	public String edit(@ModelAttribute CountryDto countryDto) {
 		countryDao.update(countryDto);
 		return "redirect:./detail?countryNo=" + countryDto.getCountryNo();
+	}
+	//국기를 반환하는 매핑
+	@RequestMapping("/flag")
+	public String flag(@RequestParam int countryNo) {
+		try {
+			//plan a - 이미지가 존재하는 경우
+			int attachNo = countryDao.searchFlag(countryNo);
+			return "redirect:/download/legacy?attachNo=" + attachNo;
+		}
+		catch(Exception e ){
+			//plan b - 이미지가 존재하지 않는 경우
+			return "redirect:/images/noimgpng.png";
+		}
 	}
 	
 	

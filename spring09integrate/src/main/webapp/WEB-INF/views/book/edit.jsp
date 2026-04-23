@@ -3,7 +3,7 @@
     <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 <h1>도서 정보 수정하기</h1>
 
-<form action = "./edit" method = "post">
+<form action = "./edit" method = "post" enctype="multipart/form-data">
 	<input type="hidden" name="bookId" value="${bookDto.bookId}">
 	
 	
@@ -25,6 +25,7 @@
 			<option ${bookDto.bookGenre=="추리소설" ? "selected" : ""}>추리소설</option>
 			<option ${bookDto.bookGenre=="자기계발" ? "selected" : ""}>자기계발</option>
 		</select><br><br>
+		커버이미지 <input type="file" name="attach" accept=".png, .jpg"><br><br>
 		<button>수정하기</button><br><br>
 </form>
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

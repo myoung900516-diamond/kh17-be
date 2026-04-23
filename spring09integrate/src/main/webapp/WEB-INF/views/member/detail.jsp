@@ -4,9 +4,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
     
-    
-    <h1>[${memberDto.memberNickname}]님의 개인 정보</h1>
 
+    <h1>[${memberDto.memberNickname}]님의 개인 정보</h1>
+<img src="./profile?memberId=${memberDto.memberId}" width="200">
 <ul>
 	<li>아이디 : ${memberDto.memberId}</li>
 	<li>닉네임 : ${memberDto.memberNickname}</li>

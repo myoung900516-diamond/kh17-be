@@ -10,6 +10,11 @@
 		- li는 리스트 내부의 항목 (list item)
 
  -->
+ 
+<!--  이곳에 국기를 출력하고 싶다(이것도 다운로드) -->
+<%-- <img src="http://localhost:8080/download/legacy?attachNo=${attachNo}" width="200"> --%>
+<%-- <img src="/download/legacy?attachNo=${attachNo}" width="200"> --%>
+<img src="./flag?countryNo=${countryDto.countryNo}" width="200">
 <ul>
   <li> 번호 : ${countryDto.countryNo} </li>
   <li> 대륙 : ${countryDto.countryRegion}  </li>
