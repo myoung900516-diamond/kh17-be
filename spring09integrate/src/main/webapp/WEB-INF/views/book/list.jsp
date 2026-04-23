@@ -44,6 +44,7 @@
 				<td><a href="./detail?bookId=${bookDto.bookId}">
 				${bookDto.bookTitle}
 				</a>
+				<img src="./cover?bookId=${bookDto.bookId}" width="20">
 				</td>
 				<td><a href="./list?column=book_author&keyword=${bookDto.bookAuthor}">
 				${bookDto.bookAuthor}
