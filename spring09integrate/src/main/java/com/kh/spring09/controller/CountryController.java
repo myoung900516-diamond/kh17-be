@@ -83,6 +83,12 @@ public class CountryController {
 //			return "redirect:./notfound";
 		}
 		model.addAttribute("countryDto", countryDto);
+		//파일번호를 찾아서...
+		try {
+			int attachNo = countryDao.searchFlag(countryNo);
+			model.addAttribute("attachNo", attachNo);
+		}
+		catch(Exception e) {}
 		return "country/detail";
 	}
 	//오류매핑
