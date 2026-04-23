@@ -44,6 +44,7 @@
 					<td><a href="./detail?lectureNo=${lectureDto.lectureNo}">
 					          ${lectureDto.lectureTitle}
 					</a>
+					<img src="./image?lectureNo=${lectureDto.lectureNo}" width="20">
 					</td>
 					<td>
 						<a href="./list?column=lecture_category&keyword=${lectureDto.lectureCategory}">

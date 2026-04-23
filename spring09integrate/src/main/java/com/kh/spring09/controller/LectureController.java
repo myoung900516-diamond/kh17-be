@@ -72,6 +72,9 @@ public class LectureController {
 		if(lectureDto == null)
 			throw new TargetNotfoundException("존재하지 않는 강좌 정보");
 		model.addAttribute("lectureDto", lectureDto);
+		
+		List<Integer> images = lectureDao.searchImage(lectureNo);
+		model.addAttribute("images", images);
 		return "lecture/detail";
 	}
 	@RequestMapping("/delete")
@@ -94,7 +97,16 @@ public class LectureController {
 		lectureDao.update(lectureDto);
 		return "redirect:./detail?lectureNo="+lectureDto.getLectureNo();
 	}
-	
+	@RequestMapping("/image")
+	public String image(@RequestParam int lectureNo) {
+		List<Integer> images = lectureDao.searchImage(lectureNo);
+		if(images.isEmpty()) {
+			return "redirect:/images/noimgpng.png";
+		}
+			return "redirect:/download/legacy?attachNo=" + images.get(0);
+		
+		
+	}
 	
 	
 }
