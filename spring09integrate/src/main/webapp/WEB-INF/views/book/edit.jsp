@@ -26,6 +26,36 @@
 			<option ${bookDto.bookGenre=="자기계발" ? "selected" : ""}>자기계발</option>
 		</select><br><br>
 		커버이미지 <input type="file" name="attach" accept=".png, .jpg"><br><br>
+		기존이미지<br>
+		<img src="./cover?bookId=${bookDto.bookId}" width="80">
 		<button>수정하기</button><br><br>
 </form>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

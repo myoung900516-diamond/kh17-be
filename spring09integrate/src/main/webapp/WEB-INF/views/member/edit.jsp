@@ -5,7 +5,7 @@
 
 <h1>내 정보 변경</h1>
 
-<form action="./edit" method="post">
+<form action="./edit" method="post" enctype="multipart/form-data">
 		<h2>변경할 정보 입력</h2>
      	이메일 <input type="text" inputmode="email" name="memberEmail" value="${memberDto.memberEmail}" required><br><br>
 		닉네임 <input type="text" name="memberNickname" value="${memberDto.memberNickname}" required><br><br>
@@ -18,8 +18,12 @@
 		상세주소 <input type="text" name="memberAddress2" value="${memberDto.memberAddress2}"><br><br>
 		상태메세지 <input type="text" name="memberMessage" value="${memberDto.memberMessage}" size="80"><br><br>
 <%-- 		<textarea name="memberMessage" rows="5" cols="80">${memberDto.memberMessage}</textarea><br><br> --%>
+		프로필이미지 <input type="file" name="attach" accept=".png, .jpg"><br><br>
+		기존이미지<br>
+		<img src="./profile?memberId=${memberDto.memberId}" width="80">
 		<h2>비밀번호 확인</h2>
 		<input type="password" name="memberPassword" required><br><br>
+		
 		<c:if test="${param.error != null}">
 		비밀번호가 일치하지 않습니다 <br><br>
 		</c:if>

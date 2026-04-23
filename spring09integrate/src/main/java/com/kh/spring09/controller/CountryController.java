@@ -123,8 +123,20 @@ public class CountryController {
 		return "country/edit";
 	}
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute CountryDto countryDto) {
+	public String edit(@ModelAttribute CountryDto countryDto, 
+						@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
 		countryDao.update(countryDto);
+		
+		//첨부파일이 있다면 기존것을 제거하고 신규 등록
+		if(!attach.isEmpty()) {
+			try {
+				int attachNo = countryDao.searchFlag(countryDto.getCountryNo());
+				attachService.delete(attachNo);
+			}catch(Exception e) {}
+			int attachNo = attachService.save(attach);
+			countryDao.connect(countryDto.getCountryNo(), attachNo);
+		}
+		
 		return "redirect:./detail?countryNo=" + countryDto.getCountryNo();
 	}
 	//국기를 반환하는 매핑

@@ -217,7 +217,8 @@ public class MemberController {
 	}
 	
 	@PostMapping("/edit")
-	public String edit(HttpSession session, @ModelAttribute MemberDto memberDto) {
+	public String edit(HttpSession session, @ModelAttribute MemberDto memberDto, 
+						@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
 		String loginId = (String) session.getAttribute("loginId");
 		
 		MemberDto findMemberDto = memberDao.selectOne(loginId);
@@ -226,6 +227,15 @@ public class MemberController {
 		
 		memberDto.setMemberId(loginId);
 		memberDao.update(memberDto);
+		
+		if(!attach.isEmpty()) {
+			try {
+				int attachNo = memberDao.searchProfile(memberDto.getMemberId());
+				attachService.delete(attachNo);
+			}catch(Exception e) {}
+			int attachNo = attachService.save(attach);
+			memberDao.connect(memberDto.getMemberId(), attachNo);
+		}
 		
 		return "redirect:./mypage";
 	}

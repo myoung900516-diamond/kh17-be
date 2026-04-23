@@ -88,8 +88,18 @@ public class BookController {
 		return "book/edit";
 	}
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute BookDto bookDto) {
+	public String edit(@ModelAttribute BookDto bookDto,
+						@RequestParam MultipartFile attach) 
+						throws IllegalStateException, IOException {
 			bookDao.update(bookDto);
+			if(!attach.isEmpty()) {
+				try {
+					int attachNo = bookDao.searchCover(bookDto.getBookId());
+					attachService.delete(attachNo);
+				}catch(Exception e) {}
+				int attachNo = attachService.save(attach);
+				bookDao.connect(bookDto.getBookId(), attachNo);
+			}
 			return "redirect:./detail?bookId=" + bookDto.getBookId();
 		
 	}
