@@ -15,7 +15,8 @@ loginLevel : ${sessionScope.loginLevel}
 		-회원 : session이 loginId, loginLevel 모두 null이 아니고 loginLevel이 '마스터'가 아님
 		-관리자 : session이 loginId, loginLevel 모두 null이 아니고 loginLevel이 '마스터'가 임
 -->
-
+<!-- 디자인을 불러오는 코드 -->
+<link rel="stylesheet" href="/css/commons.css" type="text/css">
 <c:if test="${sessionScope.loginId == null || sessionScope.loginLevel == null}">
 
 <!-- 비회원 메뉴 -->
