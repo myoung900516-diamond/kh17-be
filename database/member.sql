@@ -114,6 +114,11 @@ select member.*, member_exit.member_exit_time from member
 
 commit;
 
-
+--멤버 프로필 사진 테이블
+create table member_profile(
+member_id references member(member_id) on delete cascade not null,
+attach_no references attach(attach_no) on delete cascade not null,
+primary key(member_id)
+);
 
 

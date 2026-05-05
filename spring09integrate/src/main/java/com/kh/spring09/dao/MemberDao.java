@@ -22,6 +22,7 @@ public class MemberDao {
 					"member_contact"
 			);
 	
+	
 	public void insert(MemberDto memberDto) {
 		String sql = "insert into member("
 				+ "member_id, member_email, member_password, member_nickname, "
@@ -128,9 +129,23 @@ public class MemberDao {
 			    jdbcTemplate.update(sql, params);
 		}
 		public void connect(String memberId, int attachNo) {
+<<<<<<< HEAD
 			String sql = "insert into member_profile(member_id, attach_no) values(?, ?)";
 			Object[] params = {memberId, attachNo};
 			jdbcTemplate.update(sql, params);
+=======
+			String sql = "insert into member_profile(member_id, attach_no) "
+					+ "values(?, ?)";
+			Object[] params = {memberId, attachNo};
+			jdbcTemplate.update(sql, params);
+			
+		}
+		public int searchProfile(String memberId) {
+			String sql = "select attach_no from member_profile "
+						+ "where member_id =?";
+			Object[] params = {memberId};
+			return jdbcTemplate.queryForObject(sql, int.class, params);
+>>>>>>> branch 'main' of https://github.com/myoung900516-diamond/kh17-be.git
 		}
 		
 		

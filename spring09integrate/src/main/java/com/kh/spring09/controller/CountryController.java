@@ -83,6 +83,12 @@ public class CountryController {
 //			return "redirect:./notfound";
 		}
 		model.addAttribute("countryDto", countryDto);
+//		//파일번호를 찾아서...복잡해...
+//		try {
+//			int attachNo = countryDao.searchFlag(countryNo);
+//			model.addAttribute("attachNo", attachNo);
+//		}
+//		catch(Exception e) {}
 		return "country/detail";
 	}
 	//오류매핑
@@ -96,6 +102,15 @@ public class CountryController {
 	public String delete(@RequestParam int countryNo){
 		CountryDto countryDto = countryDao.selectOne(countryNo);
 		if(countryDto == null) throw new TargetNotfoundException("존재하지 않는 국가");
+		//국가 정보가 지워지면 국기 데이터도 지워지는데 DB만 지워지고 파일은 그대로 남아있다는 문제 발생
+		//파일(attach)정보와 실물 파일을 지울 수 있도록 국가 정보 삭제 전에 파일 번호를 알아내야 한다
+		//->만약 파일이 없어서 예외가 발생한다면? 그냥 국가 정보만 삭제~
+		try {
+			int attachNo = countryDao.searchFlag(countryNo);//국기 찾으세요~
+			attachService.delete(attachNo);//Attach테이블 데이터 살제 + 파일 삭제 
+		}
+		catch(Exception e) {}
+		
 		countryDao.delete(countryNo);
 		return "redirect:./list";
 	}
@@ -108,9 +123,34 @@ public class CountryController {
 		return "country/edit";
 	}
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute CountryDto countryDto) {
+	public String edit(@ModelAttribute CountryDto countryDto, 
+						@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
 		countryDao.update(countryDto);
+		
+		//첨부파일이 있다면 기존것을 제거하고 신규 등록
+		if(!attach.isEmpty()) {
+			try {
+				int attachNo = countryDao.searchFlag(countryDto.getCountryNo());
+				attachService.delete(attachNo);
+			}catch(Exception e) {}
+			int attachNo = attachService.save(attach);
+			countryDao.connect(countryDto.getCountryNo(), attachNo);
+		}
+		
 		return "redirect:./detail?countryNo=" + countryDto.getCountryNo();
+	}
+	//국기를 반환하는 매핑
+	@RequestMapping("/flag")
+	public String flag(@RequestParam int countryNo) {
+		try {
+			//plan a - 이미지가 존재하는 경우
+			int attachNo = countryDao.searchFlag(countryNo);
+			return "redirect:/download/modern?attachNo=" + attachNo;
+		}
+		catch(Exception e ){
+			//plan b - 이미지가 존재하지 않는 경우
+			return "redirect:/images/noimgpng.png";
+		}
 	}
 	
 	

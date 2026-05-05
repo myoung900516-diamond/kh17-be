@@ -72,6 +72,11 @@ public class BookController {
 	public String delete(@RequestParam int bookId) {
 		BookDto bookDto = bookDao.selectOne(bookId);
 		if(bookDto == null) throw new TargetNotfoundException("존재하지 않는 도서정보");
+		try {
+			int attachNo = bookDao.searchCover(bookId);//국기 찾으세요~
+			attachService.delete(attachNo);//Attach테이블 데이터 살제 + 파일 삭제 
+		}
+		catch(Exception e) {}
 		bookDao.delete(bookId);
 		return "redirect:./list";
 	}
@@ -83,9 +88,32 @@ public class BookController {
 		return "book/edit";
 	}
 	@PostMapping("/edit")
-	public String edit(@ModelAttribute BookDto bookDto) {
+	public String edit(@ModelAttribute BookDto bookDto,
+						@RequestParam MultipartFile attach) 
+						throws IllegalStateException, IOException {
 			bookDao.update(bookDto);
+			if(!attach.isEmpty()) {
+				try {
+					int attachNo = bookDao.searchCover(bookDto.getBookId());
+					attachService.delete(attachNo);
+				}catch(Exception e) {}
+				int attachNo = attachService.save(attach);
+				bookDao.connect(bookDto.getBookId(), attachNo);
+			}
 			return "redirect:./detail?bookId=" + bookDto.getBookId();
+		
+	}
+	@RequestMapping("/cover")
+	public String cover(@RequestParam int bookId) {
+		try {
+			//plan a - 이미지가 존재하는 경우
+			int attachNo = bookDao.searchCover(bookId);
+			return "redirect:/download/modern?attachNo=" + attachNo;
+		}
+		catch(Exception e ){
+			//plan b - 이미지가 존재하지 않는 경우
+			return "redirect:/images/noimgpng.png";
+		}
 		
 	}
 

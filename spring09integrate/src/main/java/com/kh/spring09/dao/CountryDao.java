@@ -151,5 +151,30 @@ public class CountryDao {
 	jdbcTemplate.update(sql, params);
 	}
 	
+	//국기 탐색
+	public int searchFlag(int countryNo) {
+		String sql = "select attach_no from country_flag where country_no=?";
+		Object[] params = {countryNo};
+		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
+	
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

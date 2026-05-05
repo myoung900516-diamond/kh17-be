@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+<img src="./cover?bookId=${bookDto.bookId}" width="200">
  <ul>
  		<li>도서번호 : ${bookDto.bookId}</li>
  		<li>도서명 : ${bookDto.bookTitle}</li>

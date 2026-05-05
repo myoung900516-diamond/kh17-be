@@ -1,5 +1,7 @@
 package com.kh.spring09.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -26,5 +28,44 @@ public class AttachDao {
 		};
 		jdbcTemplate.update(sql, params);
 	}
+	//상세
+	public AttachDto selectOne(int attachNo) {
+		String sql = "select * from attach where attach_no=?";
+		Object[] params = {attachNo};
+		List<AttachDto> list = jdbcTemplate.query(sql, attachMapper, params);
+		return list.isEmpty()? null : list.get(0);
+	}
+	
+	//삭제
+	public boolean delete(int attachNo) {
+		String sql = "delete attach where attach_no=?";
+		Object[] params = {attachNo};
+		return jdbcTemplate.update(sql, params)>0;
+	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

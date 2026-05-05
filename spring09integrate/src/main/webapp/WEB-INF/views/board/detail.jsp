@@ -61,7 +61,7 @@
 	</button>
 </c:if>
 <button>
-<a href="./list">목록</a>
+<a href="./list?boardNo=${boardDto.boardNo}&page=${pageVO.page}&${pageVO.searchParams}">목록</a>
 </button>
 <br>
 

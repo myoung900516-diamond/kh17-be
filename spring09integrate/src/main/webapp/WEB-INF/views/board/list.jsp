@@ -67,7 +67,7 @@
 							</c:forEach>
 								→
 						</c:if>
-							<a href="./detail?boardNo=${boardDto.boardNo}">
+							<a href="./detail?boardNo=${boardDto.boardNo}&page=${pageVO.page}&${pageVO.searchParams}">
 							${boardDto.boardTitle}</a>
 									<!-- 수정되었다면 수정됨 표시 -->
 									<c:if test="${boardDto.boardEtime != null}">

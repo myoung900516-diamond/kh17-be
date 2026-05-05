@@ -53,10 +53,17 @@ public class MemberController {
 	//회원가입
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberDto memberDto, 
+<<<<<<< HEAD
 						@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
 		
+=======
+							@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
+>>>>>>> branch 'main' of https://github.com/myoung900516-diamond/kh17-be.git
 		memberDao.insert(memberDto);
+<<<<<<< HEAD
 		
+=======
+>>>>>>> branch 'main' of https://github.com/myoung900516-diamond/kh17-be.git
 		if(!attach.isEmpty()) {
 			int attachNo = attachService.save(attach);
 			memberDao.connect(memberDto.getMemberId(), attachNo);
@@ -219,7 +226,8 @@ public class MemberController {
 	}
 	
 	@PostMapping("/edit")
-	public String edit(HttpSession session, @ModelAttribute MemberDto memberDto) {
+	public String edit(HttpSession session, @ModelAttribute MemberDto memberDto, 
+						@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
 		String loginId = (String) session.getAttribute("loginId");
 		
 		MemberDto findMemberDto = memberDao.selectOne(loginId);
@@ -228,6 +236,15 @@ public class MemberController {
 		
 		memberDto.setMemberId(loginId);
 		memberDao.update(memberDto);
+		
+		if(!attach.isEmpty()) {
+			try {
+				int attachNo = memberDao.searchProfile(memberDto.getMemberId());
+				attachService.delete(attachNo);
+			}catch(Exception e) {}
+			int attachNo = attachService.save(attach);
+			memberDao.connect(memberDto.getMemberId(), attachNo);
+		}
 		
 		return "redirect:./mypage";
 	}
@@ -320,6 +337,16 @@ public class MemberController {
 //		model.addAttribute("memberDto", memberDto);
 //		return "member/detail";
 //	}
+	@RequestMapping("/profile")
+	public String profile(@RequestParam String memberId) {
+		try {
+			int attachNo = memberDao.searchProfile(memberId);
+			return "redirect:/download/modern?attachNo=" + attachNo;
+		}
+		catch(Exception e) {
+			return "redirect:/images/noimgpng.png";
+		}
+	}
 
 	
 	

@@ -18,6 +18,7 @@
 상태메세지<br>
  <textarea rows="10" cols="50" name="memberMessage"></textarea>
 <br><br>
+프로필 사진 <input type="file" name="attach" accept=".png, .jpeg"><br><br>
 <!-- <input type="text" name="memberMessage"> -->
 <button>가입하기</button>
 </form>
