@@ -17,6 +17,9 @@ loginLevel : ${sessionScope.loginLevel}
 -->
 <!-- 디자인을 불러오는 코드 -->
 <link rel="stylesheet" href="/css/commons.css" type="text/css">
+<link rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        type="text/css">
 <c:if test="${sessionScope.loginId == null || sessionScope.loginLevel == null}">
 
 <!-- 비회원 메뉴 -->
