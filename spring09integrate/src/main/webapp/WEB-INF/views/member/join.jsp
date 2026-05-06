@@ -14,6 +14,7 @@
 우편번호<input type="text" inputmode="numeric" name="memberPost"><br><br>
 기본주소<input type="text" name="memberAddress1"><br><br>
 상세주소<input type="text" name="memberAddress2"><br><br>
+프로필사진 <input type="file" name="attach" accept="image/png, image/jpeg"><br><br>
 상태메세지<br>
  <textarea rows="10" cols="50" name="memberMessage"></textarea>
 <br><br>
