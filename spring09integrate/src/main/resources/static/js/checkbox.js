@@ -1,4 +1,4 @@
-checkbox.js
+//checkbox.js
 //-체크박스 관련된 자바스크립트 코드를 가지는 자바스크립트 전용 파일 
 //-pure javascript (VanillaJS)로 개발됨
 //지연 실행 코드
