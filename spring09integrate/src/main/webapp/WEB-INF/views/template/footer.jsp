@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-</div>
+<!-- </div>
 
 
 <hr>
@@ -19,4 +19,82 @@ KH정보교육원<br>
 종로점 : 서울특별시 종로구 우정국로2길 21 대왕빌딩 3F, 5F(1호선 종각역 4번 출구 91m 도보 1분 거리)<br>
 논현점 : 서울특별시 강남구 논현로 132길 9 마루빌딩 1F,2F,3F<br>
 부산점 : 부산 부산진구 중앙대로 627 삼비빌딩 2F,12F<br>
-Copyright © 1998-2024 KH Information Educational Institute All Right Reserved
+Copyright © 1998-2024 KH Information Educational Institute All Right Reserved -->
+                </div>
+            </div>
+            <!-- 푸터 -->
+            <div style="border-top: 1px solid gray;" class="flex-area mt-50">
+                <div class="w-50">
+                    <div class="container w-100">
+                        <div class="cell">
+                            <h2>KH정보교육원</h2>
+                        </div>
+                        <div class="cell">
+                            OO시 OO구 OO동 000-000번지
+                        </div>
+                        <div class="cell">
+                            대표자 - 피카츄
+                        </div>
+                        <div class="cell">
+                            고객센터 - (02) 1234-5678
+                        </div>
+                    </div>
+                </div>
+                <div class="w-25 center">
+                    <div class="container w-100">
+                        <div class="cell">
+                            <h2>지점 정보</h2>
+                        </div>
+                        <div class="cell">
+                            <span>강남지점</span>
+                            <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="cell">
+                            <span>종로지점</span>
+                            <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="cell">
+                            <span>당산지점</span>
+                            <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                        <div class="cell">
+                            <span>부산지점</span>
+                            <a href="#"><i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-25 center">
+                    <div class="container w-100">
+                        <div class="cell">
+                            <h2>운영 방침</h2>
+                        </div>
+                        <div class="cell">
+                            <a href="#">
+                                <i class="fa-regular fa-clipboard"></i>
+                                <span>홈페이지 이용약관</span>
+                            </a>
+                        </div>
+                        <div class="cell">
+                            <a href="#">
+                                <i class="fa-solid fa-user-lock"></i>
+                                <span>개인정보 처리방침</span>
+                            </a>
+                        </div>
+
+                        <div class="cell">
+                            <h2>파트너쉽</h2>
+                        </div>
+                        <div class="cell">
+                            <i class="fa-brands fa-2x fa-google"></i>
+                            <i class="fa-brands fa-2x fa-line"></i>
+                            <i class="fa-brands fa-2x fa-facebook"></i>
+                            <i class="fa-brands fa-2x fa-instagram"></i>
+                            <i class="fa-brands fa-2x fa-linkedin"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

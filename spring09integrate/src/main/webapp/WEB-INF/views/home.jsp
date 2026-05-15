@@ -3,20 +3,9 @@
 
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
 
-<h1>메인페이지</h1>
+ <h1>메인페이지</h1>
+
+
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
