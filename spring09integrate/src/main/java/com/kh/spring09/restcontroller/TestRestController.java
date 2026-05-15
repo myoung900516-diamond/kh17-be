@@ -1,9 +1,13 @@
 package com.kh.spring09.restcontroller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.kh.spring09.dao.MemberDao;
+import com.kh.spring09.dto.MemberDto;
 
 //원래 RestController의 역할은 화면이 아닌 데이터를 사용하는 역할
 //-AJAX 요청을 처리하기 위한 도구로 활용
@@ -23,5 +27,13 @@ public class TestRestController {
 	public int plus(@RequestParam int a, @RequestParam int b) {
 		return a + b;
 	}
+	@Autowired
+	private MemberDao memberDao;
 	
+	@RequestMapping("/check")
+	public boolean check(@RequestParam String memberId){
+		MemberDto memberDto = memberDao.selectOne(memberId);
+		return memberDto != null; //있으면 true, 있으면 false
+		
+	}
 }
