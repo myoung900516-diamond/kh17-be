@@ -17,7 +17,9 @@
 	</select>
 	<input type="text" name="keyword" placeholder="검색어입력"
 						value="${param.keyword}" required>
-	<button>검색🔍</button>
+	<button>
+		<i class="fa-solid fa-magnifying-glass"></i>
+	</button>
 </form>
 
 
@@ -25,7 +27,7 @@
 <%-- <h2>결과 수 : ${list.size()}</h2> --%>
  ${pageVO.getBeginRownum()}-${pageVO.getEndRownum()}/${pageVO.count}
 
-<table border="1" width="700">
+<table class="table">
 	<thead>
 			<tr align="center">
 					<th>번호</th>

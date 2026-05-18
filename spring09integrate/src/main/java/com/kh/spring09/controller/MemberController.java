@@ -1,4 +1,4 @@
-	package com.kh.spring09.controller;
+package com.kh.spring09.controller;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -55,7 +55,6 @@ public class MemberController {
 	public String join(@ModelAttribute MemberDto memberDto, 
 						@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
 		memberDao.insert(memberDto);
-
 		if(!attach.isEmpty()) {
 			int attachNo = attachService.save(attach);
 			memberDao.connect(memberDto.getMemberId(), attachNo);
@@ -358,3 +357,4 @@ public class MemberController {
 	
 
 }
+

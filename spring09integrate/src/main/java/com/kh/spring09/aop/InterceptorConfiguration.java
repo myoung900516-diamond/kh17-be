@@ -43,6 +43,9 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 				,"/member/**"
 				,"/admin/**"
 				,"/board/write"
+//				,"/rest/board/like-action"
+				,"/rest/**/like-action"
+				,"/rest/reply/write"
 //				,"/board/edit"
 //				,"/board/delete"
 				)
@@ -82,24 +85,6 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 		
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
 	
 }

@@ -1,6 +1,59 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
+
+
+<script type="text/javascript">
+ 
+$(function(){
+	//시작하자마자 서버에 물어봐서 좋아요 상태와 좋아요 개수를 알아낸다.
+	
+	var params = new URLSearchParams(window.location.search);
+	var countryNo = params.get("countryNo");
+	
+	$.ajax({
+		url : "/rest/country/like-check",
+		method : "post",
+		data : {countryNo : countryNo },
+		success : function(response){//reponse에 action, count가 있을 것으로 기대
+			$(".fa-heart").removeClass("fa-regular fa-solid")
+					.addClass(response.action ? "fa-solid" : "fa-regular");
+			$(".fa-heart").next(".heart-count").text(response.count);	
+		}
+	});
+});
+ </script>
+ <c:if test="${sessionScope.loginId != null}">
+ <!--좋아요 토글 자바스크립트 (회원만 가능)  -->
+ <script type="text/javascript">
+ 
+ $(function(){
+	 //하트를 클릭하면 좋아요 토글이 발생하도록 처리
+	 
+	 var params = new URLSearchParams(window.location.search);
+	 var countryNo = params.get("countryNo");
+	 
+	 $(".fa-heart").on("click", function(){
+		 
+		 $.ajax({
+			 
+			 url : "/rest/country/like-action",
+			 method: "post",
+			 data : {countryNo : countryNo},
+			 success : function(response){
+				 $(".fa-heart").removeClass("fa-regular fa-solid")
+					.addClass(response.action ? "fa-solid" : "fa-regular");
+				 $(".fa-heart").next(".heart-count").text(response.count);	
+			 }
+		 });
+		 
+	 });
+ });
+</script>
+</c:if>
+ 
 
 <h1>국가 상세정보</h1>
 
@@ -22,6 +75,11 @@
   <li> 수도 : ${countryDto.countryCapital}  </li>
   <li> 인구 : ${countryDto.countryPopulation}명 </li>
 </ul>
+<div class="mt-10">
+	좋아요 
+	<i class = "fa-solid fa-heart red"></i>
+	<span class="heart-count">?</span>
+</div>
 
 <h2>
 <a href="./list">목록으로 이동</a><br>
