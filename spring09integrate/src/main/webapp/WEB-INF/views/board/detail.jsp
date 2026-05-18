@@ -95,6 +95,9 @@ $(function(){
 						var html = $.parseHTML(template);
 						
 						//html에서 필요한 정보를 찾아서 변경 
+						//-(중요) 수정, 삭제 등을 위하여 기본키를 영역에 설정해야함
+						//-html은 .reply-wrapper이다.
+						$(html).attr("data-key", response[i].replyNo);
 						$(html).find(".image-profile").attr("src", "/member/profile?memberId="+response[i].replyWriter);
 						$(html).find(".reply-writer").text(response[i].replyWriter);
 						$(html).find(".reply-content").text(response[i].replyContent);
@@ -137,9 +140,27 @@ $(function(){
 		
 		});
 		//삭제 버튼을 누르면 확인창을 띄우고 ajax요청을 보내 삭제가 이루어지도록 처리
-		$(".btn-reply-delete").on("click", function(){
+		//-주의: .btn-reply-delete는 현재 시험(문서로딩후)에 존재하지 않는다
+		//-따라서 이벤트 설정이 정상적인 방법으로 불가능하다
+		//-이벤트를 에너지 소모가 크더라도(메모리 점유률이 크다) 영역에 설정하는 방향으로 변화시킨다
+		//-동적 태그 생성
+		
+		//$(".btn-reply-delete").on("click", function(){
+			$(".reply-area").on("click", ".btn-reply-delete", function(){
 			var choice = window.confirm("정말 삭제하시겠습니까?");
 			if(choice == false) return;
+			
+			var replyNo = $(this).closest(".reply-wrapper").data("key");
+			
+			$.ajax({
+				url : "/rest/reply/delete",
+				method : "post",
+				data : {replyNo : replyNo}, 
+				success : function(response){
+					loadList();//목록갱신 
+				}
+				});
+			
 		});
 	});
 

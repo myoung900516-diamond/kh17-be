@@ -37,5 +37,11 @@ public class ReplyDao {
 		Object[] params = {replyOrigin};
 		return jdbcTemplate.query(sql, replyMapper, params);
 	}
+	
+	public boolean delete(long replyNo) {
+		String sql = "delete reply where reply_no = ?";
+		Object[] params = {replyNo};
+		return jdbcTemplate.update(sql, params)>0;
+	}
 
 }
