@@ -56,6 +56,39 @@ $(function(){
  });
 </script>
 </c:if>
+<!-- 댓글 시스템을 위한 자바스크립트 -->
+<script type="text/javascript">
+	$(function(){
+		 var params = new URLSearchParams(window.location.search);
+		 var boardNo = params.get("boardNo");
+		$(".btn-reply").on("click", function(){
+			/* $(".reply-area").show();
+			$(".reply-area").fing("label").text(loginId);
+			$(".reply-area").find("span").text(response.content); */
+		 var replyContent = $(".field-reply").val();
+	 	 if(replyContent.length == 0)return;
+		 
+		 $.ajax({
+			 url : "/rest/reply/write",
+			 method : "post",
+			 data : {
+				 replyContent : replyContent
+				 replyOrigin : boardNo},
+			 success : function(){
+				 /* $(".reply-area").show();
+				 $(".reply-area").find("label").text(loginId);
+				 $(".reply-area").find("span").text(response.content); */
+				 console.log("emdfhrdhksfy");
+				 $(".field-reply").val("");
+			 }
+		 });
+		 
+		 $(".reply-area").find("textarea").text(replyContent);
+		
+		});
+	});
+
+</script>
 <h1>
 	<c:if test="${boardDto.boardHead != null}">
 [구분] : ${boardDto.boardHead}</c:if>
@@ -96,8 +129,39 @@ $(function(){
 	<span class="heart-count">?</span>
 </div>
 <div class="ms-20">댓글 ${boardDto.boardReplycount}</div>
-
 </div>
+
+<!-- 댓글 관련 정보가 표시될 자리 -->
+<!-- <hr>
+<div class="cell reply-area" style="display= none;">
+	<label></label>
+	<span></span>
+</div>
+<hr> -->
+<%-- <form action="/rest/reply/write" method="post" autocomplete="off">
+<div class="cell field">
+	<div class="cell">
+	<label>${sessionScope.loginId}</label>
+	<textarea rows="3" class="field w-100" placeholder="댓글을 남겨보세요"></textarea>
+	<button type="submit" class="btn btn-positive right btn-reply">등록</button>
+	</div>
+</div>
+</form> --%>
+<c:if test="${sessionScope.loginId != null}">
+<div class="cell">
+	<textarea rows="4" class="field w-100 field-reply" placeholder="댓글 내용 작성"></textarea>
+	<button type="button" class="btn btn-positive w-100 mt-10 btn-reply">
+		<i class="fa-solid fa-pen"></i>
+		<span>댓글 작성하기</span>
+	</button>
+</div>
+</c:if>
+<c:if test="${sessionScope.loginId == null}">
+<div class="cell">
+<h1>댓글 작성을 원하시면<a href="/member/login">로그인</a>하세요</h1>
+</div>
+</c:if>
+
 
 <hr>
 

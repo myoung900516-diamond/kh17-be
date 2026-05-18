@@ -45,6 +45,7 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 				,"/board/write"
 //				,"/rest/board/like-action"
 				,"/rest/**/like-action"
+				,"/rest/reply/write"
 //				,"/board/edit"
 //				,"/board/delete"
 				)

@@ -24,11 +24,11 @@ public class BoardRestController {
 	
 	//1.최초접속시 좋아요 여부와 현재 글의 좋아요 개수를 구해주는 매핑 /비회원 진입 가능
 	@PostMapping("/like-check")
-	public LikeVo likeCheck(@RequestParam int boardNo, HttpSession session){
+	public LikeVo likeCheck(@RequestParam long boardNo, HttpSession session){
 		String loginId = (String)session.getAttribute("loginId");
 		
 		boolean action = boardLikeDao.check(loginId, boardNo);
-		int count = boardLikeDao.count(boardNo);
+		long count = boardLikeDao.count(boardNo);
 		
 //		return Map.of("action", action, "count", count);
 		/*
@@ -44,7 +44,7 @@ public class BoardRestController {
 	//2.좋아요 클릭시 좋아요 토글 처리와 결과적으로 만들어진 좋아요 개수를 구해주는 매핑/비회원 진입 불가
 	//-비회원 차단은 인터셉터에서 구현
 	@PostMapping("/like-action")
-	public LikeVo lickAction(@RequestParam int boardNo, HttpSession session){
+	public LikeVo lickAction(@RequestParam long boardNo, HttpSession session){
 		String loginId = (String)session.getAttribute("loginId");
 		
 		boolean current = boardLikeDao.check(loginId, boardNo);
@@ -55,10 +55,9 @@ public class BoardRestController {
 			boardLikeDao.insert(loginId, boardNo);//좋아요 설정	
 		}
 		
-		int count = boardLikeDao.count(boardNo);
+		long count = boardLikeDao.count(boardNo);
 		//게시글 테이블 좋아요 개수를 최신화
 		boardDao.updateBoardLikecount(boardNo);
-		
 //		return Map.of("action", !current , "count", count);
 		return LikeVo.builder().action(!current).count(count).build();
 	}

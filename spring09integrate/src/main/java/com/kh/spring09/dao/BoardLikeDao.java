@@ -11,22 +11,22 @@ public class BoardLikeDao {
 	private JdbcTemplate jdbcTemplate;
 	
 	//구현해야하는 기능 : 등록, 삭제, 검사, 개수확인
-	public void insert(String memberId, int boardNo) {
+	public void insert(String memberId, long boardNo) {
 		String sql = "insert into board_like(member_id, board_no) values(?, ?)";
 		Object[] params = {memberId, boardNo};
 		jdbcTemplate.update(sql, params);
 	}
-	public boolean delete(String memberId, int boardNo) {
+	public boolean delete(String memberId, long boardNo) {
 		String sql = "delete board_like where member_id=? and board_no=?";
 		Object[] params = {memberId, boardNo};
 		return jdbcTemplate.update(sql, params) > 0 ;
 	}
-	public boolean check(String memberId, int boardNo) {
+	public boolean check(String memberId, long boardNo) {
 		String sql="select count(*) from board_like where member_id=? and board_no=?";
 		Object[] params = {memberId, boardNo};
 		return jdbcTemplate.queryForObject(sql, int.class, params) > 0 ;
 	}
-	public int count(int boardNo) {
+	public int count(long boardNo) {
 		String sql = "select count(*) from board_like where board_no = ?";
 		Object[] params = {boardNo};
 		return jdbcTemplate.queryForObject(sql, int.class, params);

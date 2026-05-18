@@ -245,7 +245,7 @@ public class BoardDao {
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 	
-	public boolean updateBoardLikecount(int boardNo) {
+	public boolean updateBoardLikecount(long boardNo) {
 		String sql = "update board set board_likecount = ("
 				+ "select count(*) from board_like where board_no=? "
 				+ ") where board_no = ?";

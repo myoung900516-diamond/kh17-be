@@ -8,6 +8,6 @@ import lombok.NoArgsConstructor;
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class LikeVo {
 	private boolean action;
-	private int count;
+	private long count;
 
 }
