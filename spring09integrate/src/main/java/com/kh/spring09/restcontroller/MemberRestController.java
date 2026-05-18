@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring09.dao.MemberDao;
+import com.kh.spring09.dao.MemberLikeDao;
 import com.kh.spring09.dto.MemberDto;
+import com.kh.spring09.vo.LikeVo;
+
+import jakarta.servlet.http.HttpSession;
 
 @CrossOrigin//외부 접근을 허용(CORS허용)
 @RestController
@@ -18,6 +22,9 @@ public class MemberRestController {
 	//아이디 중복검사
 	@Autowired
 	private MemberDao memberDao;
+	
+	@Autowired
+	private MemberLikeDao memberLikeDao;
 	
 	//아이디 중복검사(없으면=사용가능 =true)
 	@RequestMapping("/validId")
@@ -35,6 +42,38 @@ public class MemberRestController {
 	public boolean validEmail(@RequestParam String memberEmail) {
 		MemberDto memberDto = memberDao.selectOneByMemberEmail(memberEmail);
 		return memberDto == null;
+	}
+	
+	//회원 좋아요 체크 및 좋아요하기
+	
+	@PostMapping("/like-check")
+	public LikeVo likeCheck(@RequestParam String memberTarget, HttpSession session){
+		String loginId = (String)session.getAttribute("loginId");
+		
+		boolean action = memberLikeDao.check(loginId, memberTarget);
+		int count = memberLikeDao.count(memberTarget);
+		
+		
+		return LikeVo.builder().action(action).count(count).build();
+	}
+	
+	//2.좋아요 클릭시 좋아요 토글 처리와 결과적으로 만들어진 좋아요 개수를 구해주는 매핑/비회원 진입 불가
+	//-비회원 차단은 인터셉터에서 구현
+	@PostMapping("/like-action")
+	public LikeVo lickAction(@RequestParam String memberTarget, HttpSession session){
+		String loginId = (String)session.getAttribute("loginId");
+		
+		boolean current = memberLikeDao.check(loginId, memberTarget);
+		if(current) {//좋아요 설정한 적이 있으면 
+			memberLikeDao.delete(loginId, memberTarget);//좋아요 해제
+		}
+		else {
+			memberLikeDao.insert(loginId, memberTarget);//좋아요 설정	
+		}
+		
+		int count = memberLikeDao.count(memberTarget);
+		
+		return LikeVo.builder().action(!current).count(count).build();
 	}
 	
 

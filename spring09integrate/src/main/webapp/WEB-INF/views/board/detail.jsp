@@ -6,28 +6,56 @@
 
 
 <!-- 
-	좋아요 처리 관련 자바스크립트
+	좋아요 처리 관련 자바스크립트(비회원도 가능)
  -->
  <script type="text/javascript">
  
- 	$(function(){
- 		//시작하자마자 서버에 물어봐서 좋아요 상태와 좋아요 개수를 알아낸다.
- 		
- 		var params = new URLSearchParams(window.location.search);
- 		var boardNo = params.get("boardNo");
- 		
- 		$.ajax({
- 			url : "/rest/board/like-check",
- 			method : "post",
- 			data : {boardNo : boardNo },
- 			success : function(response){//reponse에 action, count가 있을 것으로 기대
- 				$(".fa-heart").removeClass("fa-regular fa-solid")
- 						.addClass(response.action ? "fa-solid" : "fa-regular");
- 				$(".fa-heart").next(".heart-count").text(response.count);	
- 			}
- 		});
- 	});
+$(function(){
+	//시작하자마자 서버에 물어봐서 좋아요 상태와 좋아요 개수를 알아낸다.
+	
+	var params = new URLSearchParams(window.location.search);
+	var boardNo = params.get("boardNo");
+	
+	$.ajax({
+		url : "/rest/board/like-check",
+		method : "post",
+		data : {boardNo : boardNo },
+		success : function(response){//reponse에 action, count가 있을 것으로 기대
+			$(".fa-heart").removeClass("fa-regular fa-solid")
+					.addClass(response.action ? "fa-solid" : "fa-regular");
+			$(".fa-heart").next(".heart-count").text(response.count);	
+		}
+	});
+});
  </script>
+ <c:if test="${sessionScope.loginId != null}">
+ <!--좋아요 토글 자바스크립트 (회원만 가능)  -->
+ <script type="text/javascript">
+ 
+ $(function(){
+	 //하트를 클릭하면 좋아요 토글이 발생하도록 처리
+	 
+	 var params = new URLSearchParams(window.location.search);
+	 var boardNo = params.get("boardNo");
+	 
+	 $(".fa-heart").on("click", function(){
+		 
+		 $.ajax({
+			 
+			 url : "/rest/board/like-action",
+			 method: "post",
+			 data : {boardNo : boardNo},
+			 success : function(response){
+				 $(".fa-heart").removeClass("fa-regular fa-solid")
+					.addClass(response.action ? "fa-solid" : "fa-regular");
+				 $(".fa-heart").next(".heart-count").text(response.count);	
+			 }
+		 });
+		 
+	 });
+ });
+</script>
+</c:if>
 <h1>
 	<c:if test="${boardDto.boardHead != null}">
 [구분] : ${boardDto.boardHead}</c:if>
@@ -75,7 +103,7 @@
 
 이전글 : <a href="./detail?boardNo=${prevBoardDto.boardNo}"> ${prevBoardDto.boardTitle}</a>
 <br>
-다음글 : <a href="./detail?boardNo=${prevNextDto.boardNo}">${nextBoardDto.boardTitle}</a>
+다음글 : <a href="./detail?boardNo=${nextBoardDto.boardNo}">${nextBoardDto.boardTitle}</a>
 <hr>
 <c:if test="${sessionScope.loginId != null}">
 	<button>
