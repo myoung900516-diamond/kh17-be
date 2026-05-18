@@ -78,16 +78,38 @@ $(function(){
 		 var params = new URLSearchParams(window.location.search);
 		 var boardNo = params.get("boardNo");
 		 
-		//시작하자마자 목록 불러오기
-		$.ajax({
-			url : "/rest/reply/list",
-			method : "post",
-			data : {replyOrigin : boardNo},
-			success: function(response){
-				console.log(response);
-			}
-			
-		});
+		 loadList();
+		 
+		function loadList(){
+			$(".reply-area").empty();
+			$.ajax({
+				url : "/rest/reply/list",
+				method : "post",
+				data : {replyOrigin : boardNo},
+				success: function(response){
+					/* console.log(response); */
+					//response는 백엔드에서의 List<ReplyDto>이다
+					//반복을 통해 템플릿을 배치하고 정보를 갈아끼운다
+					for(var i=0; i<response.length; i++){
+						var template = $("#reply-template").text();
+						var html = $.parseHTML(template);
+						
+						//html에서 필요한 정보를 찾아서 변경 
+						$(html).find(".image-profile").attr("src", "/member/profile?memberId="+response[i].replyWriter);
+						$(html).find(".reply-writer").text(response[i].replyWriter);
+						$(html).find(".reply-content").text(response[i].replyContent);
+						/* $(html).find(".reply-wtime").text(response[i].replyWtime); */
+						
+						/* var wtime = moment(response[i].replyWtime).format("YYYY-MM-DD HH:mm"); */
+						var wtime = moment(response[i].replyWtime).fromNow();
+						$(html).find(".reply-wtime").text(wtime);
+						
+						$(".reply-area").append(html);
+					}
+				}
+				
+			});
+		}
 		 
 		$(".btn-reply").on("click", function(){
 			/* $(".reply-area").show();
@@ -101,21 +123,46 @@ $(function(){
 			 method : "post",
 			 data : {
 				 replyContent : replyContent, 
-				 
 				 replyOrigin : boardNo},
 			 success : function(){
 				 /* $(".reply-area").show();
 				 $(".reply-area").find("label").text(loginId);
 				 $(".reply-area").find("span").text(response.content); */
 				 $(".field-reply").val("");
+				 loadList();
 			 }
 		 });
 		 
 		/* $(".reply-area").find("textarea").text(replyContent); */
 		
 		});
+		//삭제 버튼을 누르면 확인창을 띄우고 ajax요청을 보내 삭제가 이루어지도록 처리
+		$(".btn-reply-delete").on("click", function(){
+			var choice = window.confirm("정말 삭제하시겠습니까?");
+			if(choice == false) return;
+		});
 	});
 
+</script>
+<script type="text/template" id="reply-template">
+	<div class="reply-wrapper">
+		<div class="profile-wrapper">
+			<img src="https://picsum.photos/500" class="image-circle image-profile">
+		</div>
+		<div class="content-wrapper ms-20">
+			<h3 class="mt-0 mb-0 reply-writer">작성자</h3>
+			<pre class="mt-10 mb-0 reply-content">내용 샘플</pre>
+			<div class="mt-20 flex-area">
+				<div class="w-50">
+					<span class="gray reply-wtime">yyyy-MM-dd HH:mm</span>
+				</div>
+				<div class="button-wrapper right w-50">
+					<i class="fa-solid fa-edit btn-reply-edit"></i>
+					<i class="fa-solid fa-trash btn-reply-delete"></i>
+				</div>
+			</div>
+	</div>
+	
 </script>
 
 
@@ -160,7 +207,7 @@ $(function(){
 </div>
 <div class="ms-20">댓글 ${boardDto.boardReplycount}</div>
 </div>
-<div class="cell">
+<!-- <div class="cell">
 	<div class="reply-wrapper">
 		<div class="profile-wrapper">
 			<img src="https://picsum.photos/500" class="image-circle">
@@ -173,15 +220,14 @@ $(function(){
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 
 <!-- 댓글 관련 정보가 표시될 자리 -->
-<!-- <hr>
+
 <div class="cell reply-area" style="display= none;">
-	<label></label>
-	<span></span>
+
 </div>
-<hr> -->
+<hr>
 <%-- <form action="/rest/reply/write" method="post" autocomplete="off">
 <div class="cell field">
 	<div class="cell">

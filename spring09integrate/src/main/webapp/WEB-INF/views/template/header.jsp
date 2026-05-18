@@ -79,6 +79,13 @@ loginLevel : ${sessionScope.loginLevel} --%>
     <style>
         /* div { box-shadow: 0 0 0 1px gray ;} */
     </style>
+    
+    <!-- lightpick CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/lightpick@1.6.2/css/lightpick.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.30.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/locale/ko.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lightpick@1.6.2/lightpick.min.js"></script>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="/js/checkbox.js"></script>
     <link rel="stylesheet" type="text/css" href="/lib/multipage/multipage.css">
