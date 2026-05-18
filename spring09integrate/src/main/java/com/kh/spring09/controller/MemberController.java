@@ -1,4 +1,4 @@
-package com.kh.spring09.controller;
+	package com.kh.spring09.controller;
 
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -53,17 +53,9 @@ public class MemberController {
 	//회원가입
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberDto memberDto, 
-<<<<<<< HEAD
 						@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
-		
-=======
-							@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
->>>>>>> branch 'main' of https://github.com/myoung900516-diamond/kh17-be.git
 		memberDao.insert(memberDto);
-<<<<<<< HEAD
-		
-=======
->>>>>>> branch 'main' of https://github.com/myoung900516-diamond/kh17-be.git
+
 		if(!attach.isEmpty()) {
 			int attachNo = attachService.save(attach);
 			memberDao.connect(memberDto.getMemberId(), attachNo);
