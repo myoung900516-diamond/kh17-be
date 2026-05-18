@@ -1,5 +1,7 @@
 package com.kh.spring09.dao;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -26,6 +28,14 @@ public class ReplyDao {
 		Object[] params = {replyDto.getReplyNo(), replyDto.getReplyWriter(), 
 							replyDto.getReplyOrigin(), replyDto.getReplyContent()};
 		jdbcTemplate.update(sql, params);
+	}
+	
+	public List<ReplyDto> selectList(long replyOrigin){
+		String sql = "select * from reply "
+					+ "where reply_origin=? "
+					+ "order by reply_no asc";
+		Object[] params = {replyOrigin};
+		return jdbcTemplate.query(sql, replyMapper, params);
 	}
 
 }

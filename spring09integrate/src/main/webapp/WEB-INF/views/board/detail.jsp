@@ -3,7 +3,23 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <jsp:include page="/WEB-INF/views/template/header.jsp"></jsp:include>
-
+<style>
+	.reply-wrapper{
+		display:flex;
+		padding:15px;
+		box-shadow : 0 0 0 1px lightgray;
+	}
+	.reply-wrapper > .profile-wrapper{
+		width:100px;
+	}
+	.reply-wrapper > .profile-wrapper > img {
+		width : 100%;
+		aspect-ratio:1/1;
+	}
+	.reply-wrapper > .content-wrapper{
+		flex-grow: 1;
+	}
+</style>
 
 <!-- 
 	좋아요 처리 관련 자바스크립트(비회원도 가능)
@@ -61,6 +77,18 @@ $(function(){
 	$(function(){
 		 var params = new URLSearchParams(window.location.search);
 		 var boardNo = params.get("boardNo");
+		 
+		//시작하자마자 목록 불러오기
+		$.ajax({
+			url : "/rest/reply/list",
+			method : "post",
+			data : {replyOrigin : boardNo},
+			success: function(response){
+				console.log(response);
+			}
+			
+		});
+		 
 		$(".btn-reply").on("click", function(){
 			/* $(".reply-area").show();
 			$(".reply-area").fing("label").text(loginId);
@@ -72,23 +100,25 @@ $(function(){
 			 url : "/rest/reply/write",
 			 method : "post",
 			 data : {
-				 replyContent : replyContent
+				 replyContent : replyContent, 
+				 
 				 replyOrigin : boardNo},
 			 success : function(){
 				 /* $(".reply-area").show();
 				 $(".reply-area").find("label").text(loginId);
 				 $(".reply-area").find("span").text(response.content); */
-				 console.log("emdfhrdhksfy");
 				 $(".field-reply").val("");
 			 }
 		 });
 		 
-		 $(".reply-area").find("textarea").text(replyContent);
+		/* $(".reply-area").find("textarea").text(replyContent); */
 		
 		});
 	});
 
 </script>
+
+
 <h1>
 	<c:if test="${boardDto.boardHead != null}">
 [구분] : ${boardDto.boardHead}</c:if>
@@ -126,9 +156,23 @@ $(function(){
 <div>
 	좋아요 
 	<i class = "fa-solid fa-heart red"></i>
-	<span class="heart-count">?</span>
+	<span class="heart-count">0</span>
 </div>
 <div class="ms-20">댓글 ${boardDto.boardReplycount}</div>
+</div>
+<div class="cell">
+	<div class="reply-wrapper">
+		<div class="profile-wrapper">
+			<img src="https://picsum.photos/500" class="image-circle">
+		</div>
+		<div class="content-wrapper ms-20">
+			<h3 class="mt-0 mb-0">작성자</h3>
+			<pre class="mt-10 mb-0">내용 샘플</pre>
+			<div class="mt-20">
+				<span class="gray">yyyy-MM-dd HH:mm</span>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- 댓글 관련 정보가 표시될 자리 -->
