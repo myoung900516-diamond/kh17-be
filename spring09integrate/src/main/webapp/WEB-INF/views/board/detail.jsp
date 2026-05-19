@@ -113,12 +113,22 @@ $(function(){
 					var wtime = moment(response[i].replyWtime).fromNow();
 					$(html).find(".reply-wtime").text(wtime);
 					
+					//상황에 따른 화면 제거
+					//[1] owner가 false면 수정삭제버튼 영역을 지운다
+					if(response[i].owner == false){
+						$(html).find(".button-wrapper").remove();
+					}
+					//[2]writer가 false면 작성자라는 글자 영역을 지운다
+					if(response[i].owner == false){
+						$(html).find(".board-writer").remove();
+					}
+					
 					$(".reply-area").append(html);
 				}
 			}
 			
 		});
-	}
+	};
 	 
 	$(".btn-reply").on("click", function(){
 		/* $(".reply-area").show();
@@ -152,11 +162,11 @@ $(function(){
 	//-동적 태그 생성
 	
 	//$(".btn-reply-delete").on("click", function(){
-		$(".reply-area").on("click", ".btn-reply-delete", function(){
+	$(".reply-area").on("click", ".btn-reply-delete", function(){
 		var choice = window.confirm("정말 삭제하시겠습니까?");
 		if(choice == false) return;
 		
-		var replyNo = $(this).closest(".reply-wrapper").data("key");
+		var replyNo = $(this).closest(".reply-viewer").data("key");
 		
 		$.ajax({
 			url : "/rest/reply/delete",
@@ -170,21 +180,63 @@ $(function(){
 		
 		//목표 : 수정버튼을 누르면 수정화면을 보여주도록 처리
 		$(".reply-area").on("click", ".btn-reply-edit", function(){
+			//기존에 열려있는 모든 댓글 수정화면을 제거 
+			$(".reply-editor").prev(".reply-viewer").show();
+			$(".reply-editor").remove(); 
+			
+			//기존 reply-viewer의 정보를 불러온다
+			var replyViewer = $(this).closest(".reply-viewer");
+			var key = replyViewer.data("key");
+			var src = replyViewer.find(".image-profile").attr("src");
+			var replyWriter = replyViewer.find(".reply-writer").text();
+			var replyContent = replyViewer.find(".reply-content").text();
+			var replyWtime = replyViewer.find(".reply-wtime").text();
+		
 			var	template = $("#reply-editor-template").text();
 			var html = $.parseHTML(template);
+			
+			$(html).attr("data-key", key);
+			$(html).find(".image-profile").attr("src", src);
+			$(html).find(".reply-writer").text(replyWriter);
+			$(html).find(".field-reply-edit").val(replyContent);
+			$(html).find(".reply-wtime").text(replyWtime);
+			
 			
 			//필요한 정보를 설정하고
 			$(this).closest(".reply-viewer").hide().after(html);
 			
 		});
-		$(".reply-area").on("click", ".btn-reply-save", function(){
-			var choice = window.confirm("정말 삭제하시겠습니까?");
-			if(choice == false) return;
-			
-			
+		
+		//목표: 수정 취소 버튼을 누르면 수정화면을 삭제하고 표시화면을 출력
+		$(".reply-area").on("click", ".btn-reply-cancel", function(){
+			$(this).closest(".reply-editor").prev(".reply-viewer").show();
+			$(this).closest(".reply-editor").remove();
 		});
 		
 		
+		
+		$(".reply-area").on("click", ".btn-reply-save", function(){
+			/* var choice = window.confirm("정말 수정하시겠습니까?");
+			if(choice == false) return; */
+			
+			var replyNo = $(this).closest(".reply-editor").data("key");
+			var replyContent = $(this).closest(".reply-editor")
+									  .find(".field-reply-edit").val();
+			if(replyContent.length==0) return;
+			
+			$.ajax({
+				url : "/rest/reply/edit",
+				method : "post",
+				data:{
+					replyNo : replyNo,
+					replyContent : replyContent
+				},
+				success: function(){
+					loadList();
+				}
+				
+			});
+		});
 });
 </script>
 <script type="text/template" id="reply-viewer-template">
@@ -193,7 +245,10 @@ $(function(){
 		<img src="https://picsum.photos/500" class="image-circle image-profile">
 	</div>
 	<div class="content-wrapper ms-20">
-		<h3 class="mt-0 mb-0 reply-writer">작성자</h3>
+		<h3 class="mt-0 mb-0">
+			<span class="reply-writer">아이디</span>
+			<span class="board-writer">(작성자)</span>
+		</h3>
 		<pre class="mt-10 mb-0 reply-content">내용 샘플</pre>
 		<div class="mt-20 flex-area">
 			<div class="w-50">
@@ -264,7 +319,7 @@ $(function(){
 <div class="ms-20">댓글 ${boardDto.boardReplycount}</div>
 </div>
 <!-- 댓글 관련 정보가 표시될 자리 -->
-<div class="cell reply-area" style="display= none;">
+<div class="cell reply-area">
 <div class="reply-viewer">
 	<div class="profile-wrapper">
 			<img src="https://picsum.photos/500" class="image-circle image-profile">
@@ -296,8 +351,10 @@ $(function(){
 				<span class="gray reply-wtime">yyyy-MM-dd HH:mm</span>
 			</div>
 			<div class="button-wrapper right w-50">
+				
 				<i class="fa-solid fa-xmark btn-reply-cancel"></i>
 				<i class="fa-solid fa-check btn-reply-save"></i>
+				
 			</div>
 		</div>
 	</div>
@@ -318,31 +375,35 @@ $(function(){
 <h1>댓글 작성을 원하시면<a href="/member/login">로그인</a>하세요</h1>
 </div>
 </c:if>
-<hr>
-이전글 : <a href="./detail?boardNo=${prevBoardDto.boardNo}"> ${prevBoardDto.boardTitle}</a>
-<br>
-다음글 : <a href="./detail?boardNo=${nextBoardDto.boardNo}">${nextBoardDto.boardTitle}</a>
-<hr>
-<c:if test="${sessionScope.loginId != null}">
-	<button>
-		<a href="./write">글쓰기</a>
-	</button>
-	<button>
-		<a href="./write?boardParent=${boardDto.boardNo}">답글쓰기</a>
-	</button>
-</c:if>
-<!-- 비회원이 탈퇴한 글을 볼 때 본인으로 판정되는 걸 제거하기 위한 추가 검사 코드 -->
-<c:if test="${boardDto.boardWriter != null && sessionScope.loginId == boardDto.boardWriter}">
-	<button>
-		<a href="./edit?boardNo=${boardDto.boardNo}">수정</a>
-	</button>
-	<button>
-		<a href="./delete?boardNo=${boardDto.boardNo}">삭제</a>
-	</button>
-</c:if>
-<button>
-<a href="./list?boardNo=${boardDto.boardNo}&page=${pageVO.page}&${pageVO.searchParams}">목록</a>
-</button>
-<br>
+
+<div class="cell">
+		<span class="badge blue me-20">이전글</span> 
+		<a href="./detail?boardNo=${prevBoardDto.boardNo}" class="link">${prevBoardDto.boardTitle}</a>	
+	</div>
+	<div class="cell">
+		<span class="badge blue me-20">다음글</span>
+		<a href="./detail?boardNo=${nextBoardDto.boardNo}" class="link">${nextBoardDto.boardTitle}</a>	
+	</div>
+	
+	<hr>
+	<div class="cell right">
+		<c:if test="${sessionScope.loginId != null}">
+		<a class="btn btn-positive" href="./write">글쓰기</a>
+		<a class="btn btn-positive" href="./write?boardParent=${boardDto.boardNo}">답글쓰기</a>
+		</c:if>
+		
+		<c:if test="${boardDto.boardWriter != null && boardDto.boardWriter == sessionScope.loginId}">
+		<a class="btn btn-negative" href="./edit?boardNo=${boardDto.boardNo}">수정</a>
+		<a class="btn btn-negative" href="./delete?boardNo=${boardDto.boardNo}">삭제</a>
+		</c:if>
+		
+		<a class="btn btn-neutral" href="./list?boardNo=${boardDto.boardNo}&page=${pageVO.page}&${pageVO.searchParams}">목록으로</a>
+	</div>
+
+
+
+
+
+
 
 <jsp:include page="/WEB-INF/views/template/footer.jsp"></jsp:include>

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring09.dao.BoardDao;
 import com.kh.spring09.dao.BoardLikeDao;
-import com.kh.spring09.vo.LikeVo;
+import com.kh.spring09.vo.LikeVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -24,7 +24,7 @@ public class BoardRestController {
 	
 	//1.최초접속시 좋아요 여부와 현재 글의 좋아요 개수를 구해주는 매핑 /비회원 진입 가능
 	@PostMapping("/like-check")
-	public LikeVo likeCheck(@RequestParam long boardNo, HttpSession session){
+	public LikeVO likeCheck(@RequestParam long boardNo, HttpSession session){
 		String loginId = (String)session.getAttribute("loginId");
 		
 		boolean action = boardLikeDao.check(loginId, boardNo);
@@ -38,13 +38,13 @@ public class BoardRestController {
 		 * return likeVo;             //return map;
 		 */
 		
-		return LikeVo.builder().action(action).count(count).build();//Builder패턴 //@Builder라는 어노테이션때문에 생김
+		return LikeVO.builder().action(action).count(count).build();//Builder패턴 //@Builder라는 어노테이션때문에 생김
 	}
 	
 	//2.좋아요 클릭시 좋아요 토글 처리와 결과적으로 만들어진 좋아요 개수를 구해주는 매핑/비회원 진입 불가
 	//-비회원 차단은 인터셉터에서 구현
 	@PostMapping("/like-action")
-	public LikeVo lickAction(@RequestParam long boardNo, HttpSession session){
+	public LikeVO lickAction(@RequestParam long boardNo, HttpSession session){
 		String loginId = (String)session.getAttribute("loginId");
 		
 		boolean current = boardLikeDao.check(loginId, boardNo);
@@ -59,6 +59,6 @@ public class BoardRestController {
 		//게시글 테이블 좋아요 개수를 최신화
 		boardDao.updateBoardLikecount(boardNo);
 //		return Map.of("action", !current , "count", count);
-		return LikeVo.builder().action(!current).count(count).build();
+		return LikeVO.builder().action(!current).count(count).build();
 	}
 }

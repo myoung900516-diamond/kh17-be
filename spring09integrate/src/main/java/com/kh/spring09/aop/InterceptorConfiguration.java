@@ -28,6 +28,8 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 //	private BoardReadInterceptor3 boardReadInterceptor3;
 	@Autowired
 	private BoardReadInterceptor4 boardReadInterceptor4;
+	@Autowired
+	private ReplyOwnerInterceptor replyOwnerInterceptor;
 
 	//가져온 인터셉터를 특정 주소에서 일하도록 설정 
 	@Override
@@ -46,6 +48,8 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 //				,"/rest/board/like-action"
 				,"/rest/**/like-action"
 				,"/rest/reply/write"
+				,"/rest/reply/edit"
+				,"/rest/reply/delete"
 //				,"/board/edit"
 //				,"/board/delete"
 				)
@@ -82,6 +86,10 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 		//-*을 1개 쓰면 현재 작성한 앤드포인트 내에서만 범위 설정이 가능하다 
 		//-*을 2개 쓰면 현재 앤드포인트부터 하위 앤드포인트를 모두 포함한 범위 설정이 가능 
 		//(ex) 국가정보와 관련된 모든 페이지를 타겟으로 설정하고 싶다면 /country/*
+		registry.addInterceptor(replyOwnerInterceptor).addPathPatterns(
+				"/rest/reply/edit"
+				,"/rest/reply/delete"
+				);
 		
 	}
 	

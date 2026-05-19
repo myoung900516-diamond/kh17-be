@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring09.dao.CountryLikeDao;
-import com.kh.spring09.vo.LikeVo;
+import com.kh.spring09.vo.LikeVO;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -19,20 +19,20 @@ public class CountryRestController {
 	private CountryLikeDao countryLikeDao;
 	
 	@PostMapping("/like-check")
-	public LikeVo likeCheck(@RequestParam int countryNo, HttpSession session){
+	public LikeVO likeCheck(@RequestParam int countryNo, HttpSession session){
 		String loginId = (String)session.getAttribute("loginId");
 		
 		boolean action = countryLikeDao.check(loginId, countryNo);
 		int count = countryLikeDao.count(countryNo);
 		
 		
-		return LikeVo.builder().action(action).count(count).build();
+		return LikeVO.builder().action(action).count(count).build();
 	}
 	
 	//2.좋아요 클릭시 좋아요 토글 처리와 결과적으로 만들어진 좋아요 개수를 구해주는 매핑/비회원 진입 불가
 	//-비회원 차단은 인터셉터에서 구현
 	@PostMapping("/like-action")
-	public LikeVo lickAction(@RequestParam int countryNo, HttpSession session){
+	public LikeVO lickAction(@RequestParam int countryNo, HttpSession session){
 		String loginId = (String)session.getAttribute("loginId");
 		
 		boolean current = countryLikeDao.check(loginId, countryNo);
@@ -45,7 +45,7 @@ public class CountryRestController {
 		
 		int count = countryLikeDao.count(countryNo);
 		
-		return LikeVo.builder().action(!current).count(count).build();
+		return LikeVO.builder().action(!current).count(count).build();
 	}
 	
 	
