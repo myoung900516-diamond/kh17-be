@@ -110,9 +110,9 @@ from book group by book_genre;
 --[4]회원 : 등급별 회원 수, 포인트 합/평균/최대/최소 
 
 select
-  		member_level, count(*), sum(member_point), 
+  		member_level, count(*) count, sum(member_point), 
 		avg(member_point), max(member_point), min(member_point) 
-from member group by member_level;
+from member group by member_level order by count desc;
 
 --[5]게시글 : 말머리/작성자 별 글 수, 조회수/ 좋아요수/ 댓글 수 합/평균/최대/최소
 
