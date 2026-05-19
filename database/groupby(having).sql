@@ -98,7 +98,6 @@ select
 from lecture group by lecture_type order by count(*) desc;
 
 
-
 --[3]도서 : 장르별 도서 수, 판매 금액 합/평균/최대/최소
 
 select 
@@ -117,7 +116,7 @@ from member group by member_level order by count desc;
 --[5]게시글 : 말머리/작성자 별 글 수, 조회수/ 좋아요수/ 댓글 수 합/평균/최대/최소
 
 select 
-	board_head, count(*), sum(board_readCount), 
+	nvl(board_head, '없음'), count(*), sum(board_readCount), 
 	avg(board_readCount), max(board_readCount), min(board_readCount), 
 	sum(board_likeCount), 
 	avg(board_likeCount), max(board_likeCount), min(board_likeCount),
@@ -134,15 +133,30 @@ select
 	avg(board_replyCount), max(board_replyCount), min(board_replyCount) 
 from board group by board_writer;
 
+--(중요) 별칭만 통일 시키면 테이블 상관없이 결과집합이 동일하다.
+select country_region title, count(*) count from country group by country_region;
+select lecture_category title, count(*) count from lecture group by lecture_category;
+select lecture_type title, count(*) count from lecture group by lecture_type;
+select book_genre title, count(*) count from book group by book_genre;
+select member_level title, count(*) count from member group by member_level;
+select nvl(board_head, '없음') title, count(*) count from board group by board_head;  
 
+select extract(year from to_timestamp(book_publication_date, 'yyyy-mm-dd')) title 
+	from book;--년도를 뽑아라 
 
+--(추가) 연도별 출간된 권 수
+select title, count(*) count from( 
+	select extract(year from to_timestamp(book_publication_date, 'yyyy-mm-dd')) title 
+	from book
+) group by title order by title asc;
 
-
-
-
-
-
-
-
-
-
+--(추가) 월별 가입 회원 수
+select title, count(*) count from(
+	select to_char(member_join, 'yyyy-mm') title 
+	from member
+)group by title order by title asc;
+--(추가) 월별 작성된 게시글 수 
+select title, count(*) count from(
+	select to_char(board_wtime, 'yyyy-mm') title 
+	from board
+)group by title order by title asc;
