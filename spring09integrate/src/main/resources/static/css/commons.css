@@ -321,7 +321,7 @@ a.btn{
 /* (4) 1차(x) 모든 메뉴에 폭과 여백 지정 */
 /* .menu > li{ */
 .menu li{
-    width: 120px;
+    width: 140px;
     font-size: 20px;
     font-weight: bold;
     padding:0.25em;
@@ -343,7 +343,7 @@ ul{
     position: absolute;
     left: 0;
     /* right: 0; */
-    width: 120px;
+    width: 140px;
     top: 100%;
 }
 /* (7) 좌우 분리를 위한 .divider 생성 */

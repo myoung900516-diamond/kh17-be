@@ -44,12 +44,24 @@
 	<li class="divider"></li>
 	
 	<li>
-	    <a href="/admin/member/list">
-	        <i class="fa-solid fa-cog"></i>
-	        <span>회원 관리</span>
+	    <a href="#" onclick="return false">
+	        <i class="fa-solid fa-gear"></i>
+	        <span>관리메뉴</span>
 	    </a>
 	    <!-- 하위메뉴 -->
         <ul>
+        	<li>
+        		<a href="/admin/member/list">
+	        	<i class="fa-solid fa-users-gear"></i>
+	       		 <span>회원관리</span>
+	    		</a>
+        	</li>
+        	<li>
+        		<a href="/admin/stat/">
+	        	<i class="fa-solid fa-chart-line"></i>
+	       		 <span>데이터현황</span>
+	    		</a>
+        	</li>
             <li>
                 <a href="/member/logout">
                     <i class="fa-solid fa-right-from-bracket"></i>

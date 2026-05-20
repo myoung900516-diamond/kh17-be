@@ -73,6 +73,48 @@ public class StatRestController {
 		
 		return ChartDataVO.builder().type("doughnut").titles(titles).values(values).build();
 	}
+	@PostMapping("/book-genre")
+	public ChartDataVO bookByGenre() {
+		List<StatVO> list = statDao.bookByGenre();
+		
+		List<String> titles = new ArrayList<>();
+		List<Double> values = new ArrayList<>();
+		
+		for(StatVO statVO : list) {
+			titles.add(statVO.getTitle());
+			values.add(statVO.getValue());
+		}
+		
+		return ChartDataVO.builder().type("bar").titles(titles).values(values).build();
+	}
+	@PostMapping("/member-level")
+	public ChartDataVO memberByLevel() {
+		List<StatVO> list = statDao.memberByLevel();
+		
+		List<String> titles = new ArrayList<>();
+		List<Double> values = new ArrayList<>();
+		
+		for(StatVO statVO : list) {
+			titles.add(statVO.getTitle());
+			values.add(statVO.getValue());
+		}
+		
+		return ChartDataVO.builder().type("bar").titles(titles).values(values).build();
+	}
+	@PostMapping("/board-head")
+	public ChartDataVO boardByHead() {
+		List<StatVO> list = statDao.boardByHead();
+		
+		List<String> titles = new ArrayList<>();
+		List<Double> values = new ArrayList<>();
+		
+		for(StatVO statVO : list) {
+			titles.add(statVO.getTitle());
+			values.add(statVO.getValue());
+		}
+		
+		return ChartDataVO.builder().type("line").titles(titles).values(values).build();
+	}
 	
 	
 	
