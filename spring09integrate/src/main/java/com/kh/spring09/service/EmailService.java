@@ -1,14 +1,13 @@
 package com.kh.spring09.service;
 
-import java.text.DecimalFormat;
-import java.text.Format;
-import java.util.Random;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+
+import com.kh.spring09.dao.CertDao;
+import com.kh.spring09.dto.CertDto;
 
 @Service
 public class EmailService {
@@ -17,6 +16,8 @@ public class EmailService {
 	private JavaMailSender sender;
 	@Autowired
 	private RandomService randomService;
+	@Autowired
+	private CertDao certDao;
 	
 	
 	//이 메소드는 이제부터 비동기
@@ -47,6 +48,21 @@ public class EmailService {
 		
 //		message.setText("인증번호는 ["+f.format(number)+"]입니다. \n 입력창에 입력 후 확인을 눌러주세요");
 		message.setText("인증번호는 ["+number+"]입니다. \n 입력창에 입력 후 확인을 눌러주세요");
+		
 		sender.send(message);
+
+		CertDto certDto = certDao.selectOne(memberEmail);
+		if(certDto == null) {
+			certDao.insert(CertDto.builder()
+						.certEmail(memberEmail)
+						.certNumber(number)
+					.build());			
+		}
+		else {
+			certDao.update(CertDto.builder()
+					.certEmail(memberEmail)
+					.certNumber(number)
+				.build());	
+		}
 	}
 }
