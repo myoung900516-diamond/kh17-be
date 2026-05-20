@@ -38,6 +38,7 @@ public class StatRestController {
 		}
 		
 		//두개를 묶으려면 class를 만들거나 Map으로 하거나 
+		//Map 는 나중에 알아보기 힘듬. 결국 class로
 		return Map.of("titles", titles, "values", values);
 	}
 	
