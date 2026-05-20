@@ -24,4 +24,39 @@ public class StatDao {
 				+ "order by value desc, title asc";
 		return jdbcTemplate.query(sql, statMapper);
 	}
+	
+	public List<StatVO> lectureByCategory(){
+		String sql = "select lecture_category title, count(*) value "
+					+ "from lecture group by lecture_category "
+					+ "order by value desc, title asc";
+		return jdbcTemplate.query(sql, statMapper);
+	}
+	
+	public List<StatVO> lectureByType(){
+		String sql = "select lecture_type title, count(*) value "
+				+ "from lecture group by lecture_type "
+				+ "order by value desc, title asc";
+		return jdbcTemplate.query(sql, statMapper);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
