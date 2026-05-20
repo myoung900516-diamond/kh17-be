@@ -245,7 +245,7 @@ a.btn{
 .flex-area > .flex-fill {
     flex-grow: 1;
 }
-.flex-area.fill-center{
+.flex-area.flex-center{
     justify-content: center;
     align-items: center;
 }

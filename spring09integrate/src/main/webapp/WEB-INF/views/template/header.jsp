@@ -77,7 +77,7 @@ loginLevel : ${sessionScope.loginLevel} --%>
     <!-- 디자인을 작성하기 위한 영역 -->
     <link rel="stylesheet" type="text/css" href="/css/commons.css">
     <style>
-        /* div { box-shadow: 0 0 0 1px gray ;} */
+        /*div { box-shadow: 0 0 0 1px gray ;}*/
     </style>
     
     <!-- lightpick CDN -->
@@ -98,7 +98,7 @@ loginLevel : ${sessionScope.loginLevel} --%>
             <!-- 헤더 영역 -->
             <div class="flex-area">
                 <div class="w-25 flex-area flex-center">
-                    <img src="https://www.dummyimage.com/200x50">
+                    <img src="/images/kh.jpg" class="w-50">
                 </div>
                 <div class="w-50 flex-area flex-center">
                     <h1>KH정보교육원 스프링개발자 수업자료</h1>
@@ -125,6 +125,7 @@ loginLevel : ${sessionScope.loginLevel} --%>
 					</c:if>
 				</c:if>
             </div>
+            
 
             <!-- 사이드바 및 컨텐츠 -->
             <div style="min-height: 450px;" class="flex-area">
@@ -180,6 +181,7 @@ loginLevel : ${sessionScope.loginLevel} --%>
                     </div>
                 </div>
                 <div class="w-200 flex-fill">
+
 
 
 
