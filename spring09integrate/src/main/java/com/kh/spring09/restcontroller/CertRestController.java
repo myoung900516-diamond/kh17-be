@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kh.spring09.dao.CertDao;
 import com.kh.spring09.service.EmailService;
 
 @CrossOrigin
