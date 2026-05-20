@@ -3,6 +3,7 @@ package com.kh.spring09.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -11,6 +12,9 @@ public class EmailService {
 	@Autowired
 	private JavaMailSender sender;
 	
+	
+	//이 메소드는 이제부터 비동기
+	@Async
 	public void sendWelcomeMail(String memberEmail) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		

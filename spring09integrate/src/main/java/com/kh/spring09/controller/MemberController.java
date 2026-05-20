@@ -26,6 +26,7 @@ import com.kh.spring09.dto.MemberExitDto;
 import com.kh.spring09.dto.MemberHistoryDto;
 import com.kh.spring09.exception.TargetNotfoundException;
 import com.kh.spring09.service.AttachService;
+import com.kh.spring09.service.EmailService;
 import com.kh.spring09.vo.HistoryPageVO;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -44,6 +45,8 @@ public class MemberController {
 	private BoardDao boardDao;
 	@Autowired
 	private AttachService attachService;
+	@Autowired
+	private EmailService emailService;
 	
 	//회원가입
 	@GetMapping("/join")
@@ -59,6 +62,14 @@ public class MemberController {
 			int attachNo = attachService.save(attach);
 			memberDao.connect(memberDto.getMemberId(), attachNo);
 		}
+		//가입 완료 메일 발송
+		//-이 지점에서 실행되어야 하는 것은 맞지만 소요시간이 너무길다
+		//- 이대로 놔둬도 되지만 비동기 처리를 하려면?
+		//1.비동기 사용 선언(@SpringBootAplication이 붙은 파일에 설정)
+		//-@EnableAsync추가
+		//2.비동기 처리해야할 메소드 상단에 @Async작성
+		emailService.sendWelcomeMail(memberDto.getMemberEmail());
+		
 		return "redirect:./joinFinish";
 	}
 	//회원가입완료
