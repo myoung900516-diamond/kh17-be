@@ -10,7 +10,7 @@ check(regexp_like(dept_name, '^[가-힣]{1,20}$'))
 drop table emp;
 create sequence emp_seq;
 create table emp(
-emp_id varchar(50) primary key,
+emp_id number primary key,
 emp_dept references dept(dept_name) on delete set null,
 emp_name varchar(60) not null,
 emp_email varchar(100) not null unique,
