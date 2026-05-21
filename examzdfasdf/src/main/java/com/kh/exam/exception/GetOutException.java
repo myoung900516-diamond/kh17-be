@@ -1,0 +1,15 @@
+package com.kh.exam.exception;
+
+//회원이 상위권한 기능에 접근하면 발생할 예외
+public class GetOutException extends RuntimeException{
+
+	public GetOutException() {
+		super();
+	}
+
+	public GetOutException(String message) {
+		super(message);
+	}
+	
+
+}

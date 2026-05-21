@@ -24,7 +24,10 @@ public class DeptController {
 	@PostMapping("/add")
 	public String add(@ModelAttribute DeptDto deptDto) {
 		deptDao.insert(deptDto);
-		
+		if(deptDto == null) {
+			return "redirect:./add?error"; 
+	}
+		//부서명이 중복되었을 때 처리
 		
 		return "redirect:./addFinish";
 	}

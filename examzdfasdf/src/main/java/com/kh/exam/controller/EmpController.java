@@ -23,7 +23,11 @@ public class EmpController {
 	}
 	@PostMapping("/create")
 	public String create(@ModelAttribute EmpDto empDto) {
+		int empId = empDao.sequence();
+		empDto.setEmpId(empId);
+		
 		empDao.insert(empDto);
+		
 		return "redirect:./createComplate";
 	}
 	@RequestMapping("/createComplate")
