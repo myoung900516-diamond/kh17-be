@@ -28,6 +28,7 @@ import com.kh.spring09.dto.MemberExitDto;
 import com.kh.spring09.dto.MemberHistoryDto;
 import com.kh.spring09.exception.GetOutException;
 import com.kh.spring09.exception.TargetNotfoundException;
+import com.kh.spring09.exception.WhoAreYouException;
 import com.kh.spring09.service.AttachService;
 import com.kh.spring09.service.EmailService;
 import com.kh.spring09.vo.HistoryPageVO;
@@ -362,7 +363,32 @@ public class MemberController {
 		}
 	}
 
-	
+	@GetMapping("/cert")
+	public String cert(@ModelAttribute CertDto certDto) {
+		
+		CertDto findDto = certDao.selectOne(certDto.getCertEmail());
+		if(findDto == null) throw new WhoAreYouException();
+		
+		
+		boolean valid = certDto.getCertNumber().equals(findDto.getCertNumber());
+		if(valid == false) throw new GetOutException();
+		
+		LocalDateTime current = LocalDateTime.now();//현재시각
+		LocalDateTime sent = findDto.getCertTime().toLocalDateTime();//보낸시간
+		
+		Duration duration = Duration.between(sent, current);
+		if(duration.toMinutes() > 10) {
+			throw new GetOutException();
+		}
+		
+		if(findDto.isComplete()) 
+			
+			throw new GetOutException();
+		
+		certDao.update(certDto.getCertEmail());
+		
+		return "member/cert";
+	}
 	
 	
 	

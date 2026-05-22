@@ -16,6 +16,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.kh.spring09.dao.CertDao;
 import com.kh.spring09.dto.CertDto;
@@ -98,12 +99,44 @@ public class EmailService {
 		sender.send(message);
 		
 		
+	}
+	//인증용 링크 발송 메소드
+	public void sendCertLink(String memberEmail) throws MessagingException{
+		MimeMessage message = sender.createMimeMessage();
 		
+		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
 		
+		helper.setTo(memberEmail);
+		helper.setSubject("이메일 인증링크가 도착하였습니다");
 		
+		String number = randomService.generateNumber(6);
 		
+		String url = ServletUriComponentsBuilder
+				.fromCurrentContextPath() //현재 주소의 최상단에서 시작
+				.path("/member/cert") //추가 경로를 합치고
+				.queryParam("certEmail", memberEmail)
+				.queryParam("certNumber", number)
+				.toUriString(); //주소를 만드세요
+
+		String html = "<h2><a href='"+url+"'>이메일인증완료하기</a></h2>";
 		
+		helper.setText(html, true);
 		
+		sender.send(message);
+		
+		CertDto certDto = certDao.selectOne(memberEmail);
+		if(certDto == null) {
+			certDao.insert(CertDto.builder()
+						.certEmail(memberEmail)
+						.certNumber(number)
+					.build());			
+		}
+		else {
+			certDao.update(CertDto.builder()
+					.certEmail(memberEmail)
+					.certNumber(number)
+				.build());	
+		}
 	}
 	
 	public String createCertHtml(String certNumber) throws IOException {

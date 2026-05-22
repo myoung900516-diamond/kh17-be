@@ -56,13 +56,14 @@ public class InterceptorConfiguration implements WebMvcConfigurer {
 				.excludePathPatterns(
 						"/lecture/list"
 						,"/lecture/detail"
+						,"/lecture/image"
 						,"/member/join*"
 //						"/member/joinfinish", 
 						,"/member/login"
 						,"/member/goodbyeFinish"
 						,"/member/detail"
 						,"/member/profile"
-						,"/lecture/image"
+						,"/member/cert"
 //						,"/board/list"
 //						,"/board/detail"
 						);
