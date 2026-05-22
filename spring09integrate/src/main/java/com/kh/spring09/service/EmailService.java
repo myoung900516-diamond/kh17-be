@@ -1,13 +1,27 @@
 package com.kh.spring09.service;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.kh.spring09.dao.CertDao;
 import com.kh.spring09.dto.CertDto;
+
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 @Service
 public class EmailService {
@@ -32,7 +46,7 @@ public class EmailService {
 	}
 	
 	
-	//인증번호 발송 메소드
+	//인증번호 발송 메소드 (단문메일용)
 	public void sendCertNumber(String memberEmail) {
 		SimpleMailMessage message = new SimpleMailMessage();
 		
@@ -65,4 +79,86 @@ public class EmailService {
 				.build());	
 		}
 	}
+	//인증번호 발송 메소드(마임메세지용)
+	public void sendCertNumber2(String memberEmail) throws MessagingException, IOException {
+		MimeMessage message = sender.createMimeMessage();
+		
+		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+		
+		helper.setTo(memberEmail);
+		helper.setSubject("[KH정보교육원] 인증번호테스트");
+		
+
+		String certNumber = randomService.generateNumber(6);
+		
+		String template = this.createCertHtml(certNumber);
+		
+		helper.setText(template, true);
+		
+		sender.send(message);
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+	public String createCertHtml(String certNumber) throws IOException {
+		ClassPathResource resource = 
+				new ClassPathResource("templates/cert-template.html");
+		
+		File target = resource.getFile();
+//		전송할 번호 생성		
+//		파일 읽을 준비
+		BufferedReader reader = new BufferedReader(new FileReader(target));
+		
+		StringBuffer buffer = new StringBuffer();
+//		한줄 씩 읽어와서 합성
+		while(true){
+			String line = reader.readLine();//한줄을 읽어서
+			if(line == null) break;
+			buffer.append(line);
+		}
+		reader.close();
+		
+//		임기응변 : 문자열 치환명령으로 #1~#6까지 찾아서 번호로 교체 
+		String html = buffer.toString();
+		
+//		jsoup 기술을 이용해서 문자열을 html로 변환한 뒤 원하는 태그를 찾아 변조
+		Document document = Jsoup.parse(html);
+		
+		Elements list = document.select(".number-wrapper");//class=number-wrapper인 항목을 찾아
+		
+		for(int i=0; i<list.size(); i++) {
+			Element tag = list.get(i);//태그 정보를 얻어내서
+			char ch = certNumber.charAt(i);//인증번호 한 자리를 뽑아서
+			tag.text(String.valueOf(ch));//설정
+		}
+		return document.toString();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
