@@ -17,13 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.spring09.dao.BoardDao;
+import com.kh.spring09.dao.CertDao;
 import com.kh.spring09.dao.MemberDao;
 import com.kh.spring09.dao.MemberExitDao;
 import com.kh.spring09.dao.MemberHistoryDao;
 import com.kh.spring09.dto.BoardDto;
+import com.kh.spring09.dto.CertDto;
 import com.kh.spring09.dto.MemberDto;
 import com.kh.spring09.dto.MemberExitDto;
 import com.kh.spring09.dto.MemberHistoryDto;
+import com.kh.spring09.exception.GetOutException;
 import com.kh.spring09.exception.TargetNotfoundException;
 import com.kh.spring09.service.AttachService;
 import com.kh.spring09.service.EmailService;
@@ -47,6 +50,8 @@ public class MemberController {
 	private AttachService attachService;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private CertDao certDao;
 	
 	//회원가입
 	@GetMapping("/join")
@@ -57,6 +62,13 @@ public class MemberController {
 	@PostMapping("/join")
 	public String join(@ModelAttribute MemberDto memberDto, 
 						@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
+		//이메일 인증내역이 정상적으로 존재하는지 검사해서 아닌 경우를 차단
+		CertDto certDto = certDao.selectOne(memberDto.getMemberEmail());
+		if(certDto == null) throw new GetOutException();
+		if(!certDto.isComplete()) throw new GetOutException();
+		certDao.delete(certDto.getCertEmail());
+		
+		
 		memberDao.insert(memberDto);
 		if(!attach.isEmpty()) {
 			int attachNo = attachService.save(attach);

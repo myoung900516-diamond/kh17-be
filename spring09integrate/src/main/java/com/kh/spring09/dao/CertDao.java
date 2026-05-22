@@ -24,7 +24,7 @@ public class CertDao {
 		jdbcTemplate.update(sql, params);
 	}
 	public boolean update(CertDto certDto) {
-		String sql = "update cert"
+		String sql = "update cert "
 					+ "set cert_number=?, cert_time=systimestamp "
 					+ "where cert_email=?";
 		Object[] params = {certDto.getCertNumber(), certDto.getCertEmail()};
@@ -41,6 +41,28 @@ public class CertDao {
 		String sql = "delete cert where cert_email=?";
 		Object[] params = {certEmail};
 		return jdbcTemplate.update(sql, params)>0;
+	}
+	
+	public boolean update(String certEmail) {
+		String sql = "update cert set cert_yn = 'Y' where cert_email=? ";
+		Object[] params = {certEmail};
+		return jdbcTemplate.update(sql, params)>0 ;
+	}
+	//청소 메소드 - nTime
+	public boolean clear(int nTime, int yTime) {
+		String sql = "delete cert where"
+					+ "(cert_yn = 'N' and systimestamp - cert_time > numtodsinterval( ?, 'MINUTE' ))"
+					+ "or "
+					+ "(cert_yn = 'Y' and systimestamp - cert_time > numtodsinterval( ?, 'MINUTE' ))";
+		
+		Object[] params = {
+//				String.valueOf(nTime),//따옴표 생기도록 변환
+//				String.valueOf(yTime)//따옴표 생기도록 변환
+				nTime, yTime
+		};
+		return jdbcTemplate.update(sql, params)>0;
+		
+		
 	}
 	
 	
