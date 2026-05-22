@@ -31,8 +31,8 @@ public class CertRestController {
 	@PostMapping("/send")
 	public void send(@RequestParam String certEmail) throws MessagingException, IOException {
 //		emailService.sendCertNumber2(certEmail);
-//		emailService.sendCertNumber2(certEmail);
-		emailService.sendCertLink(certEmail);
+		emailService.sendCertNumber2(certEmail);
+//		emailService.sendCertLink(certEmail);
 		
 		
 	}

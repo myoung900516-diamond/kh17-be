@@ -87,16 +87,30 @@ public class EmailService {
 		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
 		
 		helper.setTo(memberEmail);
-		helper.setSubject("[KH정보교육원] 인증번호테스트");
+		helper.setSubject("[KH정보교육원] 인증 코드가 도착하였습니다");
 		
 
-		String certNumber = randomService.generateNumber(6);
+		String number = randomService.generateNumber(6);
 		
-		String template = this.createCertHtml(certNumber);
+		String template = this.createCertHtml(number);
 		
 		helper.setText(template, true);
 		
 		sender.send(message);
+		
+		CertDto certDto = certDao.selectOne(memberEmail);
+		if(certDto == null) {
+			certDao.insert(CertDto.builder()
+						.certEmail(memberEmail)
+						.certNumber(number)
+					.build());			
+		}
+		else {
+			certDao.update(CertDto.builder()
+					.certEmail(memberEmail)
+					.certNumber(number)
+				.build());	
+		}
 		
 		
 	}
