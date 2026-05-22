@@ -28,8 +28,11 @@ public class DeptController {
 			return "redirect:./add?error"; 
 	}
 		//부서명이 중복되었을 때 처리
+		/*
+		 * if(이미 사용중인 부서명이라면) { return "redirect:add?duplicate"; }
+		 */
 		
-		return "redirect:./addFinish";
+		return "redirect:addFinish";
 	}
 	@RequestMapping("/addFinish")
 	public String addFinish() {

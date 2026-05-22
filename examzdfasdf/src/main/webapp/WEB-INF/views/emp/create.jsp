@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -126,8 +127,11 @@
         <div class="cell">
             <label>부서명<i class="fa-solid fa-asterisk red"></i></label>
             <select name="empDept" class="field w-100">
+            <c:forEach var="deptDto" items="${list}">
                 <option value="">선택하세요</option>
-                <option class="dept-id"></option>
+               <!--  <option class="dept-id"></option> -->
+                <option value="${deptDto.deptId}">${deptDto.deptName}</option>
+            </c:forEach>
             </select>
             <div class="fail-feedback">필수 항목입니다.</div>
         </div>
