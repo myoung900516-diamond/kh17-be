@@ -1,0 +1,22 @@
+create table emp(
+emp_no
+emp_id,
+emp_pw,
+emp_name,
+emp_birth,
+emp_email,
+emp_contact,
+emp_post,
+emp_address1,
+emp_address2,
+emp_level,
+emp_position,
+emp_dept,
+emp_approval_status,
+emp_use_yn,
+emp_hire_date,
+emp_retired_date,
+emp_create_at,
+emp_mentor,
+emp_pw_change
+);
