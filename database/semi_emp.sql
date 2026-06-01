@@ -23,7 +23,7 @@ emp_position varchar(15byte) default '사원' not null,
 emp_dept varchar(6byte),
 emp_approval_status char(2byte) default 'N',
 emp_use_yn char(2byte) default 'N',
-emp_hire_date timestamp,
+emp_hire_date timestamp not null,
 emp_retired_date timestamp,
 emp_create_at timestamp default SYSTIMESTAMP not null,
 emp_mentor references emp(emp_no),
@@ -47,7 +47,10 @@ check(
 check(emp_level in('사용자', '관리자')),
 check(emp_position in('사원', '선임', '주임', '대리', '과장', '차장', '부장', '이사', '상무', '전무', '부사장', '사장', '부회장', '회장')),
 check(emp_dept in('영업', '관리', '감사')),
-
+check(emp_approval_status in('Y', 'N')),
+check(emp_use_yn in('Y', 'N'))
 );
+
+commit;
 
 
