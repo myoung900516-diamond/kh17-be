@@ -53,4 +53,28 @@ check(emp_use_yn in('Y', 'N'))
 
 commit;
 
+create table emp_history(
+emp_history_no number primary key,
+emp_history_origin references emp(emp_no),
+emp_history_time timestamp default systimestamp not null,
+emp_history_address varchar(45) not null,
+emp_history_agent varchar(512) not null
+);
 
+create sequence emp_history_seq;
+
+commit;
+
+create table emp_profile(
+emp_no references emp(emp_no) not null,
+attach_no references attach(attach_no) not null,
+primary key(emp_no, attach_no)
+);
+
+
+
+commit;
+
+alter table emp modify (emp_hire_date timestamp null);
+
+commit;
