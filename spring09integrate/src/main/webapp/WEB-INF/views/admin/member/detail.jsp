@@ -17,10 +17,8 @@
  		<li>등급 : ${memberDto.memberLevel}</li>
  		<li>상태메세지 : ${memberDto.memberMessage}</li>
  		<li>차단여부 : ${memberDto.memberBlock}
- 			<button>
  				<a href="./block?memberId=${memberDto.memberId}">
  				  ${memberDto.memberBlock == 'Y' ? '해제' : '차단'}</a>
- 			</button>
  		</li>
  		<li>포인트 : <fmt:formatNumber value = "${memberDto.memberPoint}" pattern="#,##0"/></li>
  		<li>가입일 : <fmt:formatDate value = "${memberDto.memberJoin}" pattern="y년 M월 d일 E a h시 m분"/></li>
