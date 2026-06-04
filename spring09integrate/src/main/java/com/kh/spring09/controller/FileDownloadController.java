@@ -84,10 +84,12 @@ public class FileDownloadController {
 	public ResponseEntity<ByteArrayResource> modern(@RequestParam int attachNo) throws IOException{
 		
 		AttachDto attachDto = attachDao.selectOne(attachNo);
+//		System.out.println(attachNo);
 		if(attachDto == null) throw new TargetNotfoundException("존재하지 않는 파일");
 		
 		File dir = new File("D:/upload");
 		File target = new File(dir, String.valueOf(attachNo));
+//		System.out.println(target);
 		if(!target.isFile()) throw new TargetNotfoundException("존재하지 않는 파일");
 		
 		//3.사용자에게 알려줄 다운로드 정보(헤더) 설정
