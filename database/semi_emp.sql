@@ -323,3 +323,7 @@ SET emp_use_yn = 'N'
 WHERE emp_use_yn IS NULL;
 
 COMMIT;
+
+ALTER TABLE emp ADD (email_verified CHAR(1) DEFAULT 'N' NOT NULL);
+
+commit;
