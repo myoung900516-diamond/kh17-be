@@ -234,3 +234,92 @@ alter table emp drop(emp_approval_status);
 alter table emp rename column dummy to emp_approval_status;
 
 select * from emp;
+
+
+select attach_no from emp_profile where emp_no='20260006';
+
+select *
+from attach
+where attach_no = 9;
+
+delete from emp_profile where emp_no='20260006';
+
+commit;
+
+select *
+from attach
+where attach_no = (
+    select max(attach_no)
+    from emp_profile
+    where emp_no = '20260006'
+);
+
+select '[' || emp_birth || ']'
+from emp
+where emp_no = '20260006';
+
+SELECT column_name
+FROM user_cons_columns
+WHERE constraint_name = 'SYS_C007585';
+
+
+SELECT constraint_name, constraint_type
+FROM user_constraints
+WHERE constraint_name = 'SYS_C008068';
+
+SELECT *
+FROM emp_attach
+WHERE emp_no = '사원번호';
+	
+select constraint_name,
+       constraint_type,
+       table_name
+from user_constraints
+where constraint_name = 'SYS_C007585';
+
+select index_name,
+       status
+from user_indexes
+where index_name = 'SYS_C007586';
+
+alter index SYS_C007585 rebuild;
+
+select index_name, status
+from user_indexes
+where index_name = 'SYS_C007586';
+
+commit;
+
+SELECT index_name,
+       status
+FROM user_indexes
+WHERE index_name = 'SYS_C007586';
+
+alter index SYS_C007586 rebuild;
+
+SELECT column_name, data_default
+FROM user_tab_columns
+WHERE table_name = 'EMP'
+AND column_name IN (
+    'EMP_APPROVAL_STATUS',
+    'EMP_USE_YN'
+);
+
+SELECT dbms_metadata.get_ddl('TABLE', 'EMP')
+FROM dual;
+
+ALTER TABLE emp
+MODIFY emp_approval_status DEFAULT 'N';
+
+ALTER TABLE emp
+MODIFY emp_use_yn DEFAULT 'N';
+
+UPDATE emp
+SET emp_approval_status = 'N'
+WHERE emp_approval_status IS NULL;
+
+UPDATE emp
+SET emp_use_yn = 'N'
+WHERE emp_use_yn IS NULL;
+
+COMMIT;
