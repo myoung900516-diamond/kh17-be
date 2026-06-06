@@ -327,3 +327,14 @@ COMMIT;
 ALTER TABLE emp ADD (email_verified CHAR(1) DEFAULT 'N' NOT NULL);
 
 commit;
+
+ALTER TABLE emp
+RENAME COLUMN email_verified TO emp_email_verified;
+
+commit;
+
+update emp
+set emp_email_verified = 'Y'
+where emp_no = '20260006';
+
+commit;
