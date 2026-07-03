@@ -20,6 +20,8 @@ public class BookRestController {
 	
 	@PostMapping("/insert")
 	public void insert(@RequestBody BookDto bookDto) {
+		int bookId = bookDao.sequence();
+		bookDto.setBookId(bookId);
 		bookDao.insert(bookDto);
 	}
 
