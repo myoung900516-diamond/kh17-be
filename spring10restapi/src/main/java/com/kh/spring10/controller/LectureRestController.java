@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.LectureDao;
 import com.kh.spring10.dto.LectureDto;
+import com.kh.spring10.vo.ListVO;
 
 @CrossOrigin
 @RestController
@@ -38,7 +40,19 @@ public class LectureRestController {
 		return lectureDao.selectList();
 	}
 	
-	
+	@GetMapping("/listForReact")
+	public ListVO listForReact(
+			@RequestParam(required = false, defaultValue= "0") int lastLectureNo, 
+			@RequestParam(required = false, defaultValue= "10") int size
+			){
+		List list = lectureDao.selectListFroReact(lastLectureNo, size);
+		int count = lectureDao.countForReact(lastLectureNo);
+		
+		return ListVO.builder()
+					.list(list)
+					.last(count <= size)
+					.build();
+	}
 	
 	
 	

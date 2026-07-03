@@ -8,10 +8,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.BookDao;
 import com.kh.spring10.dto.BookDto;
+import com.kh.spring10.vo.ListVO;
 
 @CrossOrigin
 @RestController
@@ -31,5 +33,18 @@ public class BookRestController {
 	@GetMapping("/list")
 	public List<BookDto> list(){
 		return bookDao.selectList();
+	}
+	@GetMapping("/listForReact")
+	public ListVO listForReact(
+			@RequestParam(required = false, defaultValue= "0") int lastBookId, 
+			@RequestParam(required = false, defaultValue= "10") int size
+			){
+		List list = bookDao.selectListFroReact(lastBookId, size);
+		int count = bookDao.countForReact(lastBookId);
+		
+		return ListVO.builder()
+					.list(list)
+					.last(count <= size)
+					.build();
 	}
 }

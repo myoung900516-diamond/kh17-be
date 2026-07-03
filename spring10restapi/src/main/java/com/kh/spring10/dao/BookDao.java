@@ -8,6 +8,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring10.dto.BookDto;
+import com.kh.spring10.dto.LectureDto;
 import com.kh.spring10.mapper.BookMapper;
 import com.kh.spring10.vo.PageVO;
 
@@ -148,7 +149,23 @@ public class BookDao {
 		Object[] params = {bookId};
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
-	
+	public List<BookDto> selectListFroReact(int lastBookId, int size){
+		String sql = "select * from ("
+						+ "select rownum rn, TMP.* from("
+							+ "select * from book "
+							+ "where book_id > ? "
+							+ "order by book_id asc"
+							+ ")TMP"
+						+ ") where rn between 1 and ?";
+		Object[] params = { lastBookId, size};
+		return jdbcTemplate.query(sql, bookMapper, params);
+		
+	}
+	public int countForReact(int lastBookId) {
+		String sql = "select count(*) from book where book_id > ?";
+		Object[] params = { lastBookId };
+		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
 	
 
 }

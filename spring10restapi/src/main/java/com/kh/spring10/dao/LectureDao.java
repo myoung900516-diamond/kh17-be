@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.spring10.dto.CountryDto;
 import com.kh.spring10.dto.LectureDto;
 import com.kh.spring10.mapper.LectureMapper;
 import com.kh.spring10.vo.PageVO;
@@ -145,6 +146,24 @@ public class LectureDao {
 					+ "where lecture_no =?";
 		Object[] params = {lectureNo};
 		return jdbcTemplate.queryForList(sql, int.class, params);
+	}
+	
+	public List<LectureDto> selectListFroReact(int lastLectureNo, int size){
+		String sql = "select * from ("
+						+ "select rownum rn, TMP.* from("
+							+ "select * from lecture "
+							+ "where lecture_no > ? "
+							+ "order by lecture_no asc"
+							+ ")TMP"
+						+ ") where rn between 1 and ?";
+		Object[] params = { lastLectureNo, size};
+		return jdbcTemplate.query(sql, lectureMapper, params);
+		
+	}
+	public int countForReact(int lastLectureNo) {
+		String sql = "select count(*) from lecture where lecture_no > ?";
+		Object[] params = { lastLectureNo };
+		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 	
 
