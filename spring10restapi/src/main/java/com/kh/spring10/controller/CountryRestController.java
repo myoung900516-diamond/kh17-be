@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.CountryDao;
@@ -24,7 +25,13 @@ public class CountryRestController {
 	}
 
 	
-	
+	@GetMapping("/listForReact")
+	public List<CountryDto> listForReact(
+			@RequestParam(required = false, defaultValue= "0") int lastCountryNo, 
+			@RequestParam(required = false, defaultValue= "10") int size
+			){
+		return countryDao.selectListFroReact(lastCountryNo, size);
+	}
 	
 	
 	
