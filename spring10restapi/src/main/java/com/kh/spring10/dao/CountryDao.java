@@ -164,8 +164,8 @@ public class CountryDao {
 	public List<CountryDto> selectListFroReact(int lastCountryNo, int size){
 		String sql = "select * from ("
 						+ "select rownum rn, TMP.* from("
-							+ "select * from country"
-							+ "where country_no > ?"
+							+ "select * from country "
+							+ "where country_no > ? "
 							+ "order by country_no asc"
 							+ ")TMP"
 						+ ") where rn between 1 and ?";
@@ -173,7 +173,11 @@ public class CountryDao {
 		return jdbcTemplate.query(sql, countryMapper, params);
 		
 	}
-	
+	public int countForReact(int lastCountryNo) {
+		String sql = "select count(*) from country where country_no > ?";
+		Object[] params = { lastCountryNo };
+		return jdbcTemplate.queryForObject(sql, int.class, params);
+	}
 	
 	
 	

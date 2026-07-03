@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.CountryDao;
 import com.kh.spring10.dto.CountryDto;
+import com.kh.spring10.vo.ListVO;
 
 @CrossOrigin
 @RestController
@@ -26,11 +27,17 @@ public class CountryRestController {
 
 	
 	@GetMapping("/listForReact")
-	public List<CountryDto> listForReact(
+	public ListVO listForReact(
 			@RequestParam(required = false, defaultValue= "0") int lastCountryNo, 
 			@RequestParam(required = false, defaultValue= "10") int size
 			){
-		return countryDao.selectListFroReact(lastCountryNo, size);
+		List list = countryDao.selectListFroReact(lastCountryNo, size);
+		int count = countryDao.countForReact(lastCountryNo);
+		
+		return ListVO.builder()
+					.list(list)
+					.last(count <= size)
+					.build();
 	}
 	
 	
