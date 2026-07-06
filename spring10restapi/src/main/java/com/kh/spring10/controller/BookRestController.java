@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.BookDao;
 import com.kh.spring10.dto.BookDto;
+import com.kh.spring10.dto.LectureDto;
 import com.kh.spring10.vo.ListVO;
 
 @CrossOrigin
@@ -47,4 +48,30 @@ public class BookRestController {
 					.last(count <= size)
 					.build();
 	}
+	
+	@GetMapping("/detail")
+	public BookDto detail(@RequestParam int bookId) {
+		return bookDao.selectOne(bookId);
+	}
+	
+	@GetMapping("/delete")
+	public boolean delete(@RequestParam int bookId) {
+		return bookDao.delete(bookId);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
