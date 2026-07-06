@@ -54,7 +54,15 @@ public class LectureRestController {
 					.build();
 	}
 	
+	@GetMapping("/detail")
+	public LectureDto detail(@RequestParam int lectureNo) {
+		return lectureDao.selectOne(lectureNo);
+	}
 	
+	@GetMapping("/delete")
+	public boolean delete(@RequestParam int lectureNo) {
+		return lectureDao.delete(lectureNo);
+	}
 	
 	
 	
