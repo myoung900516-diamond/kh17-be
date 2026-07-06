@@ -49,7 +49,15 @@ public class CountryRestController {
 					.last(count <= size)
 					.build();
 	}
+	@GetMapping("/detail")
+	public CountryDto detail(@RequestParam int countryNo) {
+		return countryDao.selectOne(countryNo);
+	}
 	
+	@GetMapping("/delete")
+	public boolean delete(@RequestParam int countryNo) {
+		return countryDao.delete(countryNo);
+	}
 	
 	
 	
