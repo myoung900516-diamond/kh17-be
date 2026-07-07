@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.spring11.annotation.CommonsApiResponse;
 import com.kh.spring11.dao.LectureDao;
 import com.kh.spring11.dto.LectureDto;
 import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.vo.LectureInsertVO;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -31,6 +34,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @CrossOrigin
 @RestController
 @RequestMapping("/api/lecture")
+@CommonsApiResponse
 public class LectureRestController {
 	
 	@Autowired
@@ -50,16 +54,8 @@ public class LectureRestController {
 									schema = @Schema(implementation = LectureDto.class)
 									)
 							),
-					@ApiResponse(
-							responseCode = "500", 
-							description = "서버 내부 오류",
-							content = @Content(
-									mediaType = "text/plain",
-									schema = @Schema(implementation = String.class, example = "Server error")
-									)
-							)
-					}
-			)
+					
+					})
 	
 	
 	@PostMapping("/")
@@ -76,20 +72,83 @@ public class LectureRestController {
 		lectureDao.insert(lectureDto);
 		return lectureDto;
 	}
+	
+	
+	
+	
+	@Operation(
+//			deprecated = true,
+			summary = "강좌 목록 조회",
+			description = "강좌를 최근 등록된 순서대로 조회하여 출력합니다",
+			responses = {
+					@ApiResponse(
+							responseCode = "200",
+							description="조회성공",
+							content = @Content(
+									mediaType = "application/json",
+									array = @ArraySchema(
+											schema = @Schema(implementation = LectureDto.class)
+											)
+									)
+							),
+					
+			}
+			
+			)
+	
+	
 	@GetMapping("/")
 	public List<LectureDto> list(){
 		return lectureDao.selectList(1, Integer.MAX_VALUE);
 	}
+	
+	@Operation(
+			//deprecated =true,
+			summary = "강좌 상세 조회",
+			description = "특정 강좌에 대한 모든 정보를 조회합니다",
+			/*
+			 * parameters = @Parameter( required = true, name = "강좌 고유번호", example = "1" ),
+			 */
+			responses = @ApiResponse(
+					responseCode = "200",
+					description = "대상 조회 성공",
+					content = @Content(
+							schema = @Schema(implementation = LectureDto.class)
+							)
+					)
+			)
+	
 	//상세 : PK를 경로 변수로 받음
 	@GetMapping("/{lectureNo}")
-	public LectureDto find(@PathVariable int lectureNo) {
+	public LectureDto find(
+			@Parameter(description = "조회할 강좌 번호", example = "1")
+			@PathVariable int lectureNo) {
 		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
 		if(lectureDto == null) throw new TargetNotfoundException();
 		return lectureDto;
 	}
+	
+	
+	@Operation(
+			//deprecated =true,
+			summary = "강좌 삭제",
+			description = "특정 강좌에 대한 모든 정보를 삭제합니다",
+			
+			responses = @ApiResponse(
+					responseCode = "200",
+					description = "삭제한 대상",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = LectureDto.class)
+							)
+					)
+			)
+	
 	//삭제
 	@DeleteMapping("/{lectureNo}")
-	public LectureDto delete(@PathVariable int lectureNo) {
+	public LectureDto delete(
+			@Parameter(description = "삭제할 강좌 번호", example = "1")
+			@PathVariable int lectureNo) {
 		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
 		if(lectureDto == null) throw new TargetNotfoundException();
 		lectureDao.delete(lectureNo);
