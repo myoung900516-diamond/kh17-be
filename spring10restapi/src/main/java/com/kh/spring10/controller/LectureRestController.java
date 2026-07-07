@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.LectureDao;
-import com.kh.spring10.dto.CountryDto;
 import com.kh.spring10.dto.LectureDto;
 import com.kh.spring10.error.TargetNotfoundException;
 import com.kh.spring10.vo.ListVO;
@@ -63,13 +63,21 @@ public class LectureRestController {
 					.last(count <= size)
 					.build();
 	}
-	
+	//query string 방식
 	@GetMapping("/detail")
 	public LectureDto detail(@RequestParam int lectureNo) {
 		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
 		if(lectureDto == null) throw new TargetNotfoundException();
 		return lectureDto;
 	}
+	//path variable 방식
+	@GetMapping("/detail/{lectureNo}")
+	public LectureDto detail2(@PathVariable int lectureNo) {
+		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
+		if(lectureDto == null) throw new TargetNotfoundException();
+		return lectureDto;
+	}
+
 	
 	@GetMapping("/delete")
 	public void delete(@RequestParam int lectureNo) {
