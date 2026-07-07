@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.spring11.dao.CountryDao;
 import com.kh.spring11.dto.CountryDto;
 import com.kh.spring11.error.TargetNotfoundException;
+import com.kh.spring11.vo.ListRequestVO;
+import com.kh.spring11.vo.ListVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name="국가API", description ="국가 CRUD를 위한 API입니다")
@@ -41,6 +43,42 @@ public class CountryRestController {
 	public List<CountryDto> list(){
 		return countryDao.selectList(1, Integer.MAX_VALUE);
 	}
+	
+	//리액트를 위한 더보기 방식의 조회
+	//-조회는 GepMapping으로 구현(정보가 "너무 많으면"= Post로도 가능)
+	//-정보가 많다의 기준은 2개(법이 아님)
+//	@GetMapping("/lastCountryNo/{lastCountryNo}/size/{size}")
+//	public ListVO listForReact(
+//			@PathVariable int lastCountryNo,
+//			@PathVariable int size
+//			) {
+//		List list = countryDao.selectListFroReact(lastCountryNo, size);
+//		int count = countryDao.countForReact(lastCountryNo);
+//		
+//		return ListVO.builder()
+//					.list(list)
+//					.last(count <= size)
+//					.build();
+//		
+//	}
+	@PostMapping("/list-more")
+	public ListVO listForReact(
+			@RequestBody ListRequestVO listRequestVO
+			
+			) {
+		List list = countryDao.selectListFroReact(listRequestVO.getLastNo(), listRequestVO.getSize());
+		int count = countryDao.countForReact(listRequestVO.getLastNo());
+		
+		return ListVO.builder()
+					.list(list)
+					.last(count <= listRequestVO.getSize())
+					.build();
+		
+	}
+	
+	
+	
+	
 	//상세 : PK를 경로 변수로 받음
 	@GetMapping("/{countryNo}")
 	public CountryDto find(@PathVariable int countryNo) {
