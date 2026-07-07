@@ -19,6 +19,8 @@ import com.kh.spring11.dao.LectureDao;
 import com.kh.spring11.dto.LectureDto;
 import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.vo.LectureInsertVO;
+import com.kh.spring11.vo.LectureUpdateAllVO;
+import com.kh.spring11.vo.LectureUpdateUnitVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -155,44 +157,83 @@ public class LectureRestController {
 		return lectureDto;//삭제한 데이터 정보
 	}
 	
+	
+	@Operation(
+			summary = "강좌 정보 전체 수정",
+			description = "요청한 강좌번호에 대해 번호를 제외한 모든 정보를 수정합니다",
+			responses = @ApiResponse(
+					responseCode="200",
+					description = "강좌 정보 수정 성공",
+					content = @Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = LectureDto.class)
+							)
+					)
+			)
+	
+	
 	//전체정보 수정
 	@PutMapping("/{lectureNo}")
-	public LectureDto updateAll(@RequestBody LectureDto lectureDto, 
-						 @PathVariable int lectureNo) {
-		LectureDto findLectureDto = lectureDao.selectOne(lectureNo);
-		if(findLectureDto == null) throw new TargetNotfoundException();
-		lectureDto.setLectureNo(lectureNo);
+	public LectureDto updateAll(
+			@RequestBody LectureUpdateAllVO lectureUpdateAllVO, 
+			@Parameter(description = "수정할 강좌 고유 번호", example = "1")
+			@PathVariable int lectureNo) {
+		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
+		if(lectureDto == null) throw new TargetNotfoundException();
+		
+		lectureDto.setLectureCategory(lectureUpdateAllVO.getLectureCategory());
+		lectureDto.setLectureTitle(lectureUpdateAllVO.getLectureTitle());
+		lectureDto.setLectureDuration(lectureUpdateAllVO.getLectureDuration());
+		lectureDto.setLecturePrice(lectureUpdateAllVO.getLecturePrice());
+		lectureDto.setLectureType(lectureUpdateAllVO.getLectureType());
+		
 		lectureDao.update(lectureDto);
 		return lectureDto;
 	}
 	
+	@Operation(
+			summary = "강좌 정보 부분 수정",
+			description = "대상 강좌의 정보 중 원하는 일부 정보를 변경합니다",
+			responses = @ApiResponse(
+					responseCode = "200",
+					description = "강좌 정보 변경 성공",
+					content = @ Content(
+							mediaType = "application/json",
+							schema = @Schema(implementation = LectureDto.class)
+							)
+					
+					)
+			)
+	
 	//일부정보 수정
 	@PatchMapping("/{lectureNo}")
-	public LectureDto updateUnit(@RequestBody LectureDto lectureDto, 
-								@PathVariable int lectureNo) {
+	public LectureDto updateUnit(
+			@RequestBody LectureUpdateUnitVO lectureUpdateUnitVO, 
+			@Parameter(description = "수정할 강좌 고유 번호", example = "1")
+			@PathVariable int lectureNo) {
 		//countryDto에 뭐가 있을지 모름
 		//일단 countryNo로 원본을 조회해서countryDto에 있는 정보만 복사한 뒤 변경
-		LectureDto findLectureDto = lectureDao.selectOne(lectureNo);
-		if(findLectureDto == null) throw new TargetNotfoundException();
+		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
+		if(lectureDto == null) throw new TargetNotfoundException();
 		
 		//countryDto에 존재하는 항목들을 findCountryDto에 복사
-		if(lectureDto.getLectureTitle() != null) {
-			findLectureDto.setLectureTitle(lectureDto.getLectureTitle());
+		if(lectureUpdateUnitVO.getLectureTitle() != null) {
+			lectureDto.setLectureTitle(lectureUpdateUnitVO.getLectureTitle());
 		}
-		if(lectureDto.getLectureCategory() != null) {
-			findLectureDto.setLectureCategory(lectureDto.getLectureCategory());
+		if(lectureUpdateUnitVO.getLectureCategory() != null) {
+			lectureDto.setLectureCategory(lectureUpdateUnitVO.getLectureCategory());
 		}
-		if(lectureDto.getLectureDuration() > 0L) {
-			findLectureDto.setLectureDuration(lectureDto.getLectureDuration());
+		if(lectureUpdateUnitVO.getLectureDuration() > 0L) {
+			lectureDto.setLectureDuration(lectureUpdateUnitVO.getLectureDuration());
 		}
-		if(lectureDto.getLecturePrice() > 0L) {
-			findLectureDto.setLecturePrice(lectureDto.getLecturePrice());
+		if(lectureUpdateUnitVO.getLecturePrice() > 0L) {
+			lectureDto.setLecturePrice(lectureUpdateUnitVO.getLecturePrice());
 		}
 		if(lectureDto.getLectureType() != null) {
-			findLectureDto.setLectureType(lectureDto.getLectureType());
+			lectureDto.setLectureType(lectureUpdateUnitVO.getLectureType());
 		}
-		lectureDao.update(findLectureDto);
-		return findLectureDto;
+		lectureDao.update(lectureDto);
+		return lectureDto;
 	}
 	
 	
