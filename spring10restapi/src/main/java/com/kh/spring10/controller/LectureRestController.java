@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.LectureDao;
+import com.kh.spring10.dto.CountryDto;
 import com.kh.spring10.dto.LectureDto;
+import com.kh.spring10.error.TargetNotfoundException;
 import com.kh.spring10.vo.ListVO;
 
 @CrossOrigin
@@ -29,10 +31,14 @@ public class LectureRestController {
 	// 	-> {'key1' : 'value1', 'key2' : 'value2', }
 	// POST처럼 Body가 존재하는 방식에서만 가능
 	@PostMapping("/insert")
-	public void insert(@RequestBody LectureDto lectureDto) {
+	public LectureDto insert(@RequestBody LectureDto lectureDto) {
 		int lectureNo = lectureDao.sequence();
 		lectureDto.setLectureNo(lectureNo);
 		lectureDao.insert(lectureDto);
+		//최종적으로 완성된 정보를 반환(ex: 번호, 시간 등이 모두 포함된...)
+		//->이렇게 하려면 DB를 한번 더 가야함
+//		return lectureDao.selectOne(lectureNo);
+		return lectureDto;
 	}
 	
 	@GetMapping("/list")
@@ -45,6 +51,10 @@ public class LectureRestController {
 			@RequestParam(required = false, defaultValue= "0") int lastLectureNo, 
 			@RequestParam(required = false, defaultValue= "10") int size
 			){
+		//내림 차순 이기 때문에 0이면 0보다 작다가 되엇 문제가 되므로 변경
+		if(lastLectureNo == 0) {
+			lastLectureNo = Integer.MAX_VALUE;
+		}
 		List list = lectureDao.selectListFroReact(lastLectureNo, size);
 		int count = lectureDao.countForReact(lastLectureNo);
 		
@@ -56,13 +66,18 @@ public class LectureRestController {
 	
 	@GetMapping("/detail")
 	public LectureDto detail(@RequestParam int lectureNo) {
-		return lectureDao.selectOne(lectureNo);
+		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
+		if(lectureDto == null) throw new TargetNotfoundException();
+		return lectureDto;
 	}
 	
 	@GetMapping("/delete")
-	public boolean delete(@RequestParam int lectureNo) {
-		return lectureDao.delete(lectureNo);
+	public void delete(@RequestParam int lectureNo) {
+		LectureDto lectureDto = lectureDao.selectOne(lectureNo);
+		if(lectureDto == null) throw new TargetNotfoundException();
+		lectureDao.delete(lectureNo);
 	}
+	
 	
 	
 	

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring10.dao.BookDao;
 import com.kh.spring10.dto.BookDto;
-import com.kh.spring10.dto.LectureDto;
+import com.kh.spring10.error.TargetNotfoundException;
 import com.kh.spring10.vo.ListVO;
 
 @CrossOrigin
@@ -51,12 +51,16 @@ public class BookRestController {
 	
 	@GetMapping("/detail")
 	public BookDto detail(@RequestParam int bookId) {
-		return bookDao.selectOne(bookId);
+		BookDto bookDto = bookDao.selectOne(bookId);
+		if(bookDto == null) throw new TargetNotfoundException();
+		return bookDto;
 	}
 	
 	@GetMapping("/delete")
-	public boolean delete(@RequestParam int bookId) {
-		return bookDao.delete(bookId);
+	public void delete(@RequestParam int bookId) {
+		BookDto bookDto = bookDao.selectOne(bookId);
+		if(bookDto == null) throw new TargetNotfoundException();
+		bookDao.delete(bookId);
 	}
 	
 	
