@@ -161,7 +161,7 @@ public class CountryDao {
 
 	//RESP API용 페이징 메소드
 	//- 동일 데이터가 두번 나오지 않도록 번호로 필터링하여 10개를 추출
-	public List<CountryDto> selectListFroReact(int lastCountryNo, int size){
+	public List<CountryDto> selectListForReact(int lastCountryNo, int size){
 		String sql = "select * from ("
 						+ "select rownum rn, TMP.* from("
 							+ "select * from country "

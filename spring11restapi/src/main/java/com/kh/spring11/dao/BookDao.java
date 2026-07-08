@@ -148,7 +148,7 @@ public class BookDao {
 		Object[] params = {bookId};
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
-	public List<BookDto> selectListFroReact(int lastBookId, int size){
+	public List<BookDto> selectListForReact(int lastBookId, int size){
 		String sql = "select * from ("
 						+ "select rownum rn, TMP.* from("
 							+ "select * from book "

@@ -21,6 +21,8 @@ import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.vo.LectureInsertVO;
 import com.kh.spring11.vo.LectureUpdateAllVO;
 import com.kh.spring11.vo.LectureUpdateUnitVO;
+import com.kh.spring11.vo.ListRequestVO;
+import com.kh.spring11.vo.ListVO;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -104,6 +106,22 @@ public class LectureRestController {
 		return lectureDao.selectList(1, Integer.MAX_VALUE);
 	}
 	
+	@PostMapping("/list-more")
+	public ListVO listForReact(
+			@RequestBody ListRequestVO listRequestVO
+			
+			) {
+		List list = lectureDao.selectListForReact(listRequestVO.getLastNo(), listRequestVO.getSize());
+		int count = lectureDao.countForReact(listRequestVO.getLastNo());
+//		System.out.println(listRequestVO.getLastNo());
+		return ListVO.builder()
+				.list(list)
+				.last(count <= listRequestVO.getSize())
+				.build();
+		
+	}
+	
+	
 	@Operation(
 			//deprecated =true,
 			summary = "강좌 상세 조회",
@@ -119,6 +137,7 @@ public class LectureRestController {
 							)
 					)
 			)
+	
 	
 	//상세 : PK를 경로 변수로 받음
 	@GetMapping("/{lectureNo}")
@@ -220,6 +239,7 @@ public class LectureRestController {
 		if(lectureUpdateUnitVO.getLectureTitle() != null) {
 			lectureDto.setLectureTitle(lectureUpdateUnitVO.getLectureTitle());
 		}
+//		System.out.println(lectureDto);
 		if(lectureUpdateUnitVO.getLectureCategory() != null) {
 			lectureDto.setLectureCategory(lectureUpdateUnitVO.getLectureCategory());
 		}
@@ -229,7 +249,7 @@ public class LectureRestController {
 		if(lectureUpdateUnitVO.getLecturePrice() > 0L) {
 			lectureDto.setLecturePrice(lectureUpdateUnitVO.getLecturePrice());
 		}
-		if(lectureDto.getLectureType() != null) {
+		if(lectureUpdateUnitVO.getLectureType() != null) {
 			lectureDto.setLectureType(lectureUpdateUnitVO.getLectureType());
 		}
 		lectureDao.update(lectureDto);

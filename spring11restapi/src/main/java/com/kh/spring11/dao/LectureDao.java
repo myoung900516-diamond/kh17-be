@@ -147,12 +147,12 @@ public class LectureDao {
 		return jdbcTemplate.queryForList(sql, int.class, params);
 	}
 	
-	public List<LectureDto> selectListFroReact(int lastLectureNo, int size){
+	public List<LectureDto> selectListForReact(int lastLectureNo, int size){
 		String sql = "select * from ("
 						+ "select rownum rn, TMP.* from("
 							+ "select * from lecture "
-							+ "where lecture_no < ? "
-							+ "order by lecture_no desc"
+							+ "where lecture_no > ? "
+							+ "order by lecture_no asc"
 							+ ")TMP"
 						+ ") where rn between 1 and ?";
 		Object[] params = { lastLectureNo, size};
@@ -160,7 +160,7 @@ public class LectureDao {
 		
 	}
 	public int countForReact(int lastLectureNo) {
-		String sql = "select count(*) from lecture where lecture_no < ?";
+		String sql = "select count(*) from lecture where lecture_no > ?";
 		Object[] params = { lastLectureNo };
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}

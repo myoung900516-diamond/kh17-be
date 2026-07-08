@@ -66,7 +66,7 @@ public class CountryRestController {
 			@RequestBody ListRequestVO listRequestVO
 			
 			) {
-		List list = countryDao.selectListFroReact(listRequestVO.getLastNo(), listRequestVO.getSize());
+		List list = countryDao.selectListForReact(listRequestVO.getLastNo(), listRequestVO.getSize());
 		int count = countryDao.countForReact(listRequestVO.getLastNo());
 		
 		return ListVO.builder()
