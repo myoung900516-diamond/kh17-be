@@ -137,7 +137,7 @@ public class BookRestController {
 //		System.out.println(listRequestVO.getLastNo());
 		return ListVO.builder()
 				.list(list)
-				.last(count >= listRequestVO.getSize())
+				.last(count <= listRequestVO.getSize())
 				.build();
 		
 	}
