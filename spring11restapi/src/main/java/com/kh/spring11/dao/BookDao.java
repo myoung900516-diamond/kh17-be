@@ -149,11 +149,14 @@ public class BookDao {
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
 	public List<BookDto> selectListForReact(int lastBookId, int size){
+		if(lastBookId == 0) {
+			lastBookId = Integer.MAX_VALUE;
+		}
 		String sql = "select * from ("
 						+ "select rownum rn, TMP.* from("
 							+ "select * from book "
-							+ "where book_id > ? "
-							+ "order by book_id asc"
+							+ "where book_id < ? "
+							+ "order by book_id desc"
 							+ ")TMP"
 						+ ") where rn between 1 and ?";
 		Object[] params = { lastBookId, size};
@@ -161,7 +164,7 @@ public class BookDao {
 		
 	}
 	public int countForReact(int lastBookId) {
-		String sql = "select count(*) from book where book_id > ?";
+		String sql = "select count(*) from book where book_id < ?";
 		Object[] params = { lastBookId };
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}

@@ -243,10 +243,10 @@ public class LectureRestController {
 		if(lectureUpdateUnitVO.getLectureCategory() != null) {
 			lectureDto.setLectureCategory(lectureUpdateUnitVO.getLectureCategory());
 		}
-		if(lectureUpdateUnitVO.getLectureDuration() > 0L) {
+		if(lectureUpdateUnitVO.getLectureDuration() != null) {
 			lectureDto.setLectureDuration(lectureUpdateUnitVO.getLectureDuration());
 		}
-		if(lectureUpdateUnitVO.getLecturePrice() > 0L) {
+		if(lectureUpdateUnitVO.getLecturePrice() != null) {
 			lectureDto.setLecturePrice(lectureUpdateUnitVO.getLecturePrice());
 		}
 		if(lectureUpdateUnitVO.getLectureType() != null) {

@@ -14,11 +14,11 @@ public class BookUpdateUnitVO {
 	@Schema(description="출판일", example="1996-07-16")
 	private String bookPublicationDate;
 	@Schema(description="도서가", example="18000")
-	private int bookPrice;
+	private Integer bookPrice;
 	@Schema(description="출판사", example="열린책들")
 	private String bookPublisher;
 	@Schema(description="페이지수", example="256")
-	private int bookPageCount;
+	private Integer bookPageCount;
 	@Schema(description="장르", example="소설")
 	private String bookGenre;
 

@@ -151,8 +151,8 @@ public class LectureDao {
 		String sql = "select * from ("
 						+ "select rownum rn, TMP.* from("
 							+ "select * from lecture "
-							+ "where lecture_no > ? "
-							+ "order by lecture_no asc"
+							+ "where lecture_no < ? "
+							+ "order by lecture_no desc"
 							+ ")TMP"
 						+ ") where rn between 1 and ?";
 		Object[] params = { lastLectureNo, size};
@@ -160,7 +160,7 @@ public class LectureDao {
 		
 	}
 	public int countForReact(int lastLectureNo) {
-		String sql = "select count(*) from lecture where lecture_no > ?";
+		String sql = "select count(*) from lecture where lecture_no < ?";
 		Object[] params = { lastLectureNo };
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}

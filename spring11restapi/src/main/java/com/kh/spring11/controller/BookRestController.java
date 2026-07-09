@@ -32,10 +32,10 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-@Tag(name="도서API", description ="도서 CRUD를 위한 API입니다")
+@Tag(name="도서 처리 시스템", description ="도서 CRUD를 위한 API입니다")
 
-@CrossOrigin
-@RestController
+@CrossOrigin//CORS허용 (지금은 전체허용, 향후 특정 대상만 허용하는 옵션 추가 필요)
+@RestController//Controller와 차이를 3초 안에 말할 수 있어야 합니다.
 @RequestMapping("/api/book")
 @CommonsApiResponse
 public class BookRestController {
@@ -61,7 +61,7 @@ public class BookRestController {
 					})
 	
 	
-	@PostMapping("/")
+	@PostMapping(value="/", produces="application/json", consumes="application/json")
 	public BookDto insert(@RequestBody BookInsertVO bookInsertVO) {
 		int bookId = bookDao.sequence();
 		BookDto bookDto = new BookDto();
@@ -106,6 +106,26 @@ public class BookRestController {
 	public List<BookDto> list(){
 		return bookDao.selectList(1, Integer.MAX_VALUE);
 	}
+	@Operation(
+//			deprecated = true,
+			summary = "도서 목록 조회(더보기버튼구현)",
+			description = "도서 목록을 조회하고 더보기 버튼으로 내려 볼 수 있습니다",
+			responses = {
+					@ApiResponse(
+							responseCode = "200",
+							description="조회성공",
+							content = @Content(
+									mediaType = "application/json",
+									array = @ArraySchema(
+											schema = @Schema(implementation = BookDto.class)
+											)
+									)
+							),
+					
+			}
+			
+			)
+	
 	
 	@PostMapping("/list-more")
 	public ListVO listForReact(
@@ -117,7 +137,7 @@ public class BookRestController {
 //		System.out.println(listRequestVO.getLastNo());
 		return ListVO.builder()
 				.list(list)
-				.last(count <= listRequestVO.getSize())
+				.last(count >= listRequestVO.getSize())
 				.build();
 		
 	}
@@ -244,10 +264,10 @@ public class BookRestController {
 		if(bookUpdateUnitVO.getBookPublicationDate() != null) {
 			bookDto.setBookPublicationDate(bookUpdateUnitVO.getBookPublicationDate());
 		}
-		if(bookUpdateUnitVO.getBookPrice() > 0L) {
+		if(bookUpdateUnitVO.getBookPrice() != null) {
 			bookDto.setBookPrice(bookUpdateUnitVO.getBookPrice());
 		}
-		if(bookUpdateUnitVO.getBookPageCount() > 0L) {
+		if(bookUpdateUnitVO.getBookPageCount() != null) {
 			bookDto.setBookPageCount(bookUpdateUnitVO.getBookPageCount());
 		}
 		if(bookUpdateUnitVO.getBookPublisher() != null) {
