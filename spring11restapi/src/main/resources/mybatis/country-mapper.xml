@@ -15,4 +15,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		#{countryNo}, #{countryName}, #{countryRegion}, #{countryCapital}, #{countryPopulation}
 		)
 	</insert>
+	<!-- 
+		조회는 등록과 다르게 결과물의 형태를 알려줘야 한다(그래야 자동으로 변환함)
+		결과물의 형태는 반드시 설정에서 등록된 패키지 내부에 있어야함
+	 -->
+	<select id="list" resultType="CountryDto">
+		select * from country order by country_no asc
+	</select>
+	<select id="find" resultType="CountryDto">
+		select * from country where country_no = #{countryNo}
+	</select>
+	
 </mapper>

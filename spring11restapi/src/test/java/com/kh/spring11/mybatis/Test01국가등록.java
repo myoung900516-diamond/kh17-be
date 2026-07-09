@@ -26,7 +26,7 @@ public class Test01국가등록 {
 		sqlSession.insert(
 				"mapper.country.add", 
 				CountryDto.builder()
-					.countryNo(1235)
+					.countryNo(1236)
 					.countryName("자바왕국")
 					.countryRegion("유럽")
 					.countryCapital("강남점")
