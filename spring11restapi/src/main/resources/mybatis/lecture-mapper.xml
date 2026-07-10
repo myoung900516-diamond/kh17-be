@@ -5,6 +5,68 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 
-<mapper namespace="mapper.book">
+<mapper namespace="mapper.lecture">
+	<select id="sequence" resultType="int">
+		select lecture_seq.nextval from dual
+	</select>
+	<insert id="add">
+		insert into lecture(
+			lecture_no, lecture_title, lecture_category, lecture_duration, lecture_price, lecture_type
+		)
+		values(
+			#{lecture_no}, #{lecture_title}, #{lecture_category}, #{lecture_duration}, #{lecture_price}, #{lecture_type}
+		)
+	</insert>
+	<select id="list" resultType="LectureDto">
+		select * from lecture order by lecture_no desc
+	</select>
+	<select id="find" resultType="LectureDto">
+		select * from lecture where lecture_no = #{lectureNo}
+	</select>
+	<select id="listMore" resultType="LectureDto">
+		select * from (
+			select rownum rn, TMP.* from(
+				<if test="lastLectureNo != null or lastLectureNo > 0">
+				where #{lastLectureNo} > lecture_no 
+				</if>
+				order by lecture_no desc
+			) TMP
+		) where rn between 1 and #{size}
+	</select>
+	<select id="countMore" resultType="int">
+		select count(*) from lecture where #{lectureNo} > lecture_no  
+	</select>
+	<update id="updateAll">
+		update lecture
+		set 
+			lecture_title = #{lectureTitle},
+			lecture_category = #{lectureCategory},
+			lecture_duration = #{lectureDuration},
+			lecture_price = #{lecturePrice},
+			lecture_type = #{lectureType}
+		where lecture_no= #{lectureNo}
+	</update>
+	<update id="updateUnit">
+		update lecture
+		<set> 
+			<if test="lectureTitle != null">
+			lecture_title = #{lectureTitle},
+			</if>
+			<if test="lectureCategory != null">
+			lecture_category = #{lectureCategory},
+			</if>
+			<if test="lectureDuration != null">
+			lecture_duration = #{lectureDuration},
+			</if>
+			<if test="lecturePrice != null">
+			lecture_price = #{lecturePrice},
+			</if>
+			<if test="lectureType != null">
+			lecture_type = #{lectureType}
+			</if>
+		</set>
+		where lecture_no= #{lectureNo}
+	</update>
+	<delete id=""></delete>
 	
 </mapper>

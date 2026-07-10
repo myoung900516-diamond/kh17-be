@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring11.annotation.CommonsApiResponse;
-import com.kh.spring11.dao.LectureDao;
+import com.kh.spring11.dao.LectureDaoSpringJDBC;
 import com.kh.spring11.dto.LectureDto;
 import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.vo.LectureInsertVO;
@@ -42,7 +42,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class LectureRestController {
 	
 	@Autowired
-	private LectureDao lectureDao;
+	private LectureDaoSpringJDBC lectureDao;
 	
 	//어떤 작업인지에 대해 설명하기 위한 코드
 	@Operation(
@@ -111,8 +111,8 @@ public class LectureRestController {
 			@RequestBody ListRequestVO listRequestVO
 			
 			) {
-		List list = lectureDao.selectListForReact(listRequestVO.getLastNo(), listRequestVO.getSize());
-		int count = lectureDao.countForReact(listRequestVO.getLastNo());
+		List list = lectureDao.selectList(listRequestVO.getLastNo(), listRequestVO.getSize());
+		int count = lectureDao.count(listRequestVO.getLastNo());
 //		System.out.println(listRequestVO.getLastNo());
 		return ListVO.builder()
 				.list(list)

@@ -1,6 +1,8 @@
 package com.kh.spring11.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,37 +17,44 @@ public class CountryDaoMybatis implements CountryDao{
 
 	@Override
 	public int sequence() {
-		return 0;
+		return sqlSession.selectOne("mapper.country.sequence");
 	}
 
 	@Override
 	public void insert(CountryDto countryDto) {
+		sqlSession.insert("mapper.country.add", countryDto);
 		
 	}
 
 	@Override
 	public boolean update(CountryDto countryDto) {
-		return false;
+		return sqlSession.update("mapper.country.updateUnit", countryDto) >0;
 	}
 
 	@Override
 	public boolean delete(int countryNo) {
-		return false;
+		return sqlSession.delete("mapper.country.delete", countryNo) > 0;
 	}
 
 	@Override
 	public CountryDto selectOne(int countryNo) {
-		return null;
+		CountryDto countryDto = sqlSession.selectOne("mapper.country.find", countryNo);
+		return countryDto;
 	}
 
 	@Override
 	public List<CountryDto> selectList(int lastCountryNo, int size) {
-		return null;
+		
+		//mybatis는 구문 뒤에 데이터를 딱 하나만 보낼 수 있다.
+		Map<String, Object> params = new HashMap<>();
+		params.put("lastCountryNo", lastCountryNo);
+		params.put("size", size);
+		return sqlSession.selectList("mapper.country.listMore", params);
 	}
 
 	@Override
 	public int count(int lastCountryNo) {
-		return 0;
+		return sqlSession.selectOne("mapper.country.countMore", lastCountryNo);
 	}
 	
 	
