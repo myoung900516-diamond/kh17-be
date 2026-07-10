@@ -16,5 +16,6 @@ public interface CountryDao {
 	CountryDto selectOne(int countryNo);
 	List<CountryDto> selectList(int lastCountryNo, int size);
 	int count(int lastCountryNo);
+	List<CountryDto> searchByCountryName(String keyword);
 	
 }

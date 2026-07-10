@@ -91,6 +91,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>	
 	
 	
+	<!-- 시작 검색(검색창 연관검색어에 활용) -->
+	<select id="searchByKeyword" resultType="CountryDto">
+		select * from country 
+		where country_name like #{keyword} || '%'
+		order by country_name asc, country_no asc
+	</select>
 	
 	
 	

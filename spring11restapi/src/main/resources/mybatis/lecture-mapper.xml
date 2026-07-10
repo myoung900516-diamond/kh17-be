@@ -14,7 +14,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			lecture_no, lecture_title, lecture_category, lecture_duration, lecture_price, lecture_type
 		)
 		values(
-			#{lecture_no}, #{lecture_title}, #{lecture_category}, #{lecture_duration}, #{lecture_price}, #{lecture_type}
+			#{lectureNo}, #{lectureTitle}, #{lectureCategory}, #{lectureDuration}, #{lecturePrice}, #{lectureType}
 		)
 	</insert>
 	<select id="list" resultType="LectureDto">
@@ -26,15 +26,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="listMore" resultType="LectureDto">
 		select * from (
 			select rownum rn, TMP.* from(
+				select * from lecture
 				<if test="lastLectureNo != null or lastLectureNo > 0">
-				where #{lastLectureNo} > lecture_no 
+				<!-- where #{lastLectureNo} > lecture_no --> 
+				<!-- where lecture_no &lt; #{lastLectureNo} -->
+				<![CDATA[
+				where lecture_no < #{lastLectureNo}]]>
 				</if>
 				order by lecture_no desc
 			) TMP
 		) where rn between 1 and #{size}
 	</select>
+	<!-- 
+		xml에서 < 를 쓸 수 없음(태그 시작기호로 오해함)
+		1. 순서를 바꾼다 (>는 사용 가능)
+		2. < 대신 &lt;를 쓴다(HTML 특수문자)
+		3. CDATA 구문을 사용한다 (꼭 필요한 경우에만 사용해야함)
+	 -->
 	<select id="countMore" resultType="int">
-		select count(*) from lecture where #{lectureNo} > lecture_no  
+		select count(*) from lecture 
+		<if test="lastLectureNo != null">
+		<![CDATA[
+			where lecture_no < #{lectureNo}
+		]]>
+		</if>
+		<!-- where #{lectureNo} > lecture_no -->  
 	</select>
 	<update id="update">
 		update lecture
@@ -67,6 +83,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</set>
 		where lecture_no= #{lectureNo}
 	</update>
-	<delete id=""></delete>
+	<delete id="delete">
+		delete lecture where lecture_no= #{lectureNo}
+	</delete>
 	
 </mapper>

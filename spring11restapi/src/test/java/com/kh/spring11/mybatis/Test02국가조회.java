@@ -22,6 +22,7 @@ public class Test02국가조회 {
 		for(CountryDto countryDto : list) {
 			System.out.println(countryDto);
 		}
+		
 	}
 
 }
