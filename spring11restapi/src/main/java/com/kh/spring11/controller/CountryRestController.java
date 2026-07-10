@@ -27,6 +27,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RequestMapping("/api/country")
 public class CountryRestController {
 
+	//interface를 Autowired하면 상복받은 클래스 중 등록된 클래스의 객체가 주입된다.
+	//(주의) 등록(annotation으로)은 반드시 하나만 되어 있어야한다=@Repository등록 중 하나빼고 나머지는 주석처리해야한다
+	//(여러개를 두고 선택하려면 추가 작업이 필요)
 	@Autowired
 	private CountryDao countryDao;
 	//등록
@@ -66,8 +69,8 @@ public class CountryRestController {
 			@RequestBody ListRequestVO listRequestVO
 			
 			) {
-		List list = countryDao.selectListForReact(listRequestVO.getLastNo(), listRequestVO.getSize());
-		int count = countryDao.countForReact(listRequestVO.getLastNo());
+		List list = countryDao.selectList(listRequestVO.getLastNo(), listRequestVO.getSize());
+		int count = countryDao.count(listRequestVO.getLastNo());
 		
 		return ListVO.builder()
 					.list(list)

@@ -38,7 +38,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</update>
 	<update id="updateUnit">
 		update country
-		<!-- mybatis에서 제공하는 선택적 수정 기능 -->
+		<!-- 
+			mybatis에서 제공하는 선택적 수정 기능
+			<set>내부에 <if>로 각 데이터가 수정되야 하는 상황을 명시
+			단, 자바코드와 유사하지만 다음 기호로는 쓸 수 없다.
+			
+			1. && 대신 and라고 사용
+			2. || 대신 or이라고 사용
+			
+			매소드 등도 호출 가능 (권장하진 않음)
+			
+			JSTL의 c태고 기능 대부분이 존재
+			<if>, <choose>+<when>+<otherwise>, <forEach>
+		 -->
 		<set> 
 			<if test="countryName != null">
 			country_name = #{countryName}, 
@@ -54,7 +66,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			</if>
 		</set>
 		where country_no= #{countryNo}
-	</update>	
+	</update>
+	<!-- 삭제 -->
+	<delete id="delete">
+		delete country where country_no = #{countryNo}
+	</delete>	
 	
 	
 	
