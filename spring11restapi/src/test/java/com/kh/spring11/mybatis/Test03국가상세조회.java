@@ -7,6 +7,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.kh.spring11.dto.CountryDto;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @SpringBootTest
 public class Test03국가상세조회 {
 	
@@ -17,7 +19,9 @@ public class Test03국가상세조회 {
 	public void test() {
 		int countryNo= 1235;
 		CountryDto countryDto = sqlSession.selectOne("mapper.country.find", countryNo);
-		System.out.println(countryDto);
+//		System.out.println(countryDto);
+		log.debug("countryDto = {}", countryDto);
+		
 	}
 
 }
