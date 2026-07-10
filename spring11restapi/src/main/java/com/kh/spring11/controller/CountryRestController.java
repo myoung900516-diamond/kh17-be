@@ -135,7 +135,7 @@ public class CountryRestController {
 		return findCountryDto;
 	}
 	
-	@GetMapping("/countryName/{countryName}")
+	@GetMapping("/countryName/{keyword}")
 	public List<CountryDto> searchByKeyword(@PathVariable String keyword){
 		return countryDao.searchByCountryName(keyword);
 	}
