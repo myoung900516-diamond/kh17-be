@@ -28,6 +28,10 @@ public class LectureDaoMybatis implements LectureDao{
 
 		@Override
 		public boolean update(LectureDto lectureDto) {
+			return sqlSession.update("mapper.lecture.update", lectureDto) >0;
+		}
+		@Override
+		public boolean updateUnit(LectureDto lectureDto) {
 			return sqlSession.update("mapper.lecture.updateUnit", lectureDto) >0;
 		}
 

@@ -11,6 +11,7 @@ public interface LectureDao {
 	LectureDto selectOne(int lectureNo);
 	List<LectureDto> selectList(int lastLectureNo, int size);
 	boolean update(LectureDto lectureDto);
+	boolean updateUnit(LectureDto lectureDto);
 	boolean delete(int lectureNo);
 	int count(int lectureNo);
 

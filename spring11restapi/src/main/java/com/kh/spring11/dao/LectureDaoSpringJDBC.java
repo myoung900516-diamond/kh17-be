@@ -83,6 +83,11 @@ public class LectureDaoSpringJDBC implements LectureDao{
 		Object[] params = { lastLectureNo };
 		return jdbcTemplate.queryForObject(sql, int.class, params);
 	}
+	@Override
+	public boolean updateUnit(LectureDto lectureDto) {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 
 }

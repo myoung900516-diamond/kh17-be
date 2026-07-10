@@ -4,7 +4,7 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-
+<!-- namespace는 분류가 편하게 정하자 -->
 <mapper namespace="mapper.lecture">
 	<select id="sequence" resultType="int">
 		select lecture_seq.nextval from dual
@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="countMore" resultType="int">
 		select count(*) from lecture where #{lectureNo} > lecture_no  
 	</select>
-	<update id="updateAll">
+	<update id="update">
 		update lecture
 		set 
 			lecture_title = #{lectureTitle},

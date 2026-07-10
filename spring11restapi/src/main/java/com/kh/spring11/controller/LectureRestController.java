@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring11.annotation.CommonsApiResponse;
-import com.kh.spring11.dao.LectureDaoSpringJDBC;
+import com.kh.spring11.dao.LectureDao;
 import com.kh.spring11.dto.LectureDto;
 import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.vo.LectureInsertVO;
@@ -41,8 +41,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @CommonsApiResponse
 public class LectureRestController {
 	
+//	@Qualifier("lectureDaoMybatis")//두개 등록할 시에 id를 적는 방식
 	@Autowired
-	private LectureDaoSpringJDBC lectureDao;
+	private LectureDao lectureDao;
 	
 	//어떤 작업인지에 대해 설명하기 위한 코드
 	@Operation(
