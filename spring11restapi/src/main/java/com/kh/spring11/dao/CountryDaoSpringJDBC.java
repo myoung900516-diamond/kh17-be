@@ -1,15 +1,13 @@
 package com.kh.spring11.dao;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
 
 import com.kh.spring11.dto.CountryDto;
 import com.kh.spring11.mapper.CountryMapper;
-import com.kh.spring11.vo.PageVO;
+import com.kh.spring11.vo.CountryComplexRequestVO;
 
 //@Repository//DB나 파일을 제어하기 위한 도구(영속성을 가진 대상 제어 도구)
 public class CountryDaoSpringJDBC implements CountryDao{
@@ -77,7 +75,7 @@ public class CountryDaoSpringJDBC implements CountryDao{
 	//RESP API용 페이징 메소드
 	//- 동일 데이터가 두번 나오지 않도록 번호로 필터링하여 10개를 추출
 	@Override
-	public List<CountryDto> selectList(int lastCountryNo, int size){
+	public List<CountryDto> selectList(Integer lastCountryNo, int size){
 		String sql = "select * from ("
 						+ "select rownum rn, TMP.* from("
 							+ "select * from country "
@@ -97,6 +95,11 @@ public class CountryDaoSpringJDBC implements CountryDao{
 	}
 	@Override
 	public List<CountryDto> searchByCountryName(String keyword) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public List<CountryDto> complexSearch(CountryComplexRequestVO vo) {
 		// TODO Auto-generated method stub
 		return null;
 	}

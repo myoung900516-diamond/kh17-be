@@ -3,6 +3,7 @@ package com.kh.spring11.dao;
 import java.util.List;
 
 import com.kh.spring11.dto.CountryDto;
+import com.kh.spring11.vo.CountryComplexRequestVO;
 
 public interface CountryDao {
 
@@ -14,8 +15,9 @@ public interface CountryDao {
 	boolean update(CountryDto countryDto);
 	boolean delete(int countryNo);
 	CountryDto selectOne(int countryNo);
-	List<CountryDto> selectList(int lastCountryNo, int size);
+	List<CountryDto> selectList(Integer lastCountryNo, int size);
 	int count(int lastCountryNo);
 	List<CountryDto> searchByCountryName(String keyword);
+	List<CountryDto> complexSearch(CountryComplexRequestVO vo);
 	
 }

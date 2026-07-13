@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring11.dto.CountryDto;
+import com.kh.spring11.vo.CountryComplexRequestVO;
 
 @Repository
 public class CountryDaoMybatis implements CountryDao{
@@ -43,7 +44,7 @@ public class CountryDaoMybatis implements CountryDao{
 	}
 
 	@Override
-	public List<CountryDto> selectList(int lastCountryNo, int size) {
+	public List<CountryDto> selectList(Integer lastCountryNo, int size) {
 		
 		//mybatis는 구문 뒤에 데이터를 딱 하나만 보낼 수 있다.
 		Map<String, Object> params = new HashMap<>();
@@ -61,6 +62,12 @@ public class CountryDaoMybatis implements CountryDao{
 	public List<CountryDto> searchByCountryName(String keyword) {
 
 		return sqlSession.selectList("mapper.country.searchByKeyword", keyword);
+	}
+
+	@Override
+	public List<CountryDto> complexSearch(CountryComplexRequestVO vo) {
+		
+		return sqlSession.selectList("mapper.country.complexSearch", vo);
 	}
 	
 	

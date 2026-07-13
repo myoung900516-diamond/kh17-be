@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.spring11.dao.CountryDao;
 import com.kh.spring11.dto.CountryDto;
 import com.kh.spring11.error.TargetNotfoundException;
+import com.kh.spring11.vo.CountryComplexRequestVO;
 import com.kh.spring11.vo.ListRequestVO;
 import com.kh.spring11.vo.ListVO;
 
@@ -138,6 +139,13 @@ public class CountryRestController {
 	@GetMapping("/countryName/{keyword}")
 	public List<CountryDto> searchByKeyword(@PathVariable String keyword){
 		return countryDao.searchByCountryName(keyword);
+	}
+	@PostMapping("/complexSearch")
+	public ListVO complexSearch(@RequestBody CountryComplexRequestVO vo) {
+		return ListVO.builder()
+					.list(countryDao.complexSearch(vo))
+					.last(false)
+				.build();
 	}
 	
 	
