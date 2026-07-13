@@ -148,7 +148,7 @@ public class CountryRestController {
 		
 		return ListVO.builder()
 					.list(countryDao.complexSearch(vo))
-					.last(count <= vo.getSize())
+					.last(last)
 				.build();
 	}
 	
