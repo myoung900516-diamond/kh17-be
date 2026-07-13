@@ -202,7 +202,83 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 	</select>
 	
+	<!-- 복합검색 Count-->
 	
+	<select id="complexSearchCount" resultType="int">
+	with temp_list as (
+    select rownum rn, TMP.* from (
+        
+    
+	
+		select * from country 
+		<where>
+		
+		<!-- 대륙명을 리스크형태로 받아서 처리 -->
+		<if test="countryRegions != null and countryRegions.size() > 0">
+		and country_region in
+			<foreach item="countryRegion" collection="countryRegions" separator="," open="(" close=")">
+				#{countryRegion}
+			</foreach>
+		</if>
+		
+		
+		
+		<!-- 국가명은 시작검색 -->
+		<if test="countryName != null">
+		and country_name like #{countryName} || '%'
+		</if>
+		<!-- 수도명은 포함 검색 -->
+		<if test="countryCapital != null">
+		and instr(country_capital, #{countryCapital}) > 0
+		</if> 
+		<!-- 인구수는 범위 검색 -->
+		<choose>
+		<!-- 둘다 있으면 -->
+			<when test="minCountryPopulation != null and maxCountryPopulation != null">
+				and country_population between #{minCountryPopulation} and #{maxCountryPopulation}
+			</when>
+		<!-- min만 있으면 -->
+			<when test="minCountryPopulation != null">
+				<![CDATA[
+				and country_population >= #{minCountryPopulation}
+				]]>
+			</when>
+		<!-- max만 있으면 -->
+			<when test="maxCountryPopulation != null">
+				<![CDATA[
+				and country_population <= #{maxCountryPopulation}
+				]]>
+			</when>
+		
+			<otherwise></otherwise>
+		</choose>
+		
+		</where>
+		
+		order by 
+		<if test="orders != null">
+			<foreach item="order" collection="orders">
+				${orders},
+			</foreach>
+		</if>
+		country_no asc
+		)TMP
+	)
+	select count(*) from (
+	    select * from temp_list 
+    	<if test="lastCountryNo != null">
+		    <![CDATA[
+		    where rn > 
+		    (
+		    	select rn from temp_list 
+		    	where country_no=#{lastCountryNo}
+		    	)
+		    ]]>
+    	</if>
+	) 
+	
+		
+	</select>
 	
 	
 	
