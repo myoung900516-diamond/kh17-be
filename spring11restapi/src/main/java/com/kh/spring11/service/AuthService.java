@@ -10,7 +10,10 @@ import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.vo.auth.AuthLoginRequestVO;
 import com.kh.spring11.vo.auth.AuthLoginResponseVO;
 
+import lombok.extern.slf4j.Slf4j;
+
 //인증과 관련된 복잡한 작업들을 모듈화 하여 처리하기 위한 서비스
+@Slf4j
 @Service
 public class AuthService {
 	@Autowired
@@ -25,6 +28,7 @@ public class AuthService {
 		//아이디에 해당하는 회원 조회
 		AccountDto accountDto = accountDao.selectOne(request.getAccountId());
 		if(accountDto == null) {
+//			log.error("아이디가 존재하지 않습니다");
 			throw new TargetNotfoundException();
 		}
 		//비밀번호 비교
@@ -32,8 +36,11 @@ public class AuthService {
 					request.getAccountPassword(), 
 					accountDto.getAccountPassword()
 				);
-		if(valid == false) throw new TargetNotfoundException();
-		
+		if(valid == false) {
+//			log.error("비밀번호가 일치하지 않습니다");
+			throw new TargetNotfoundException();
+		}
+//		log.debug("로그인성공");
 		//로그인 성공 
 		return AuthLoginResponseVO.builder()
 				.accountId(accountDto.getAccountId())
@@ -41,6 +48,7 @@ public class AuthService {
 				.accountNickname(accountDto.getAccountNickname())
 			.build();
 	}
+	
 	
 	
 	
