@@ -15,6 +15,7 @@ import com.kh.spring11.annotation.CommonsApiResponse;
 import com.kh.spring11.dao.AccountDao;
 import com.kh.spring11.dto.AccountDto;
 import com.kh.spring11.error.TargetNotfoundException;
+import com.kh.spring11.error.WhoAreYouException;
 import com.kh.spring11.service.JwtService;
 import com.kh.spring11.vo.account.AccountFindResponseVO;
 import com.kh.spring11.vo.account.AccountJoinRequestVO;
@@ -91,7 +92,10 @@ public class AccountRestController {
 	// stateless 서버의 세션 대체 방안
 	@ApiResponse(responseCode = "200", description = "조회성공")
 	@GetMapping(value = "/me", produces = "application/json")
-	public AccountMeResponseVO me(@CookieValue(name = "accessToken", required = true) String accessToken) {
+	public AccountMeResponseVO me(@CookieValue(name = "accessToken", required = false) String accessToken) {
+		if(accessToken == null) {
+			throw new WhoAreYouException();
+		}
 		
 		//토큰해석 
 		TokenParseResponseVO parseVO = jwtService.parseAccessToken(accessToken);
