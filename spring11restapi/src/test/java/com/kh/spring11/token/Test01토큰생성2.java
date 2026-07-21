@@ -32,7 +32,7 @@ public class Test01토큰생성2 {
 				//표준데이터
 				.issuer(jwtProperties.getIssuer())
 				.issuedAt(current)//발급시각
-				.expiresAt(current.plusSeconds(jwtProperties.getTokenValidity()))//만료시각(테스트로 60초)
+				.expiresAt(current.plusSeconds(jwtProperties.getAccessTokenValidity()))//만료시각(테스트로 60초)
 				.subject("testuser1")//토큰의 소유자(유일한 항목)
 				//커스텀 데이터
 				.claim("accountId", "testuser1")

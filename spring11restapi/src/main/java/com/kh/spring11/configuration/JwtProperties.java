@@ -13,6 +13,7 @@ import lombok.Data;
 public class JwtProperties {
 	private String issuer;
 	private String secret;
-	private long tokenValidity;
+	private long accessTokenValidity;
+	private long refreshTokenValidity;
 	
 }
