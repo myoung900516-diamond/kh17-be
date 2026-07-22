@@ -9,6 +9,5 @@ import lombok.NoArgsConstructor;
 @Schema(name="현재비밀번호조회응답용")
 @Data @Builder @NoArgsConstructor @AllArgsConstructor
 public class AccountPasswordFindResponseVO {
-	private String accountId;
 	private String accountPassword;
 }

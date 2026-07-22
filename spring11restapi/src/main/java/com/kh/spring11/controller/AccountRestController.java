@@ -2,12 +2,15 @@ package com.kh.spring11.controller;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring11.annotation.CommonsApiResponse;
@@ -20,7 +23,6 @@ import com.kh.spring11.vo.account.AccountFindResponseVO;
 import com.kh.spring11.vo.account.AccountJoinRequestVO;
 import com.kh.spring11.vo.account.AccountJoinResponseVO2;
 import com.kh.spring11.vo.account.AccountMeResponseVO;
-import com.kh.spring11.vo.account.AccountPasswordFindResponseVO;
 import com.kh.spring11.vo.jwt.TokenParseResponseVO;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,6 +39,8 @@ public class AccountRestController {
 	private AccountDao accountDao;
 	@Autowired
 	private JwtService jwtService;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@ApiResponse(responseCode = "200", description = "가입성공")
 	@PostMapping(value = "/", produces = "application/json")
@@ -110,15 +114,39 @@ public class AccountRestController {
 	}
 	
 	@ApiResponse(responseCode = "200", description = "비밀번호조회성공")
-	@GetMapping(value="/password", produces="application/json")
-	public AccountPasswordFindResponseVO password() {
+	@GetMapping(value="/findPassword", produces="application/json")
+	public boolean findPassword(
+			@CookieValue(name = "accessToken", required = false) String accessToken,
+			@RequestParam(required = false)  String accountPassword 
+			) {
 		
-		AccountPasswordFindResponseVO accountPasswordFindResponseVO = new AccountPasswordFindResponseVO();
+		if(accessToken == null) {
+			throw new WhoAreYouException();
+		}
 		
-		return accountPasswordFindResponseVO;
+		//토큰해석 
+		TokenParseResponseVO parseVO = jwtService.parseAccessToken(accessToken);
+		AccountDto accountDto = accountDao.selectOne(parseVO.getAccountId());
+		if (accountDto == null)	throw new TargetNotfoundException();
+		
+		
+//		System.out.println("입력 비밀번호 = [" + accountPassword + "]");
+//		System.out.println("DB 비밀번호 = [" + accountDto.getAccountPassword() + "]");
+
+		boolean valid = passwordEncoder.matches(
+		    accountPassword,
+		    accountDto.getAccountPassword()
+		);
+
+//		System.out.println("비밀번호 일치 여부 = " + valid);
+		return valid;
 	}
 
-	
+	@ApiResponse(responseCode="200", description="비밀번호변경성공")
+	@PatchMapping(value="/password", produces="application/json")
+	public boolean password() {
+		return true;
+	}
 	
 	
 	
