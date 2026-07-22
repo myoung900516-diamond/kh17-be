@@ -1,6 +1,7 @@
 package com.kh.spring11.service;
 
 import java.time.Instant;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.jwt.JwsHeader;
@@ -46,6 +47,12 @@ public class JwtService {
 					.claim("accountId", request.getAccountId())
 					.claim("accountLevel", request.getAccountLevel())
 					.claim("accountNickname", request.getAccountNickname())
+				//Spring Security 검사를 위한 항목을 추가 
+					//-이름은 authorities로 고정 검사는 hasAuthority()로
+					//-이름을 roles로 설정하면 hasRoles()로 검사(ROLE_접두사 필요)
+					.claim("authorities", List.of(
+							request.getAccountLevel()
+					))
 				.build();
 		//토큰 최종 생성 및 결과 반환
 		return jwtEncoder

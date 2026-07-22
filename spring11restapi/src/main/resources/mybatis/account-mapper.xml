@@ -51,6 +51,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from account where account_email = #{accountEmail}
 	</select>
 	
+	<!-- 로그인시 최종 로그인 시각 갱신 -->
+	<update id="updateLogin">
+		update account 
+		set account_login = systimestamp
+		where account_id= #{accountId}
+	</update>
+	
 	
 	
 	

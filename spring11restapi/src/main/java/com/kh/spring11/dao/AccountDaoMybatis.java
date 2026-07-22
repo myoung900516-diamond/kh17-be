@@ -9,7 +9,6 @@ import com.kh.spring11.dto.AccountDto;
 
 @Repository
 public class AccountDaoMybatis implements AccountDao{
-
 	@Autowired
 	private SqlSession sqlSession;
 	
@@ -48,4 +47,12 @@ public class AccountDaoMybatis implements AccountDao{
 		int count = sqlSession.selectOne("mapper.account.countAccountEmail", accountEmail);
 		return count == 0;
 	}
+
+	@Override
+	public boolean updateLogin(String accountId) {
+		return sqlSession.update("mapper.account.updateLogin", accountId)>0;
+		
+	}
+
+	
 }
