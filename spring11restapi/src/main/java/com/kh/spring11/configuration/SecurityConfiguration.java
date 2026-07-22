@@ -1,0 +1,308 @@
+package com.kh.spring11.configuration;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Set;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenResolver;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import jakarta.servlet.http.Cookie;
+
+//보안을 위해 필요한 도구 및 설정을 작성
+@Configuration
+public class SecurityConfiguration {
+	
+	@Bean
+	public BCryptPasswordEncoder bCrytPasswordEncoder() {
+		//업캐스팅
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		return encoder;
+	}
+	
+	
+	//Spring Security 시스템의 구조를 객체화하여 등록
+	//목표:SecurityFilterChain 
+	// - 인터셉터 비슷. 스프링이 인지하기도 전에 사전 전처리하는 것 
+	@Bean
+	public SecurityFilterChain securityFilterChain(
+				HttpSecurity http,//Spring Security가 제공하는 http 설정 객체
+				BearerTokenResolver bearerTokenResolver,//내가 만든 토큰 해석기
+				JwtAuthenticationConverter jwtAuthenticationConverter //내가 만든 토큰 변환기
+			) throws Exception {
+		//http에 홈페이지 운영 규칙을 모두 설정하고 Build해서 반환
+		http	
+			//csrf 비활성화
+			.csrf(csrf -> csrf.disable())
+			//cors 설정 : 별도로 등록한 CorsConfigurationSource의 설정을 따르겠다(없으면 기본값)
+			.cors(Customizer.withDefaults())
+			//session 설정:무상태(STATELESS)로 설정
+			.sessionManagement(
+					session-> session.sessionCreationPolicy(
+							SessionCreationPolicy.STATELESS
+					)
+			)
+			//security의 기본 제공되는 로그인화면과 인증시스템을 비활성화
+			.formLogin(form->form.disable())
+			.httpBasic(basic->basic.disable())
+			.logout(logout->logout.disable())
+//			.logout(AbstractHttpConfigurer::disable)//Java Method Reference
+		
+			//HTTP요청에 대한 처리계획
+			//.requestMatchers("적용시킬 주소or패턴")
+			//	.permitAll() -모두 수락(접속 허용)
+			// 	.denyAll() -모두 거절(접속 차단)
+			// 	.authenticated() -인증 필요(인증 방식에 대해서는 따로 정의)
+			//	.hasRole() - Spring Security의 기본 역할(ROLE_ 이라는 접두사로 시작)
+			//	.hasAuthority() -사용자가 임의로 지정한 역할
+			.authorizeHttpRequests(
+					auth-> auth
+						//무조건 허용할 기본 페이지들
+						.requestMatchers(
+							"/active"//생존 확인용 페이지
+								
+							,"/swagger-ui/**"//springdoc ui
+							,"/v3/api-docs/**"//springdoc json
+							
+							
+						).permitAll()
+						//auth service
+						.requestMatchers(
+								"/service/auth/login"//로그인 페이지
+								,"/service/auth/logout"//로그아웃 페이지
+								,"/service/auth/refresh"//로그인 갱신 페이지 
+						)
+						.permitAll()
+						
+						//cert service
+						.requestMatchers("/service/cert/**").permitAll()
+						
+						
+						.requestMatchers("/api/country/**").permitAll()
+						
+						.requestMatchers(HttpMethod.POST, "/api/lecture/").authenticated()
+						.requestMatchers(HttpMethod.PUT, "/api/lecture/**").authenticated()
+						.requestMatchers(HttpMethod.PATCH, "api/lecture/**").authenticated()
+						.requestMatchers(HttpMethod.DELETE, "api/lecture/**").authenticated()
+						
+
+						//book api
+						
+						
+						//account api -조건부 허용(내가 만든 요소들)
+						.requestMatchers(
+							"/api/account/me"//내정보
+						)
+//						.authenticated()//인증 필요
+						.hasAnyAuthority("브론즈", "실버", "골드", "다이아", "플래티넘")
+						//관리자기능 - JWT에 authorities 클레임에 "마스터"가 포함되어 있어야함
+						.requestMatchers(
+							"/api/admin/**"
+						).hasAuthority("마스터")
+						//나머지 모두 거절
+						.anyRequest().permitAll()
+			)
+			//JWT를 어떻게 검증할 것인지 설정 (JwtDecoder가 반드시 필요)
+			//→ BearerTokenResolver : AccessToken을 꺼내서 JWT를 뽑아내는 도구
+			//→ JwtAuthenticationConverter : Jwt의 authority를 Spring Security용으로 변환
+			.oauth2ResourceServer(
+					oauth2-> oauth2
+						//하단에 @Bean으로 만든 해석도구를 oauth2의 표준 해석기로 설정
+						.bearerTokenResolver(bearerTokenResolver)
+						//하단에 @Bean으로 만든 JWT 권한 해석 및 변환기를 설정
+						.jwt(
+							jwt -> jwt.jwtAuthenticationConverter(
+								jwtAuthenticationConverter//내가 만든 도구 
+							)
+						)
+			)
+			
+			//예외 상황 처리 설정 
+			//→인증되지 않은 경우는 401, 권한이 부족한 경우는 403으로 반환하도록 설정
+			.exceptionHandling(
+					exception -> exception
+						//인증되지 않는 경우
+						.authenticationEntryPoint(
+							(req, res, exp) -> res.setStatus(401)
+						)
+						//접근을 거부당한 경우
+						.accessDeniedHandler(
+							(req, res, exp) -> res.setStatus(403)
+						)
+			)
+		;
+		
+		return http.build();
+		
+	}
+	
+	//CorsConfigurationSource 생성(Security의 기본값으로 자동 지정)
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		//설정 객체를 생성
+		CorsConfiguration config = new CorsConfiguration();
+		
+		//CORS설정 코드 작성
+		//[1]. 허용되는 접근 대상을 지정(allow origins or pattern)
+		config.setAllowedOrigins(List.of(
+				"http://localhost:5173"
+		));
+		//[2]허용할 HTTP 메소드 설정
+		config.setAllowedMethods(List.of(
+				//기본 CRUD 요청 방식
+				"GET", "POST", "PUT", "PATCH", "DELETE",
+				//OPTIONS는 불확실한 상황일 때 보내는 사전 답사용 요청 
+				// -> origin이 다른데 GET/HEAD가 아닌 요청을 보내면 불확실하다고 판단
+				// = POST, PUT, PATCH, DELETE
+				"OPTIONS",
+				//HEAD는 GET과 같은데 응답 본문을 가져오지 않고 되나 안되나만 확인할 수 있음
+				"HEAD"
+		));
+		
+		//[3] 허용할 HTTP헤더 설정
+		//->특정 해더를 반드시 포함해야 하는 경우가 존재(ex: 카카오페이 결제 API)
+		//->보안이 강화되면 CSRF 해더만 허용하는 경우가 있음(사이트간 요청 위조 방지 헤더)
+		config.setAllowedHeaders(List.of("*"));
+		
+		//[4] 인증쿠키사용설정
+		config.setAllowCredentials(true);
+
+		//[5] preflight 시간 설정(캐싱 유지시간)
+		config.setMaxAge(Duration.ofHours(1L));//1시간(=3600초, 기본값)
+		//캐싱시간caching 은행, 증권은 시간이 짧아야함. 사이트의 성격에 따라 시간 설정함. 
+		
+		//적용 시킬 주소까지 포함한 설정 객체로 확장
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		
+		source.registerCorsConfiguration(
+				"/**", //적용할 주소
+				config //적용할 설정
+		);
+		
+		//완성된 객체 반환
+		return source;
+		
+	}
+	
+	//BearerTokenResolver
+	//-Bearer는 토큰의 한 종류(인증을 통해 무언가를 얻어내겠다는 의미의 토큰)
+	//- 원래 토큰은 표준이 없어서 JWT앞에 어떤 접두사를 붙여도 됨. 
+	//- 헤더 방식인 경우 "Authorization : Bearer [토큰값]" 과 같은 형태로 전달 
+	//- 카카오는 KAKAOAK 라는 자체 이름을 만들어서 토큰에 적용하여 사용하고 있음 (즉, 자율적) 사람들이 많이 쓰는 토큰은 Bearer 
+	//- 인증용 토큰을 해석하는 도구 (accessToken 쿠키)
+	@Bean
+	public BearerTokenResolver bearerTokenResolver() {
+		return request -> {
+			//request는 요청정보이며 이 내부에 쿠키가 들어있으므로 accessToken을 찾아서 반환
+			
+			//만약 accessToken이 만료되어도 상관이 없는 주소라면 통과시킨다. 
+			Set<String> allowPaths = Set.of(
+					"/service/auth/login",
+					"/service/auth/logout",
+					"/service/auth/refresh",
+					"/service/cert/send",
+					"/service/cert/check"
+					
+			);
+			
+			if(allowPaths.contains(request.getServletPath())) {
+				return null;
+			}
+			//accessToken이 필요한 주소만 남았으므로 검색을 통해 찾아서 반환
+			Cookie[] cookies = request.getCookies();//모든 쿠키를 긁어온다. 
+			if(cookies == null) {//options 같은 상황에서 null일 수 있다.
+				return null;
+			}
+//			//클래식 자바 버전으로 쿠키 찾기
+//			String target = null;
+//			for(Cookie cookie : cookies) {
+//				if(cookie.getName().equals("accessToken")) {//이름이 accessToken인 걸 찾아서
+//					String token = cookie.getValue();//저장된 토큰을 꺼내
+//					if(token == null || token.isBlank()) continue;//토큰이 없으면 스킵
+//					target = token;//토큰이 있으면 target에 넣어
+//				}
+//			}
+//			
+//			
+//			return target;//찾은 결과를 반환 (null 이거나 유효한 토큰이거나)
+			
+//			모던 자바(Stream API)버전으로 쿠키 찾기
+			return Arrays.stream(cookies)
+					.filter(cookie -> cookie.getName().equals("accessToken"))
+					.map(cookie -> cookie.getValue())
+					.filter(value -> value != null && !value.isBlank())
+					.findFirst()
+					.orElse(null);
+		};
+	}
+	
+	//JwtAuthenticationConverter
+	// JWT의 authorities 항목을 Spring Security Authority로 변환하는 역할 
+	@Bean
+	public JwtAuthenticationConverter jwtAuthenticationConverter() {
+		
+		JwtGrantedAuthoritiesConverter converter = new JwtGrantedAuthoritiesConverter();
+		
+		//jwt에서 authorities와 관련된 claim 이름을 설정 
+		converter.setAuthoritiesClaimName("authorities");
+		
+		//기본 접두사 (ROLE_, SCOPE_)를 모두 제거 
+		converter.setAuthorityPrefix("");
+		
+		//최종 JWT 변환 도구를 생성
+		JwtAuthenticationConverter result = new JwtAuthenticationConverter();
+		
+		//앞서 만든 도구를 장착
+		result.setJwtGrantedAuthoritiesConverter(converter);
+		
+		//반환
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}

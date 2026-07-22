@@ -176,7 +176,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		order by 
 		<if test="orders != null">
 			<foreach item="order" collection="orders">
-				${orders},
+				${order},
 			</foreach>
 		</if>
 		country_no asc
@@ -257,11 +257,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		
 		order by 
 		<if test="orders != null">
-			<foreach item="order" collection="orders" separator=",">
-				${order}
+			<foreach item="order" collection="orders">
+				${order},
 			</foreach>
 		</if>
-		, country_no asc
+		 country_no asc
 		)TMP
 	)
 	select count(*) from (

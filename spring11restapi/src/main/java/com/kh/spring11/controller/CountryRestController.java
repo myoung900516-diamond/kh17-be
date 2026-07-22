@@ -23,7 +23,7 @@ import com.kh.spring11.vo.ListVO;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name="국가API", description ="국가 CRUD를 위한 API입니다")
-@CrossOrigin
+//@CrossOrigin
 @RestController
 @RequestMapping("/api/country")
 public class CountryRestController {
@@ -151,6 +151,8 @@ public class CountryRestController {
 					.last(last)
 				.build();
 	}
+	
+
 	
 	
 	

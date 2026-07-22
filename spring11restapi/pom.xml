@@ -91,7 +91,6 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
 		<!-- AES 암호화 테스트를 위한 의존성 -->
 		<dependency>
 		    <groupId>commons-codec</groupId>
@@ -124,6 +123,7 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
+
 	</dependencies>
 
 	<build>

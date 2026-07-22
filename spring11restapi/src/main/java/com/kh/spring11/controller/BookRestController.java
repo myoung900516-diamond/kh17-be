@@ -34,7 +34,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 @Tag(name="도서 처리 시스템", description ="도서 CRUD를 위한 API입니다")
 
-@CrossOrigin//CORS허용 (지금은 전체허용, 향후 특정 대상만 허용하는 옵션 추가 필요)
+//@CrossOrigin//CORS허용 (지금은 전체허용, 향후 특정 대상만 허용하는 옵션 추가 필요)
 @RestController//Controller와 차이를 3초 안에 말할 수 있어야 합니다.
 @RequestMapping("/api/book")
 @CommonsApiResponse

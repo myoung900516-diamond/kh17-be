@@ -11,57 +11,28 @@ public class AccountRefreshDaoMybatis implements AccountRefreshDao {
 	
 	@Autowired
 	private SqlSession sqlSession;
-	
 
 	@Override
 	public void insertOrUpdate(AccountRefreshDto accountRefreshDto) {
 		AccountRefreshDto findDto = sqlSession.selectOne("mapper.accountRefresh.find", accountRefreshDto);
 		if(findDto == null) {
-			//insert
 			sqlSession.insert("mapper.accountRefresh.add", accountRefreshDto);
 		}
 		else {
-			//update
 			sqlSession.update("mapper.accountRefresh.change", accountRefreshDto);
 		}
+		
 	}
 
 	@Override
-	public void delete(String accountId) {
-		sqlSession.delete("mapper.accountRefresh.delete", accountId);
-
+	public void delete(AccountRefreshDto accountRefreshDto) {
+		sqlSession.delete("mapper.accountRefresh.delete", accountRefreshDto);
+		
 	}
 
 	@Override
-	public AccountRefreshDto find(String accountId) {
-		return sqlSession.selectOne("mapper.accountRefresh.find", accountId);
+	public AccountRefreshDto find(AccountRefreshDto accountRefreshDto) {
+		return sqlSession.selectOne("mapper.accountRefresh.find", accountRefreshDto);
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
-
