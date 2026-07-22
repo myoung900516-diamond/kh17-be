@@ -3,7 +3,6 @@ package com.kh.spring11.controller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CookieValue;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +20,7 @@ import com.kh.spring11.vo.account.AccountFindResponseVO;
 import com.kh.spring11.vo.account.AccountJoinRequestVO;
 import com.kh.spring11.vo.account.AccountJoinResponseVO2;
 import com.kh.spring11.vo.account.AccountMeResponseVO;
+import com.kh.spring11.vo.account.AccountPasswordFindResponseVO;
 import com.kh.spring11.vo.jwt.TokenParseResponseVO;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -108,5 +108,35 @@ public class AccountRestController {
 
 		return response;
 	}
+	
+	@ApiResponse(responseCode = "200", description = "비밀번호조회성공")
+	@GetMapping(value="/password", produces="application/json")
+	public AccountPasswordFindResponseVO password() {
+		
+		AccountPasswordFindResponseVO accountPasswordFindResponseVO = new AccountPasswordFindResponseVO();
+		
+		return accountPasswordFindResponseVO;
+	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
