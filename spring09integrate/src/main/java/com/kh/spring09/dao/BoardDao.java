@@ -6,7 +6,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import com.kh.spring09.Spring09integrateApplication;
+
 import com.kh.spring09.dto.BoardDto;
 import com.kh.spring09.mapper.BoardMapper;
 import com.kh.spring09.vo.PageVO;
@@ -14,7 +14,7 @@ import com.kh.spring09.vo.PageVO;
 @Repository
 public class BoardDao {
 
-    private final Spring09integrateApplication spring09integrateApplication;
+    
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 	@Autowired
@@ -24,9 +24,7 @@ public class BoardDao {
 			"board_title", "board_writer"
 			);
 
-    BoardDao(Spring09integrateApplication spring09integrateApplication) {
-        this.spring09integrateApplication = spring09integrateApplication;
-    }
+   
 	
 	public List<BoardDto> selectList(){
 		String sql = "select * from board_list order by board_no desc";
