@@ -242,10 +242,21 @@ public class AccountRestController {
 		AccountDto accountDto = accountDao.selectOne(parseVO.getAccountId());
 		if(accountDto == null) throw new TargetNotfoundException();
 		
+		//추가 검증이 필요하다면 이곳에 작성 후 거절 상태를 반환 
+		boolean passwordValid = passwordEncoder.matches(
+				request.getAccountPassword(),
+				accountDto.getAccountPassword());
+		if( passwordValid == false) {
+			return ChangeAccountResponseVO.builder()
+					.status(false)
+					.message("비밀번호가 일치하지 않습니다")
+				.build();
+		}
+		
+		
 		//[2] 정보 갈아끼우기
 		BeanUtils.copyProperties(request, accountDto);//request -> accountDto
 		
-		//추가 검증이 필요하다면 이곳에 작성 후 거절 상태를 반환 
 		
 		
 		//[3] 수정처리

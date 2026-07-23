@@ -17,17 +17,14 @@ public class ChangeAccountRequestVO {
 	private String accountNickname;
 	@NotNull @Email
 	private String accountEmail;
-	@Null
+	@NotNull
+	private String accountPassword;
 	private String accountBirth;
-	@Null
 	private String accountContact;
-	@Null @Pattern(regexp = "^[0-9]{5,6}$")
+	@Pattern(regexp = "^[0-9]{5,6}$")
 	private String accountPost;
-	@Null
 	private String accountAddress1;
-	@Null
 	private String accountAddress2;
-	@Null
 	private String accountMessage;
 
 }
