@@ -2,9 +2,12 @@ package com.kh.spring11.error;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.JwtValidationException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 //@RestControllerAdvice(annotations = {RestController.class})
 @RestControllerAdvice(basePackages = {"com.kh.spring11.controller"})
 public class ErrorRestController {
@@ -31,6 +34,13 @@ public class ErrorRestController {
 	public ResponseEntity<String> serverError(Exception e){
 		e.printStackTrace();
 		return ResponseEntity.status(500).body("Server Error");
+	}
+	@ExceptionHandler(value = {
+			MethodArgumentNotValidException.class
+	})
+	public ResponseEntity<String> badRequest(Exception e){
+		log.debug("e = {}", e.getMessage()); //에러 메세지도 보낼 수 있음 
+		return ResponseEntity.status(400).body("requiredment mismatch");
 	}
 
 }

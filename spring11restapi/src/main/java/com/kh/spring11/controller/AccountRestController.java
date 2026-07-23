@@ -3,14 +3,12 @@ package com.kh.spring11.controller;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring11.annotation.CommonsApiResponse;
@@ -18,7 +16,6 @@ import com.kh.spring11.annotation.CurrentUser;
 import com.kh.spring11.dao.AccountDao;
 import com.kh.spring11.dto.AccountDto;
 import com.kh.spring11.error.TargetNotfoundException;
-import com.kh.spring11.error.WhoAreYouException;
 import com.kh.spring11.vo.account.AccountFindResponseVO;
 import com.kh.spring11.vo.account.AccountJoinRequestVO;
 import com.kh.spring11.vo.account.AccountJoinResponseVO2;
@@ -29,6 +26,7 @@ import com.kh.spring11.vo.jwt.TokenParseResponseVO;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 @Tag(name = "회원 정보 관리 서비스")
 @CommonsApiResponse
@@ -168,7 +166,10 @@ public class AccountRestController {
 	@PatchMapping(value="/password", produces="application/json")
 	public ChangePasswordResponseVO password(
 			@CurrentUser TokenParseResponseVO parseVO,
-			@RequestBody ChangePasswordRequestVO request 
+			//@Valid를 붙이면 Spring Validation을 사용하겠다는 뜻
+			//→요구사항에 맞지 않으면 MethodArgumentNotValidException예외가 발생
+			//→400 bad request로 치환하여 반환
+			@Valid @RequestBody ChangePasswordRequestVO request 
 			) {
 		//[1]DB에서 기존 유저의 정보를 불러온다
 		AccountDto accountDto = accountDao.selectOne(parseVO.getAccountId());
