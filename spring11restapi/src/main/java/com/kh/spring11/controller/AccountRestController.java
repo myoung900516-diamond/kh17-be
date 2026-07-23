@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,6 +21,8 @@ import com.kh.spring11.vo.account.AccountFindResponseVO;
 import com.kh.spring11.vo.account.AccountJoinRequestVO;
 import com.kh.spring11.vo.account.AccountJoinResponseVO2;
 import com.kh.spring11.vo.account.AccountMeResponseVO;
+import com.kh.spring11.vo.account.ChangeAccountRequestVO;
+import com.kh.spring11.vo.account.ChangeAccountResponseVO;
 import com.kh.spring11.vo.account.ChangePasswordRequestVO;
 import com.kh.spring11.vo.account.ChangePasswordResponseVO;
 import com.kh.spring11.vo.jwt.TokenParseResponseVO;
@@ -199,6 +202,16 @@ public class AccountRestController {
 					.build();
 		}
 		
+		
+		//[4]형식 검사
+		String regex = "^(?=.*?[A-Z]+)(?=.*?[a-z]+)(?=.*?[0-9]+)(?=.*?[\\\\!\\\\@\\\\#\\\\$\\\\%\\\\^\\\\&\\\\*\\\\(\\\\)\\\\-\\\\_\\\\=\\\\+\\\\[\\\\]\\\\{\\\\}\\\\'\\\\\\\"\\\\`\\\\~\\\\<\\\\>\\\\.\\\\,\\\\/\\\\?\\\\\\\\\\\\|]+)[A-Za-z0-9\\\\!\\\\@\\\\#\\\\$\\\\%\\\\^\\\\&\\\\*\\\\(\\\\)\\\\-\\\\_\\\\=\\\\+\\\\[\\\\]\\\\{\\\\}\\\\'\\\\\\\"\\\\`\\\\~\\\\<\\\\>\\\\.\\\\,\\\\/\\\\?\\\\\\\\\\\\|]{8,16}$\";\r\n";
+		if(request.getNewAccountPassword().matches(regex)==false) {
+			return ChangePasswordResponseVO.builder()
+					.result(false)
+					.message("비밀번호는 대문자, 소문자, 숫자, 특수문자를 반드시 포함하여 작성하세요")
+				.build();
+		}
+		
 		//[4]변경시도
 		
 		accountDao.updateAccountPassword(
@@ -217,6 +230,33 @@ public class AccountRestController {
 				;
 	}
 	
+	//회원 정보 수중(본인)
+	@PutMapping("/")
+	public ChangeAccountResponseVO updateAll(
+//			@AuthenticationPrincipal(expression="") 
+			@CurrentUser TokenParseResponseVO parseVO,
+			@Valid @RequestBody ChangeAccountRequestVO request
+	){
+		
+		//[1]정보 조회 후 없으면 404처리
+		AccountDto accountDto = accountDao.selectOne(parseVO.getAccountId());
+		if(accountDto == null) throw new TargetNotfoundException();
+		
+		//[2] 정보 갈아끼우기
+		BeanUtils.copyProperties(request, accountDto);//request -> accountDto
+		
+		//추가 검증이 필요하다면 이곳에 작성 후 거절 상태를 반환 
+		
+		
+		//[3] 수정처리
+		accountDao.updateAll(accountDto);
+
+		
+		return ChangeAccountResponseVO.builder()
+				.status(true)
+				.message("회원 정보 변경이 완료되었습니다")
+				.build();
+	}
 	
 	
 	

@@ -62,6 +62,12 @@ public class AccountDaoMybatis implements AccountDao{
 		accountDto.setAccountPassword(encrypt);
 		return sqlSession.update("mapper.account.updateAccountPassword", accountDto) >0;
 	}
+	
+	
+	@Override
+	public boolean updateAll(AccountDto accountDto) {
+		return sqlSession.update("mapper.account.updateAll", accountDto)>0 ;
+	}
 
 	
 }
