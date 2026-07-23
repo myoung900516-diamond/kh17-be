@@ -14,15 +14,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring11.annotation.CommonsApiResponse;
+import com.kh.spring11.annotation.CurrentUser;
 import com.kh.spring11.dao.AccountDao;
 import com.kh.spring11.dto.AccountDto;
 import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.error.WhoAreYouException;
-import com.kh.spring11.service.JwtService;
 import com.kh.spring11.vo.account.AccountFindResponseVO;
 import com.kh.spring11.vo.account.AccountJoinRequestVO;
 import com.kh.spring11.vo.account.AccountJoinResponseVO2;
 import com.kh.spring11.vo.account.AccountMeResponseVO;
+import com.kh.spring11.vo.account.ChangePasswordRequestVO;
+import com.kh.spring11.vo.account.ChangePasswordResponseVO;
 import com.kh.spring11.vo.jwt.TokenParseResponseVO;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,10 +39,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class AccountRestController {
 	@Autowired
 	private AccountDao accountDao;
-	@Autowired
-	private JwtService jwtService;
+//	@Autowired
+//	private JwtService jwtService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+
 
 	@ApiResponse(responseCode = "200", description = "가입성공")
 	@PostMapping(value = "/", produces = "application/json")
@@ -96,14 +100,30 @@ public class AccountRestController {
 	// stateless 서버의 세션 대체 방안
 	@ApiResponse(responseCode = "200", description = "조회성공")
 	@GetMapping(value = "/me", produces = "application/json")
-	public AccountMeResponseVO me(@CookieValue(name = "accessToken", required = false) String accessToken) {
-		if(accessToken == null) {
-			throw new WhoAreYouException();
-		}
+	public AccountMeResponseVO me(
+			//accessToken이라는 쿠키를 읽는 명령
+//			@CookieValue(value = "accessToken") String accessToken
+			
+			//Spring Security가 해석해낸 JWT를 가져오는 명령(+이미 해석되어 있음)
+//			@AuthenticationPrincipal Jwt jwt
+			
+			//아예 무슨 명령을 써야 반환되는지까지 알려주고 최종형태를 달라고 해보자! 
+//			@AuthenticationPrincipal(expression="@jwtService.parseAccessToken(#this.tokenValue)")
+			@CurrentUser TokenParseResponseVO parseVO
+			
+			) {
+//		if(accessToken == null) {
+//			throw new WhoAreYouException();
+//		}
 		
-		//토큰해석 
-		TokenParseResponseVO parseVO = jwtService.parseAccessToken(accessToken);
+		//토큰해석 + 유효성 검증 = @CookieValue로 읽었을 때
+//		TokenParseResponseVO parseVO = jwtService.parseAccessToken(accessToken);
+		
+		//토큰을 내가 원하는 형태로 변환만 , 내용만 (=유효성 검증은 하지 않음, JwtDecoder 사용하지 않음)
+//		TokenParseResponseVO parseVO = jwtService.parseAccessToken(jwt);
+		
 		AccountDto accountDto = accountDao.selectOne(parseVO.getAccountId());
+		
 		if (accountDto == null)
 			throw new TargetNotfoundException();
 
@@ -113,39 +133,87 @@ public class AccountRestController {
 		return response;
 	}
 	
-	@ApiResponse(responseCode = "200", description = "비밀번호조회성공")
-	@GetMapping(value="/findPassword", produces="application/json")
-	public boolean findPassword(
-			@CookieValue(name = "accessToken", required = false) String accessToken,
-			@RequestParam(required = false)  String accountPassword 
-			) {
-		
-		if(accessToken == null) {
-			throw new WhoAreYouException();
-		}
-		
-		//토큰해석 
-		TokenParseResponseVO parseVO = jwtService.parseAccessToken(accessToken);
-		AccountDto accountDto = accountDao.selectOne(parseVO.getAccountId());
-		if (accountDto == null)	throw new TargetNotfoundException();
-		
-		
-//		System.out.println("입력 비밀번호 = [" + accountPassword + "]");
-//		System.out.println("DB 비밀번호 = [" + accountDto.getAccountPassword() + "]");
+	
+//	@ApiResponse(responseCode = "200", description = "비밀번호조회성공")
+//	@GetMapping(value="/findPassword", produces="application/json")
+//	public boolean findPassword(
+//			@CookieValue(name = "accessToken", required = false) String accessToken,
+//			@RequestParam(required = false)  String accountPassword 
+//			) {
+//		
+//		if(accessToken == null) {
+//			throw new WhoAreYouException();
+//		}
+//		
+//		//토큰해석 
+//		TokenParseResponseVO parseVO = jwtService.parseAccessToken(accessToken);
+//		AccountDto accountDto = accountDao.selectOne(parseVO.getAccountId());
+//		if (accountDto == null)	throw new TargetNotfoundException();
+//		
+//		
+////		System.out.println("입력 비밀번호 = [" + accountPassword + "]");
+////		System.out.println("DB 비밀번호 = [" + accountDto.getAccountPassword() + "]");
+//
+//		boolean valid = passwordEncoder.matches(
+//		    accountPassword,
+//		    accountDto.getAccountPassword()
+//		);
+//
+////		System.out.println("비밀번호 일치 여부 = " + valid);
+//		return valid;
+//	}
 
-		boolean valid = passwordEncoder.matches(
-		    accountPassword,
-		    accountDto.getAccountPassword()
-		);
-
-//		System.out.println("비밀번호 일치 여부 = " + valid);
-		return valid;
-	}
-
+	//비밀번호 변경 오쳥에 대한 처리
 	@ApiResponse(responseCode="200", description="비밀번호변경성공")
 	@PatchMapping(value="/password", produces="application/json")
-	public boolean password() {
-		return true;
+	public ChangePasswordResponseVO password(
+			@CurrentUser TokenParseResponseVO parseVO,
+			@RequestBody ChangePasswordRequestVO request 
+			) {
+		//[1]DB에서 기존 유저의 정보를 불러온다
+		AccountDto accountDto = accountDao.selectOne(parseVO.getAccountId());
+		
+		if(accountDto == null) throw new TargetNotfoundException();
+		
+		//[2]비밀번호를 비교한다
+		String db = accountDto.getAccountPassword();
+		String input = request.getPrevAccountPassword();
+		
+		boolean valid = passwordEncoder.matches(input, db);//BCrypt 비교
+		
+		if(valid == false) {
+			return ChangePasswordResponseVO.builder()
+						.result(false)
+						.message("비밀번호가 일치하지 않습니다")
+					.build();
+		}
+		
+		//[3] 동일한 비밀번호로 변경하려고 하는 것을 차단 
+		boolean same = request.getPrevAccountPassword()
+						.equals(request.getNewAccountPassword());
+		if(same == true) {
+			return ChangePasswordResponseVO.builder()
+						.result(false)
+						.message("동일한 비밀번호로는 변경이 불가합니다")
+					.build();
+		}
+		
+		//[4]변경시도
+		
+		accountDao.updateAccountPassword(
+				AccountDto.builder()
+					.accountId(parseVO.getAccountId())
+					.accountPassword(request.getNewAccountPassword())
+				.build()
+				);
+		
+		
+		//[5] 성공알림
+		return ChangePasswordResponseVO.builder()
+					.result(true)
+					.message("비밀번호 변경이 완료되었습니다")
+				.build()
+				;
 	}
 	
 	

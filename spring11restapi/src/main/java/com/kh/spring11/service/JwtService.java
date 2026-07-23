@@ -71,6 +71,16 @@ public class JwtService {
 				.build();
 	}
 	
+	//액세스토큰 해석 메소드
+		public TokenParseResponseVO parseAccessToken(Jwt jwt){
+			return TokenParseResponseVO.builder()
+						.accountId(jwt.getClaimAsString("accountId"))
+						.accountNickname(jwt.getClaimAsString("accountNickname"))
+						.accountLevel(jwt.getClaimAsString("accountLevel"))
+					.build();
+		}
+	
+	
 	//리프레시 토큰 생성 메소드 
 	public String createRefreshToken(String accountId) {
 		//토큰 발생시각을 객체로 생성

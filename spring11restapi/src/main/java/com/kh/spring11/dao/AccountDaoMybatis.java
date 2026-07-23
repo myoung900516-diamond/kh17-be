@@ -49,9 +49,18 @@ public class AccountDaoMybatis implements AccountDao{
 	}
 
 	@Override
-	public boolean updateLogin(String accountId) {
-		return sqlSession.update("mapper.account.updateLogin", accountId)>0;
+	public boolean updateAccountLogin(String accountId) {
+		return sqlSession.update("mapper.account.updateAccountLogin", accountId)>0;
 		
+	}
+
+	@Override
+	public boolean updateAccountPassword(AccountDto accountDto) {
+		//+비밀번호 암호화 처리 추가
+		String origin = accountDto.getAccountPassword();
+		String encrypt = passwordEncoder.encode(origin);
+		accountDto.setAccountPassword(encrypt);
+		return sqlSession.update("mapper.account.updateAccountPassword", accountDto) >0;
 	}
 
 	

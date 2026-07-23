@@ -129,7 +129,7 @@ public class AuthRestController {
 		);
 		
 		//최종로그인시각 갱신
-		accountDao.updateLogin(response.getAccountId());
+		accountDao.updateAccountLogin(response.getAccountId());
 		
 		
 		
