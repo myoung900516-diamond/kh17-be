@@ -1,9 +1,13 @@
 package com.kh.spring11.configuration;
 
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.cfg.CoercionAction;
+import com.fasterxml.jackson.databind.cfg.CoercionInputShape;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
@@ -12,7 +16,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 //기존의 ObjectMapper를 대체할 신규 ObjectMapper를 만들어서 교체 설정을 한다
 @Configuration
 public class JsonConfiguration {
-	@Bean
+	//@Bean
 	public ObjectMapper objectMapper() {
 		//신규 ObjectMapper 생성
 		ObjectMapper mapper = new ObjectMapper();
@@ -29,5 +33,25 @@ public class JsonConfiguration {
 		return mapper;
 	}
 	
+	//전체를 바꾸는 것이 아니라 특정 설정만 변경
+	@Bean 
+	public Jackson2ObjectMapperBuilderCustomizer jsonMapperBuilder() {
+		return builder -> {
+			//String 설정
+			//기존 도구를 사용
+			builder.deserializerByType(
+				String.class, new EmptyStringToNullDeserializer()
+			);
+			
+			//Integer 설정
+			builder.postConfigurer(mapper -> {
+				mapper.coercionConfigFor(Integer.class)
+					.setAcceptBlankAsEmpty(true)
+					.setCoercion(
+							CoercionInputShape.EmptyString, CoercionAction.AsNull
+							);
+			});
+		};
+	}
 
 }

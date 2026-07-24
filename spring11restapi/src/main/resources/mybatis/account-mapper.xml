@@ -203,12 +203,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			<if test="accountBlock != null">
 				and account_block = #{accountBlock}
 			</if>
+			<!-- 포인트 조건 -->
+			<choose>
+				<when test="accountPointMin != null and accountPointMax != null">
+					and account_point
+						between #{accountPointMin} and #{accountPointMax}
+				</when>
+				<when test="accountPointMin != null">
+					<![CDATA[
+					and account_point >= #{accountPointMin}
+					]]>
+				</when>
+				<when test= "accountPointMax != null">
+					<![CDATA[
+					and account_point <= #{accountPointMax}
+					]]>
+				</when>
+			</choose>	
+		
 		</where>
 	</select>
 	<!-- 복합검색 count -->
-	<select id="complexSearchCount" resultType="int">
+	<!-- <select id="complexSearchCount" resultType="int">
 	
-	</select>
+	</select> -->
 	
 	
 	

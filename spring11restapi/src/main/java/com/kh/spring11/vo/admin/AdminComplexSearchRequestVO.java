@@ -19,10 +19,10 @@ public class AdminComplexSearchRequestVO {
 	private String accountBirthBegin, accountBirthEnd;
 	private String accountJoinBegin, accountJoinEnd;
 	private String accountLoginBegin, accountLoginEnd;
-//	private String accountPointMin, accountPointMax;
+	private Integer accountPointMin, accountPointMax;
 	private Set<String> accountLevels;
 	private String accountBlock;
 
-	private List<String> orders;
-	private Integer size;
+//	private List<String> orders;
+//	private Integer size;
 }

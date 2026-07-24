@@ -276,13 +276,13 @@ public class AccountRestController {
 	@PostMapping("/search")
 	public AdminComplexSearchResponseVO search(@RequestBody AdminComplexSearchRequestVO request) {
 		
-		int count = accountDao.complexSearchCount(request);
-		boolean last = request.getSize() == null? true : count <= request.getSize();
+//		int count = accountDao.complexSearchCount(request);
+//		boolean last = request.getSize() == null? true : count <= request.getSize();
 		List<AccountSearchResultVO> list = accountDao.complexSearch(request);
 		
 		return AdminComplexSearchResponseVO.builder()
 					.list(list)
-					.last(last)
+//					.last(last)
 				.build();
 		
 	}
