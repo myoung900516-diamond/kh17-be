@@ -79,8 +79,136 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where account_id = #{accountId}
 	</update>
 	
+	<!-- (관리자용) 회원정보복합검색 -->
+	<select id="complexSearch" resultType="AccountSearchResultVO">
+		select 
+			account_id, account_nickname,
+			account_email, account_birth,
+			account_contact, account_post,
+			account_address1, account_address2,
+			account_join, account_login, account_change,
+			account_level, account_point, account_block
+		from account
+		<where>
+			<if test="accountId != null">
+				and account_id = #{accountId}
+			</if>
+			<if test="accountNickname != null">
+				and account_nickname = #{accountNickname}
+			</if>
+			<if test="accountContact != null">
+				and account_contact = #{accountContact}
+			</if>
+			<if test="accountEmail != null">
+				<![CDATA[
+				and instr(account_email, #{accountEmail}) > 0
+				]]>
+			</if>
+			<if test="accountAddress != null">
+				and
+				(
+				 	instr(account_post, #{accountAddress}) > 0
+					or
+					instr(account_address1, #{accountAddress}) > 0
+					or
+					instr(account_address2, #{accountAddress}) > 0
+				)
+			</if>
+			<!-- 생일 -->
+			<choose>
+				<when test="accountBirthBegin != null and accountBirthEnd != null" >
+					and 
+					to_timestamp(account_birth, 'yyyy-mm-dd')
+						between 
+							to_timestamp(#{accountBirthBegin}, 'yyyy-mm-dd') 
+							and 
+							to_timestamp(#{accountBirthEnd}, 'yyyy-mm-dd')
+				</when>
+				<when test="accountBirthBegin != null">
+					<![CDATA[
+					and
+					to_timestamp(account_birth, 'yyyy-mm-dd') 
+						>= to_timestamp(#{accountBirthBegin}, 'yyyy-mm-dd') 
+					]]>
+				</when>
+				<when test="accountBirthEnd != null">
+					<![CDATA[
+					and
+					to_timestamp(account_birth, 'yyyy-mm-dd') 
+						<= to_timestamp(#{accountBirthEnd}, 'yyyy-mm-dd')
+					]]>
+				</when>
+			</choose>
+			<!-- 가입일 -->
+			<choose>
+				<when test="accountJoinBegin != null and accountJoinEnd != null" >
+					and 
+					account_join
+						between 
+							to_timestamp(#{accountJoinBegin} || ' ' || '00:00:00.000', 'yyyy-mm-dd hh24:mi:ss.ff3') 
+							and 
+							to_timestamp(#{accountJoinEnd} || ' ' || '23:59:59.999', 'yyyy-mm-dd hh24:mi:ss.ff3')
+				</when>
+				<when test="accountJoinBegin != null">
+					<![CDATA[
+					and
+					account_join 
+						>= to_timestamp(#{accountJoinBegin} || ' ' || '00:00:00.000', 'yyyy-mm-dd hh24:mi:ss.ff3') 
+					]]>
+				</when>
+				<when test="accountJoinEnd != null">
+					<![CDATA[
+					and
+					account_join 
+						<= to_timestamp(#{accountJoinEnd} || ' ' || '23:59:59.999', 'yyyy-mm-dd hh24:mi:ss.ff3')
+					]]>
+				</when>
+			</choose>
+			<!-- 로그인시각 -->
+			<choose>
+				<when test="accountLoginBegin != null and accountLoginEnd != null" >
+					and 
+					account_login
+						between 
+							to_timestamp(#{accountLoginBegin} || ' ' || '00:00:00.000', 'yyyy-mm-dd hh24:mi:ss.ff3') 
+							and 
+							to_timestamp(#{accountLoginEnd} || ' ' || '23:59:59.999', 'yyyy-mm-dd hh24:mi:ss.ff3')
+				</when>
+				<when test="accountLoginBegin != null">
+					<![CDATA[
+					and
+					account_login 
+						>= to_timestamp(#{accountLoginBegin} || ' ' || '00:00:00.000', 'yyyy-mm-dd hh24:mi:ss.ff3') 
+					]]>
+				</when>
+				<when test="accountLoginEnd != null">
+					<![CDATA[
+					and
+					account_login 
+						<= to_timestamp(#{accountLoginEnd} || ' ' || '23:59:59.999', 'yyyy-mm-dd hh24:mi:ss.ff3')
+					]]>
+				</when>
+			</choose>
+			
+			<!-- 등급 -->
+			<if test="accountLevels != null and accountLevels.size() >0">
+				and account_level in (
+				<foreach item="accountLevel" collection="accountLevels" separator=",">
+					#{accountLevel}
+				</foreach>
+				)
+			</if>
+			
+			<!-- 차단 -->
+			<if test="accountBlock != null">
+				and account_block = #{accountBlock}
+			</if>
+		</where>
+	</select>
+	<!-- 복합검색 count -->
+	<select id="complexSearchCount" resultType="int">
 	
-	
+	</select>
 	
 	
 	

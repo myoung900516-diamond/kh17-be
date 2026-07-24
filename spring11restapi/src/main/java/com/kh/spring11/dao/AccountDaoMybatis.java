@@ -1,11 +1,15 @@
 package com.kh.spring11.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring11.dto.AccountDto;
+import com.kh.spring11.vo.account.AccountSearchResultVO;
+import com.kh.spring11.vo.admin.AdminComplexSearchRequestVO;
 
 @Repository
 public class AccountDaoMybatis implements AccountDao{
@@ -67,6 +71,18 @@ public class AccountDaoMybatis implements AccountDao{
 	@Override
 	public boolean updateAll(AccountDto accountDto) {
 		return sqlSession.update("mapper.account.updateAll", accountDto)>0 ;
+	}
+
+	@Override
+	public List<AccountSearchResultVO> complexSearch(AdminComplexSearchRequestVO request) {
+		
+		return sqlSession.selectList("mapper.account.complexSearch", request);
+	}
+
+	@Override
+	public int complexSearchCount(AdminComplexSearchRequestVO request) {
+		int result = sqlSession.selectOne("mapper.account.count", request);
+		return result;
 	}
 
 	
