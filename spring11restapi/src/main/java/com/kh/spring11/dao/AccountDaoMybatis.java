@@ -81,8 +81,13 @@ public class AccountDaoMybatis implements AccountDao{
 
 	@Override
 	public int complexSearchCount(AdminComplexSearchRequestVO request) {
-		int result = sqlSession.selectOne("mapper.account.count", request);
+		int result = sqlSession.selectOne("mapper.account.complexSearchCount", request);
 		return result;
+	}
+
+	@Override
+	public boolean blockRequest(String accountId) {
+		return sqlSession.update("mapper.account.block", accountId) >0 ;
 	}
 
 	

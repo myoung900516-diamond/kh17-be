@@ -1,6 +1,8 @@
 package com.kh.spring11.controller;
 
+import java.sql.Timestamp;
 import java.time.Duration;
+import java.time.LocalDateTime;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,7 @@ import com.kh.spring11.dao.AccountDao;
 import com.kh.spring11.dao.AccountRefreshDao;
 import com.kh.spring11.dto.AccountDto;
 import com.kh.spring11.dto.AccountRefreshDto;
+import com.kh.spring11.error.GetOutException;
 import com.kh.spring11.error.WhoAreYouException;
 import com.kh.spring11.service.AuthService;
 import com.kh.spring11.service.JwtService;
@@ -75,6 +78,25 @@ public class AuthRestController {
 			) {
 		//로그인 처리를 수행하고 결과를 얻어낸다
 		AuthLoginResponseVO response = authService.login(request);
+		
+		
+		//차단된 회원이면 403처리
+		AccountDto accountDto = accountDao.selectOne(request.getAccountId());
+		System.out.println(accountDto);
+		if(accountDto.getAccountBlock().equals("Y")) {
+			
+			throw new GetOutException();
+		}
+		
+		//비밀번호를 생성한지 30일이 지났으면 needUpdate를 true로 변환
+		Timestamp changed = accountDto.getAccountChange();
+		if(changed != null) {
+			LocalDateTime at = changed.toLocalDateTime();
+			LocalDateTime now = LocalDateTime.now();
+			if( at.plusDays(30).isBefore(now)) {
+				response.setNeedUpdate(true);
+			}
+		}
 		
 		//쿠키생성
 //		ResponseCookie postIt = ResponseCookie

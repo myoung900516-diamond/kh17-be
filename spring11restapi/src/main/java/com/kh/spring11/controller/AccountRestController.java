@@ -19,6 +19,7 @@ import com.kh.spring11.annotation.CurrentUser;
 import com.kh.spring11.dao.AccountDao;
 import com.kh.spring11.dto.AccountDto;
 import com.kh.spring11.error.TargetNotfoundException;
+import com.kh.spring11.vo.account.AccountBlockResponseVO;
 import com.kh.spring11.vo.account.AccountFindResponseVO;
 import com.kh.spring11.vo.account.AccountJoinRequestVO;
 import com.kh.spring11.vo.account.AccountJoinResponseVO2;
@@ -235,7 +236,7 @@ public class AccountRestController {
 				;
 	}
 	
-	//회원 정보 수중(본인)
+	//회원 정보 수정(본인)
 	@PutMapping("/")
 	public ChangeAccountResponseVO updateAll(
 //			@AuthenticationPrincipal(expression="") 
@@ -276,17 +277,31 @@ public class AccountRestController {
 	@PostMapping("/search")
 	public AdminComplexSearchResponseVO search(@RequestBody AdminComplexSearchRequestVO request) {
 		
-//		int count = accountDao.complexSearchCount(request);
-//		boolean last = request.getSize() == null? true : count <= request.getSize();
+		int count = accountDao.complexSearchCount(request);
+		boolean last = request.getSize() == null? true : count <= request.getSize();
 		List<AccountSearchResultVO> list = accountDao.complexSearch(request);
 		
 		return AdminComplexSearchResponseVO.builder()
 					.list(list)
-//					.last(last)
+					.last(last)
 				.build();
 		
 	}
 	
+	@PatchMapping("/block/{accountId}")
+	public AccountBlockResponseVO block(@PathVariable String accountId) {
+		
+		AccountBlockResponseVO result = new AccountBlockResponseVO();
+		
+		boolean valid =accountDao.blockRequest(accountId);
+		
+		
+		BeanUtils.copyProperties(valid, result);
+		
+		
+		return result;
+		
+	}
 	
 	
 	

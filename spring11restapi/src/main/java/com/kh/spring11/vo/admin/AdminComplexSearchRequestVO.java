@@ -1,6 +1,5 @@
 package com.kh.spring11.vo.admin;
 
-import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -24,5 +23,6 @@ public class AdminComplexSearchRequestVO {
 	private String accountBlock;
 
 //	private List<String> orders;
-//	private Integer size;
+	private String lastAccountId;
+	private Integer size = 10; //없으면 10
 }

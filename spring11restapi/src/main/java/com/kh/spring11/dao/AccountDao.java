@@ -25,5 +25,6 @@ public interface AccountDao {
 	List<AccountSearchResultVO> complexSearch(AdminComplexSearchRequestVO request);
 	int complexSearchCount(AdminComplexSearchRequestVO request);
 	
+	boolean blockRequest(String accountId);
 
 }
