@@ -190,6 +190,58 @@ public class EmailService {
 		return document.toString();
 	}
 	
+	public void sendTempPassword(String memberEmail, String tempPassword) throws MessagingException, IOException {
+		MimeMessage message = sender.createMimeMessage();
+		
+		MimeMessageHelper helper = new MimeMessageHelper(message, false, "UTF-8");
+		
+		helper.setTo(memberEmail);
+		helper.setSubject("[KH정보교육원] 임시 비밀번호가 도착하였습니다");
+		
+
+		String template = this.createTempPasswordHtml(tempPassword);
+		
+		helper.setText(template, true);
+		
+		sender.send(message);
+		
+		
+		
+		
+	}
+	
+	private String createTempPasswordHtml(String tempPassword) {
+
+	    return """
+	            <html>
+	            <body>
+	                <h2>임시 비밀번호가 발급되었습니다.</h2>
+
+	                <p>안녕하세요.</p>
+
+	                <p>
+	                    요청하신 임시 비밀번호를 안내드립니다.
+	                </p>
+
+	                <h3>임시 비밀번호</h3>
+
+	                <p>
+	                    <strong>%s</strong>
+	                </p>
+
+	                <p>
+	                    임시 비밀번호로 로그인하신 후
+	                    새로운 비밀번호로 변경해 주세요.
+	                </p>
+
+	                <p>
+	                    감사합니다.
+	                </p>
+	            </body>
+	            </html>
+	            """.formatted(tempPassword);
+	}
+	
 	
 	
 	

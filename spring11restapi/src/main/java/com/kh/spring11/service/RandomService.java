@@ -26,10 +26,21 @@ public class RandomService {
 			char ch = numbers.charAt(index);
 			buffer.append(ch);
 		}
-		
+//		System.out.println(buffer.toString());
 		return buffer.toString();
 	}
 	
+	public String generateString(int size) {
+		StringBuffer buffer = new StringBuffer();
+		
+		for(int i=0; i<size; i++) {
+			int index = r.nextInt(numbers.length());
+			char ch = numbers.charAt(index);
+			buffer.append(ch);
+		}
+//		System.out.println(buffer.toString());
+		return buffer.toString();
+	}
 	
 	
 	

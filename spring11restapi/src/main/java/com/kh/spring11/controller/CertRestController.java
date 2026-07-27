@@ -5,19 +5,24 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring11.annotation.CommonsApiResponse;
+import com.kh.spring11.dao.AccountDao;
 import com.kh.spring11.dao.CertDao;
+import com.kh.spring11.dto.AccountDto;
 import com.kh.spring11.dto.CertDto;
 import com.kh.spring11.service.EmailService;
+import com.kh.spring11.service.RandomService;
 import com.kh.spring11.vo.cert.CertCheckRequestVO;
 import com.kh.spring11.vo.cert.CertCheckResponseVO;
 import com.kh.spring11.vo.cert.CertSendRequestVO;
+import com.kh.spring11.vo.cert.CertTempPasswordResponseVO;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,7 +40,16 @@ public class CertRestController {
 	private EmailService emailService;
 	
 	@Autowired
+	private RandomService randomService;
+	
+	@Autowired
 	private CertDao certDao;
+	
+	@Autowired
+	private AccountDao accountDao;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@ApiResponse(responseCode="200", description="이메일발송성공")
 	@PostMapping("/send")
@@ -89,10 +103,31 @@ public class CertRestController {
 			
 		}
 		
+
+	@ApiResponse(responseCode="200", description="임시비밀번호 발송성공")
+	@PostMapping("/tempPassword/{accountId}")
+	public CertTempPasswordResponseVO tempPassword(@PathVariable String accountId) throws MessagingException, IOException {
+		
+		//임시 비밀번호 생성(숫자12자리)
+		String tempPassword = randomService.generateNumber(12);
+		
+		AccountDto accountDto = accountDao.selectOne(accountId);
+//		String encrypt = passwordEncoder.encode(tempPassword);
+		accountDto.setAccountPassword(tempPassword);
+		accountDao.updateAccountPassword(accountDto);
+		
+		emailService.sendTempPassword(accountDto.getAccountEmail(), tempPassword);
+		
+		
+		return CertTempPasswordResponseVO.builder()
+					.result(true)
+				.build();
+		
 	}
 	
 	
 	
+}
 	
 	
 	
