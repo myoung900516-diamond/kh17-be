@@ -17,6 +17,7 @@ import com.kh.spring11.dao.AccountDao;
 import com.kh.spring11.dao.CertDao;
 import com.kh.spring11.dto.AccountDto;
 import com.kh.spring11.dto.CertDto;
+import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.service.EmailService;
 import com.kh.spring11.service.RandomService;
 import com.kh.spring11.vo.cert.CertCheckRequestVO;
@@ -104,26 +105,7 @@ public class CertRestController {
 		}
 		
 
-	@ApiResponse(responseCode="200", description="임시비밀번호 발송성공")
-	@PostMapping("/tempPassword/{accountId}")
-	public CertTempPasswordResponseVO tempPassword(@PathVariable String accountId) throws MessagingException, IOException {
-		
-		//임시 비밀번호 생성(숫자12자리)
-		String tempPassword = randomService.generateNumber(12);
-		
-		AccountDto accountDto = accountDao.selectOne(accountId);
-//		String encrypt = passwordEncoder.encode(tempPassword);
-		accountDto.setAccountPassword(tempPassword);
-		accountDao.updateAccountPassword(accountDto);
-		
-		emailService.sendTempPassword(accountDto.getAccountEmail(), tempPassword);
-		
-		
-		return CertTempPasswordResponseVO.builder()
-					.result(true)
-				.build();
-		
-	}
+	
 	
 	
 	

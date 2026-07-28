@@ -88,7 +88,10 @@ public class SecurityConfiguration {
 						.permitAll()
 						
 						//cert service
-						.requestMatchers("/service/cert/**").permitAll()
+						.requestMatchers(
+								"/service/cert/check"
+								,"/service/cert/send"
+						).permitAll()
 						
 						
 						.requestMatchers("/api/country/**").permitAll()
@@ -112,8 +115,9 @@ public class SecurityConfiguration {
 						//관리자기능 - JWT에 authorities 클레임에 "마스터"가 포함되어 있어야함
 						.requestMatchers(
 							"/api/admin/**"
-							,"api/account/search"
 						).hasAuthority("마스터")
+						
+						
 						//나머지 모두 거절
 						.anyRequest().permitAll()
 			)

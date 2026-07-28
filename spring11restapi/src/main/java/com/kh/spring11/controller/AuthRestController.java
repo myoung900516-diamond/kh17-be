@@ -39,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name="인증 처리 서비스", description="stateless 서버의 인증 처리 로직 구현")
 @CommonsApiResponse
 
+
 @Slf4j
 //@CrossOrigin(
 //		origins = "http://localhost:5173",

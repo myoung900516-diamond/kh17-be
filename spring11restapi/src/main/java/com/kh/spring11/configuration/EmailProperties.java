@@ -15,5 +15,6 @@ public class EmailProperties {
 	private int port; //접두사 + port라는 항목을 읽어서 여기에 저장해
 	private String username; //접두사+ username라는 항목을 읽어서 여기에 저장해
 	private String password; //접두사 + password라는 항목을 읽어서 여기에 저장해
+	private String from;
 	
 }

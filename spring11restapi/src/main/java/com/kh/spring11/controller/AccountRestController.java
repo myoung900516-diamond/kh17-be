@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kh.spring11.annotation.CommonsApiResponse;
+import com.kh.spring11.annotation.AuthApiResponse;
 import com.kh.spring11.annotation.CurrentUser;
 import com.kh.spring11.dao.AccountDao;
 import com.kh.spring11.dto.AccountDto;
@@ -38,7 +38,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @Tag(name = "회원 정보 관리 서비스")
-@CommonsApiResponse
+//@CommonsApiResponse
+@AuthApiResponse
 
 //@CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
 @RestController
@@ -95,6 +96,11 @@ public class AccountRestController {
 		AccountDto accountDto = accountDao.selectOne(accountId);
 		if (accountDto == null)
 			throw new TargetNotfoundException();
+		
+//		로딩중인 화면을 보려고 일부러 느리게 만듬 
+//		try {
+//			Thread.sleep(Duration.ofSeconds(2L));
+//		} catch (InterruptedException e) {}
 
 		AccountFindResponseVO response = new AccountFindResponseVO();
 		BeanUtils.copyProperties(accountDto, response);// 가능한 항목 복사
@@ -210,7 +216,8 @@ public class AccountRestController {
 		
 		
 		//[4]형식 검사
-		String regex = "^(?=.*?[A-Z]+)(?=.*?[a-z]+)(?=.*?[0-9]+)(?=.*?[\\\\!\\\\@\\\\#\\\\$\\\\%\\\\^\\\\&\\\\*\\\\(\\\\)\\\\-\\\\_\\\\=\\\\+\\\\[\\\\]\\\\{\\\\}\\\\'\\\\\\\"\\\\`\\\\~\\\\<\\\\>\\\\.\\\\,\\\\/\\\\?\\\\\\\\\\\\|]+)[A-Za-z0-9\\\\!\\\\@\\\\#\\\\$\\\\%\\\\^\\\\&\\\\*\\\\(\\\\)\\\\-\\\\_\\\\=\\\\+\\\\[\\\\]\\\\{\\\\}\\\\'\\\\\\\"\\\\`\\\\~\\\\<\\\\>\\\\.\\\\,\\\\/\\\\?\\\\\\\\\\\\|]{8,16}$\";\r\n";
+		String regex = "^(?=.*?[A-Z]+)(?=.*?[a-z]+)(?=.*?[0-9]+)(?=.*?[\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\-\\_\\=\\+\\[\\]\\{\\}\\'\\\"\\`\\~\\<\\>\\.\\,\\/\\?\\\\\\|]+)[A-Za-z0-9\\!\\@\\#\\$\\%\\^\\&\\*\\(\\)\\-\\_\\=\\+\\[\\]\\{\\}\\'\\\"\\`\\~\\<\\>\\.\\,\\/\\?\\\\\\|]{8,16}$";
+		
 		if(request.getNewAccountPassword().matches(regex)==false) {
 			return ChangePasswordResponseVO.builder()
 					.result(false)
