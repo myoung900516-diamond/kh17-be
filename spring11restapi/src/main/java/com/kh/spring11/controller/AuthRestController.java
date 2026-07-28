@@ -83,21 +83,21 @@ public class AuthRestController {
 		
 		//차단된 회원이면 403처리
 		AccountDto accountDto = accountDao.selectOne(request.getAccountId());
-		System.out.println(accountDto);
-		if(accountDto.getAccountBlock().equals("Y")) {
-			
-			throw new GetOutException();
-		}
+//		System.out.println(accountDto);
+//		if(accountDto.getAccountBlock().equals("Y")) {
+//			
+//			throw new GetOutException();
+//		}
 		
 		//비밀번호를 생성한지 30일이 지났으면 needUpdate를 true로 변환
-		Timestamp changed = accountDto.getAccountChange();
-		if(changed != null) {
-			LocalDateTime at = changed.toLocalDateTime();
-			LocalDateTime now = LocalDateTime.now();
-			if( at.plusDays(30).isBefore(now)) {
-				response.setNeedUpdate(true);
-			}
-		}
+//		Timestamp changed = accountDto.getAccountChange();
+//		if(changed != null) {
+//			LocalDateTime at = changed.toLocalDateTime();
+//			LocalDateTime now = LocalDateTime.now();
+//			if( at.plusDays(30).isBefore(now)) {
+//				response.setNeedUpdate(true);
+//			}
+//		}
 		
 		//쿠키생성
 //		ResponseCookie postIt = ResponseCookie
