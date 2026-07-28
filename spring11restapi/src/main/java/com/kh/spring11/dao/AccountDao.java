@@ -27,4 +27,8 @@ public interface AccountDao {
 	
 	boolean blockRequest(String accountId);
 
+	boolean updateAccountChange(String accountId);
+	
+	
+
 }

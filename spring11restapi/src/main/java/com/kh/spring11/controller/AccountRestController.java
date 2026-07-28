@@ -310,6 +310,13 @@ public class AccountRestController {
 		
 	}
 	
+	//30일 동안 비밀번호 변경 요청 안보기 처리(비밀번호 변경시간 갱신처리)
+	@ApiResponse(responseCode = "200", description="갱신 처리 완료")
+	@PatchMapping("/remindMeLater/{accountId}")
+	public void remindMeLater(@PathVariable String accountId) {
+		accountDao.updateAccountChange(accountId);
+	}
+	
 	
 	
 	
