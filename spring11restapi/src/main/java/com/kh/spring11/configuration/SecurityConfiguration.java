@@ -115,10 +115,11 @@ public class SecurityConfiguration {
 						//관리자기능 - JWT에 authorities 클레임에 "마스터"가 포함되어 있어야함
 						.requestMatchers(
 							"/api/admin/**"
+							,"/api/sale/add"
 						).hasAuthority("마스터")
 						
 						
-						//나머지 모두 거절
+						//나머지 모두 허용
 						.anyRequest().permitAll()
 			)
 			//JWT를 어떻게 검증할 것인지 설정 (JwtDecoder가 반드시 필요)
