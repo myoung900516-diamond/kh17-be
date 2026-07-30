@@ -4,9 +4,13 @@ import java.io.IOException;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.spring11.vo.attach.AttachInfoVO;
+
 public interface AttachService {
 	
 	int save(MultipartFile attach) throws IllegalStateException, IOException;
 	void delete(int attachNo);
 
+	AttachInfoVO load(int attachNo) throws Exception;
+	
 }

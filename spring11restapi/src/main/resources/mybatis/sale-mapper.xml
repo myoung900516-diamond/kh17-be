@@ -55,10 +55,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	
+	<!--  썸네일 Attach번호 조회용  -->
+	<select id="findAttachNo" resultType="Integer">
+		select attach_no from sale_thumbnail where sale_no = #{saleNo}
+	</select>
 	
-	
-	
-	
+	<!-- 상세이미지 조회를 위한 attachno 조회용 -->
+	<select id="findAttachNumbers" resultType="Integer">
+		select attach_no from sale_information where sale_no = #{saleNo} order by attach_no asc
+	</select>
 	
 	
 	

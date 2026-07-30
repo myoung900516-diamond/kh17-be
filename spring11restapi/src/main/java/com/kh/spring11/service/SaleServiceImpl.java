@@ -9,11 +9,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.spring11.dao.AttachDao;
 import com.kh.spring11.dao.SaleDao;
+import com.kh.spring11.dto.AttachDto;
 import com.kh.spring11.dto.SaleDto;
+import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.vo.sale.SaleAddRequestVO;
 import com.kh.spring11.vo.sale.SaleAddRequestVO2;
 import com.kh.spring11.vo.sale.SaleAddResponseVO;
+import com.kh.spring11.vo.sale.SaleDetailResponseVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +31,9 @@ public class SaleServiceImpl implements SaleService{
 	
 	@Autowired
 	private AttachService attachService;
+	
+	@Autowired
+	private AttachDao attachDao;
 	
 	
 	
@@ -87,7 +94,7 @@ public class SaleServiceImpl implements SaleService{
 
 
 
-	@Transactional //이 메소드에서 발생하는 DB작업은 다 실행되거나 모두 실행이 안되거나 
+	@Transactional //이 메소드에서 발생하는 DB변경작업은 다 실행되거나 모두 실행이 안되거나 (DB조회는 해당안함)
 	@Override
 	public SaleAddResponseVO add(
 			SaleAddRequestVO2 request, 
@@ -123,7 +130,7 @@ public class SaleServiceImpl implements SaleService{
 				
 				//[5]첨부파일이 있으면 첨부파일을 등록 후 상품정보와 연결
 //				MultipartFile thumbnail = request.getThumbnail();
-				if(thumbnail.isEmpty() == false) {
+				if(thumbnail != null && thumbnail.isEmpty() == false) {
 					int attachNo = attachService.save(thumbnail);
 					saleDao.connect(saleNo, attachNo);
 				}
@@ -142,4 +149,49 @@ public class SaleServiceImpl implements SaleService{
 		return response;
 	}
 
+
+
+	@Override
+	public SaleDetailResponseVO findSaleDetail(int saleNo) throws Exception {
+		SaleDto saleDto = saleDao.selectOne(saleNo);
+		if(saleDto == null) throw new TargetNotfoundException();
+		
+		
+		//없을 수 있으니까
+		Integer attachNo = saleDao.findAttachNo(saleNo);
+		
+		AttachDto thumbnail = attachNo != null ? 
+				attachDao.selectOne(attachNo) : null;
+		
+//		System.out.println(thumbnail);
+		
+		
+		List<Integer> attachNumbers = saleDao.findAttachNumbers(saleNo);
+		List<AttachDto> details = attachDao.selectList(attachNumbers);
+		
+//		attachService.load(attachNo);
+		
+		
+		
+		return SaleDetailResponseVO.builder()
+					.saleDto(saleDto)
+					.thumbnail(thumbnail)
+					.detailImages(details)
+				.build();
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

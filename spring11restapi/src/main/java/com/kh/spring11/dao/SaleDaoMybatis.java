@@ -56,4 +56,44 @@ public class SaleDaoMybatis implements SaleDao{
 		return sqlSession.selectList("mapper.sale.list", request);
 	}
 
+	@Override
+	public Integer findAttachNo(int saleNo) {
+		return sqlSession.selectOne("mapper.sale.findAttachNo", saleNo);
+	}
+
+	@Override
+	public List<Integer> findAttachNumbers(int saleNo) {
+		return sqlSession.selectList("mapper.sale.findAttachNumbers", saleNo);
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }

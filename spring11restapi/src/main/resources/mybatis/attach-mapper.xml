@@ -27,5 +27,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</delete>
 	
 	
+	<!-- 여러개찾기 -->
+	
+	<select id="findList" resultType="AttachDto">
+		select * from attach
+		where attach_no in(
+		<foreach item="attachNo" collection="list" separator=",">
+			#{attachNo}
+		</foreach>
+		)
+		order by attach_no asc
+	</select>
+	
+	
 	
 </mapper>

@@ -15,4 +15,8 @@ public interface SaleDao {
 	void connectDetailImage(int saleNo, int attachNo);
 	
 	List<SaleListItemVO> selecList(SaleListRequestVO request);
+	Integer findAttachNo(int saleNo);
+	
+	List<Integer> findAttachNumbers(int saleNo);
+	
 }

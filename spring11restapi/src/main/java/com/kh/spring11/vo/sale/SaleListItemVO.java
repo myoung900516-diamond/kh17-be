@@ -14,6 +14,6 @@ public class SaleListItemVO {
 	private String saleCategory;
 	private int saleOriginalPrice;
 	private int saleDiscountPrice;
-	private int attachNo;
+	private Integer attachNo;
 
 }
