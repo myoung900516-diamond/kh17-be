@@ -31,7 +31,7 @@ public class SaleServiceImpl implements SaleService{
 	
 	
 
-	
+	@Transactional
 	@Override
 	public SaleAddResponseVO add(SaleAddRequestVO request) throws IllegalStateException, IOException {
 //		log.debug("Local용 SaleService 실행");
@@ -66,6 +66,19 @@ public class SaleServiceImpl implements SaleService{
 		if(thumbnail.isEmpty() == false) {
 			int attachNo = attachService.save(thumbnail);
 			saleDao.connect(saleNo, attachNo);
+		}
+		
+		//[6]상세이미지가 있으면 첨부파일 등록 후 상품정보와 연결 
+		List<MultipartFile> detailImages = request.getDetailImages();
+		boolean exist = detailImages != null && detailImages.size() > 0;
+		if(exist) {//파라미터가 있으면
+			for(MultipartFile detail : detailImages) {//반복하며
+				if(detail.isEmpty() == false) { //비어있지 않은 이미지를 
+					int attachNo = attachService.save(detail);
+					saleDao.connectDetailImage(saleNo, attachNo);
+				}
+			}
+			
 		}
 		
 		

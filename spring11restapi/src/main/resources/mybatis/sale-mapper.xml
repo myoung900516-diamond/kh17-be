@@ -37,4 +37,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		insert into sale_information(sale_no, attach_no)
 		values(#{saleNo}, #{attachNo})
 	</insert>
+	
+	
+	
+	<!-- 고객이 볼 상품목록 -->
+	<select id="list" resultType="SaleListItemVO">
+		select 
+			S.sale_no, S.sale_name, S.sale_category, S.sale_original_price, S.sale_discount_price, T.attach_no
+		from sale S
+			left outer join sale_thumbnail T on S.sale_no = T.sale_no
+		<where>
+			<if test="saleCategory != null">
+				and S.sale_category = #{saleCategory}
+			</if>
+		</where>
+		order by sale_no desc
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 </mapper>

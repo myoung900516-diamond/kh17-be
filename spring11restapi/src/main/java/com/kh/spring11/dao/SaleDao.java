@@ -1,6 +1,10 @@
 package com.kh.spring11.dao;
 
+import java.util.List;
+
 import com.kh.spring11.dto.SaleDto;
+import com.kh.spring11.vo.sale.SaleListItemVO;
+import com.kh.spring11.vo.sale.SaleListRequestVO;
 
 public interface SaleDao {
 	int sequence();
@@ -10,4 +14,5 @@ public interface SaleDao {
 	void connect(int saleNo, int attachNo);
 	void connectDetailImage(int saleNo, int attachNo);
 	
+	List<SaleListItemVO> selecList(SaleListRequestVO request);
 }
