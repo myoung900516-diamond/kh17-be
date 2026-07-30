@@ -21,6 +21,8 @@ public interface SaleService {
 
 	SaleDetailResponseVO findSaleDetail(int saleNo) throws Exception;
 	
+	void delete(int saleNo);
+	
 	
 
 }

@@ -180,6 +180,22 @@ public class SaleServiceImpl implements SaleService{
 				.build();
 	}
 
+
+
+	@Override
+	public void delete(int saleNo) {
+		SaleDto saleDto = saleDao.selectOne(saleNo);
+		if(saleDto == null) throw new TargetNotfoundException();
+		
+		Integer attachNo = saleDao.findAttachNo(saleNo);
+		attachDao.delete(attachNo);
+		
+		saleDao.delete(saleNo);
+		
+	}
+
+	
+	
 	
 	
 	

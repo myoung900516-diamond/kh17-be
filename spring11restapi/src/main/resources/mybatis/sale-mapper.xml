@@ -65,6 +65,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select attach_no from sale_information where sale_no = #{saleNo} order by attach_no asc
 	</select>
 	
+	<!-- 상품정보 삭제 -->
+	
+	<delete id="delete">
+		delete sale where sale_no = #{saleNo}
+	</delete>
+	
 	
 	
 	

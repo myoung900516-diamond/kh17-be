@@ -19,4 +19,6 @@ public interface SaleDao {
 	
 	List<Integer> findAttachNumbers(int saleNo);
 	
+	boolean delete(int saleNo);
+	
 }
