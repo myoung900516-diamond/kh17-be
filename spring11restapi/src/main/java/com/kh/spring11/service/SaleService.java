@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.spring11.vo.sale.ChangeThumbnailResponseVO;
 import com.kh.spring11.vo.sale.SaleAddRequestVO;
 import com.kh.spring11.vo.sale.SaleAddRequestVO2;
 import com.kh.spring11.vo.sale.SaleAddResponseVO;
 import com.kh.spring11.vo.sale.SaleDetailResponseVO;
+import com.kh.spring11.vo.sale.SaleEditRequestVO;
 
 public interface SaleService {
 	SaleAddResponseVO add(SaleAddRequestVO request) throws IllegalStateException, IOException;
@@ -22,6 +24,14 @@ public interface SaleService {
 	SaleDetailResponseVO findSaleDetail(int saleNo) throws Exception;
 	
 	void delete(int saleNo);
+	
+	void edit(int saleNo, SaleEditRequestVO request, List<MultipartFile> detailImages) throws IllegalStateException, IOException;
+
+	ChangeThumbnailResponseVO changeThumbnail(int saleNo, MultipartFile thumbnail) throws IllegalStateException, IOException;
+
+	void deleteThumbnail(int saleNo);
+
+	void deleteDetailImage(int saleNo, int attachNo);
 	
 	
 

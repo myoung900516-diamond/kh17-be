@@ -13,11 +13,14 @@ import com.kh.spring11.dao.AttachDao;
 import com.kh.spring11.dao.SaleDao;
 import com.kh.spring11.dto.AttachDto;
 import com.kh.spring11.dto.SaleDto;
+import com.kh.spring11.error.GetOutException;
 import com.kh.spring11.error.TargetNotfoundException;
+import com.kh.spring11.vo.sale.ChangeThumbnailResponseVO;
 import com.kh.spring11.vo.sale.SaleAddRequestVO;
 import com.kh.spring11.vo.sale.SaleAddRequestVO2;
 import com.kh.spring11.vo.sale.SaleAddResponseVO;
 import com.kh.spring11.vo.sale.SaleDetailResponseVO;
+import com.kh.spring11.vo.sale.SaleEditRequestVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -181,16 +184,110 @@ public class SaleServiceImpl implements SaleService{
 	}
 
 
-
+	@Transactional
 	@Override
 	public void delete(int saleNo) {
-		SaleDto saleDto = saleDao.selectOne(saleNo);
-		if(saleDto == null) throw new TargetNotfoundException();
 		
-		Integer attachNo = saleDao.findAttachNo(saleNo);
-		attachDao.delete(attachNo);
+		
+		//상품 정보 및 이미지 정보 + 실물파일까지 삭제
+		//[1]썸네일과 상세이미지의 파일번호를 찾아야함
+		Integer thumbnail = saleDao.findAttachNo(saleNo);
+		List<Integer> detailNumbers = saleDao.findAttachNumbers(saleNo);
+		//[2]다 지워진 뒤 상품정보를 삭세
 		
 		saleDao.delete(saleNo);
+		
+		
+		//[3]DB의 파일 정보를 먼저 삭제하고 실물 파일을 삭제하도록 처리+@Transactional
+		//->파일번호만 알면 AttachService에서 가능(파일1개에 대해서)
+		attachService.delete(thumbnail);//썸네일 삭제
+		for(Integer attachNo : detailNumbers) {
+			attachService.delete(attachNo);
+		}
+		
+		
+		
+		
+		
+		
+	}
+
+
+
+	@Override
+	public void edit(int saleNo, SaleEditRequestVO request, List<MultipartFile> detailImages) throws IllegalStateException, IOException {
+		//요청에 saleDiscountPrice가 없는 경우는 saleOriginalPrice와 동일하게 변경
+		if(request.getSaleDiscountPrice() == null)
+			request.setSaleDiscountPrice(request.getSaleOriginalPrice());
+		//기본정보 변경
+		SaleDto saleDto = new SaleDto();
+		saleDto.setSaleNo(saleNo);
+		BeanUtils.copyProperties(request, saleDto);
+		saleDao.update(saleDto);
+		
+		//상세이미지 추가 등록
+		boolean exist = detailImages != null && detailImages.size() > 0;
+		if(exist) {//파라미터가 있으면
+			for(MultipartFile detail : detailImages) {//반복하며
+				if(detail.isEmpty() == false) { //비어있지 않은 이미지를 
+					int attachNo = attachService.save(detail);
+					saleDao.connectDetailImage(saleNo, attachNo);
+				}
+			}
+			
+		}
+	}
+
+
+	@Transactional
+	@Override
+	public ChangeThumbnailResponseVO changeThumbnail(int saleNo, MultipartFile thumbnail) throws IllegalStateException, IOException {
+		
+		//썸네일 변경을 위한 구체적인 코드
+		//[1]기존 썸네일 번호를 조회
+		Integer thumbnailNo = saleDao.findAttachNo(saleNo);
+		
+		//[2]기존 썸네일이 있다면 제거 
+		attachService.delete(thumbnailNo);
+
+		//[3]신규썸네일추가
+		int newThumbnailNo = attachService.save(thumbnail);
+		
+		//[4]연결
+		saleDao.connect(saleNo, newThumbnailNo);
+		
+		//[5]수정된 썸네일 정보 조회
+		AttachDto attachDto = attachDao.selectOne(newThumbnailNo);
+		
+		return ChangeThumbnailResponseVO.builder()
+					.attach(attachDto)
+				.build();
+	}
+
+
+
+	@Override
+	public void deleteThumbnail(int saleNo) {
+		//saleNo를 이용해서 썸네일의 attachNo를 구한 뒤 제거 처리 
+		
+		//[1]기존 썸네일 번호를 조회
+		Integer thumbnailNo = saleDao.findAttachNo(saleNo);
+		
+		//[2]기존 썸네일이 있다면 제거 
+		attachService.delete(thumbnailNo);
+
+	}
+
+
+
+	@Override
+	public void deleteDetailImage(int saleNo, int attachNo) {
+		//[1]상세이미지 번호만 조회
+		List<Integer> detailNumbers = saleDao.findAttachNumbers(saleNo);
+		//[2]실제 지우려는 이미지가 포함되어있지 않은 경우(즉, 다른상품 이미지라면)차단
+		if(!detailNumbers.contains(attachNo)) throw new GetOutException();//403 
+		//[3]통과했다면 삭제하자
+		attachService.delete(attachNo);
 		
 	}
 

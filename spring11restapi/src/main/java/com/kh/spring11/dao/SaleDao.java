@@ -21,4 +21,6 @@ public interface SaleDao {
 	
 	boolean delete(int saleNo);
 	
+	boolean update(SaleDto saleDto);
+	
 }

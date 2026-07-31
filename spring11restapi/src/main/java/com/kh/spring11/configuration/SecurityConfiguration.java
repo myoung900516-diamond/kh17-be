@@ -116,7 +116,21 @@ public class SecurityConfiguration {
 						.requestMatchers(
 							"/api/admin/**"
 							,"/api/sale/add"
+							
 						).hasAuthority("마스터")
+						
+						.requestMatchers(
+								HttpMethod.DELETE, "/api/sale/**"
+						)
+						.hasAuthority("마스터")
+						.requestMatchers(
+								HttpMethod.PUT, "/api/sale/**"
+						)
+						.hasAuthority("마스터")
+						.requestMatchers(
+								HttpMethod.PATCH, "/api/sale/thumbnail/**"
+						)
+						.hasAuthority("마스터")
 						
 						
 						//나머지 모두 허용
