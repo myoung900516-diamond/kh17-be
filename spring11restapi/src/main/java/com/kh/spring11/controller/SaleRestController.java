@@ -150,7 +150,15 @@ public class SaleRestController {
 	}
 	
 	
-	
+	//삭제이긴 하지만 데이터를 많이 보내야하게 때문에POST로 처리
+	@ApiResponse(responseCode="200", description="상세 이미지 여러개 삭제 성공")
+	@PostMapping("/deleteDetailImages/{saleNo}")
+	public void deleteDetailImages(
+			@PathVariable int saleNo,
+			@RequestBody List<Integer> detailNumbers
+			) {
+		
+	}
 	
 	
 	
