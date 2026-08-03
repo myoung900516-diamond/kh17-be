@@ -155,9 +155,9 @@ public class SaleRestController {
 	@PostMapping("/deleteDetailImages/{saleNo}")
 	public void deleteDetailImages(
 			@PathVariable int saleNo,
-			@RequestBody List<Integer> detailNumbers
+			@RequestBody List<Integer> detailNumbers //지워져야할 상세이미지 번호들
 			) {
-		
+		saleService.deleteDetailImages(saleNo, detailNumbers);
 	}
 	
 	

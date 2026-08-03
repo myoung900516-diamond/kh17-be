@@ -291,6 +291,16 @@ public class SaleServiceImpl implements SaleService{
 		
 	}
 
+
+	@Transactional
+	@Override
+	public void deleteDetailImages(int saleNo, List<Integer> detailNumbers) {
+		//이미지가 적기 때문에 반복문으로 db에 지속적으로 접근해서 처리 
+		for(int number : detailNumbers) {
+			deleteDetailImage(saleNo, number);
+		}
+	}
+
 	
 	
 	

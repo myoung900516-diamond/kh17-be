@@ -32,6 +32,8 @@ public interface SaleService {
 	void deleteThumbnail(int saleNo);
 
 	void deleteDetailImage(int saleNo, int attachNo);
+
+	void deleteDetailImages(int saleNo, List<Integer> detailNumbers);
 	
 	
 
