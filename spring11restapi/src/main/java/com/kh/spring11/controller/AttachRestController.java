@@ -116,10 +116,12 @@ public class AttachRestController {
 		GetObjectPresignRequest presignRequest = 
 				GetObjectPresignRequest.builder()
 					.signatureDuration(
-							Duration.ofMinutes(storageProperties.getPresignedLimit())
+							Duration.ofMinutes(storageProperties.getPresignedLimits())
 					)
 					.getObjectRequest(request)
 				.build();
+		
+//		System.out.println("몇초?= "+ storageProperties.getPresignedLimits());
 		
 		//이 코드로 우리가 얻어내고 싶은건 S3가 발급한 임시 다운로드 주소
 		String url = s3Presigner.presignGetObject(presignRequest)

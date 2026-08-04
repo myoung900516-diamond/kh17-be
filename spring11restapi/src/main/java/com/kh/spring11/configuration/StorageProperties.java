@@ -14,7 +14,7 @@ public class StorageProperties {
 
 	private String local;
 	private String awsRegion, awsBucket, awsRoot;
-	private long presignedLimit;
+	private long presignedLimits;
 	
 	public File getLocalRoot() {
 		return new File(local);
