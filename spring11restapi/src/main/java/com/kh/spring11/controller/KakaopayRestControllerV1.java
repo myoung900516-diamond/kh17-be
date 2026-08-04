@@ -1,11 +1,15 @@
 package com.kh.spring11.controller;
 
+import java.net.URI;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +28,7 @@ import com.kh.spring11.vo.kakaopay.KakaopayReadyResultVO;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Tag(name="실험용 결제 API")
@@ -42,7 +47,12 @@ public class KakaopayRestControllerV1 {
 	
 	@ApiResponse(responseCode = "200", description="쓰건 아닌 실험용 결제 성공")
 	@PostMapping(value = "/buy", produces="application/json")
-	public KakaopayBuyResponseVO buy(KakaopayBuyRequestVO request){
+	public KakaopayBuyResponseVO buy(
+			@Valid @RequestBody KakaopayBuyRequestVO request,
+//			@RequestHeader("Referer") String referer
+			@RequestHeader("X-Client-Page") String clientPage
+			){
+//		log.debug("Referer = {}", referer);
 //		보낼 데이터 통신은 기본적으로 String만 보낼 수 있음
 		
 		String partnerOrderId = UUID.randomUUID().toString();
@@ -52,9 +62,9 @@ public class KakaopayRestControllerV1 {
 					.partnerUserId("testuser1")
 					.itemName(request.getName())
 					.totalAmount(request.getPrice())
-					.approvalUrl("http://localhost:8080/api/kakaopay/v1/buy/success/"+partnerOrderId)
-					.cancelUrl("http://localhost:8080/api/kakaopay/v1/buy/cancel/"+partnerOrderId)
-					.failUrl("http://localhost:8080/api/kakaopay/v1/buy/fail/"+partnerOrderId)
+//					.approvalUrl("http://localhost:8080/api/kakaopay/v1/buy/success/"+partnerOrderId)
+//					.cancelUrl("http://localhost:8080/api/kakaopay/v1/buy/cancel/"+partnerOrderId)
+//					.failUrl("http://localhost:8080/api/kakaopay/v1/buy/fail/"+partnerOrderId)
 				.build();
 		
 		KakaopayReadyResponseVO payResponse = kakaopayService.ready(payRequest);
@@ -62,9 +72,10 @@ public class KakaopayRestControllerV1 {
 		//결재 승인 요청 매핑에서 필요로 하는 데이터를 FlashService를 이용해서 저장한다. 
 		flashService.addKakaopayReadyFlashData(
 					KakaopayReadyResultVO.builder()
-						.partnerOrderId(partnerOrderId)
-						.partnerUserId(payRequest.getPartnerUserId())
-						.tid(payResponse.getTid())
+						.partnerOrderId(partnerOrderId)//주문번호
+						.partnerUserId(payRequest.getPartnerUserId())//사용자아이디
+						.tid(payResponse.getTid())//거래번호
+						.clientPage(clientPage)//돌아갈 주소
 					.build()
 				);
 		
@@ -77,7 +88,7 @@ public class KakaopayRestControllerV1 {
 	
 	@GetMapping("/buy/success/{partnerOrderId}")
 //	@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-	public String success(
+	public ResponseEntity<?> success(
 			@RequestParam(value="pg_token") String pgToken,
 			@PathVariable String partnerOrderId
 			){
@@ -105,7 +116,11 @@ public class KakaopayRestControllerV1 {
 					.build()
 				);
 		
-		return "결재완료!";
+//		return "결재완료!";//임시조치이며. 실제로는 리액트의 완료페이지로 리다이렉트 시켜야함. 
+		return ResponseEntity.status(302)
+//					.location(URI.create("http://localhost:5173/pay/v1/buy/success"))
+					.location(URI.create(result.getClientPage()+"/success"))
+				.build();
 		
 		
 		
@@ -115,8 +130,15 @@ public class KakaopayRestControllerV1 {
 		
 		
 	}
-//	@GetMapping("/but/success")
-//	@GetMapping("/but/success")
+	//취소나 
+	@GetMapping("/buy/cancel/{partnerOrderId}")
+	public ResponseEntity<?> cancel(@PathVariable String partnerOrderId){
+		KakaopayReadyResultVO result = flashService.getKakaopayReadyFlashData(partnerOrderId);
+		return ResponseEntity.status(302)
+					.location(URI.create("http://localhose:5173/pay/v1/buy/cancel"))
+				.build();
+	}
+//	@GetMapping("/buy/success/{partnerOrderId}")
 	
 
 }
