@@ -21,6 +21,7 @@ import com.kh.spring11.vo.sale.SaleAddRequestVO2;
 import com.kh.spring11.vo.sale.SaleAddResponseVO;
 import com.kh.spring11.vo.sale.SaleDetailResponseVO;
 import com.kh.spring11.vo.sale.SaleEditRequestVO;
+import com.kh.spring11.vo.sale.SaleListItemVO;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -299,6 +300,15 @@ public class SaleServiceImpl implements SaleService{
 		for(int number : detailNumbers) {
 			deleteDetailImage(saleNo, number);
 		}
+	}
+
+
+
+	@Override
+	public List<SaleListItemVO> findOrders(List<Integer> saleNumbers) {
+		//상태검사 추가(판매중지상품여부 or 구매자격검증 or 재고 소진 or ...)
+		return saleDao.findOrders(saleNumbers);
+		
 	}
 
 	

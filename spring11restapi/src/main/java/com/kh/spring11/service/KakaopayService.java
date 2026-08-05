@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.kh.spring11.configuration.KakaopayProperties;
 import com.kh.spring11.vo.kakaopay.KakaopayApproveRequestVO;
 import com.kh.spring11.vo.kakaopay.KakaopayApproveResponseVO;
 import com.kh.spring11.vo.kakaopay.KakaopayReadyRequestVO;
@@ -17,10 +18,18 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class KakaopayService {
 	
+	
 	@Qualifier("kakaopayClient")
 	@Autowired
 	private WebClient webClient;
 	
+	@Autowired
+	private KakaopayProperties kakaopayProperties;
+	
+//	private final KakaopayProperties kakaopayProperties;
+//	KakaopayService(KakaopayProperties kakaopayProperties){
+//		this.kakaopayProperties = kakaopayProperties;
+//	}
 
 	//결제 준비
 	public KakaopayReadyResponseVO ready(KakaopayReadyRequestVO request) {
@@ -35,6 +44,8 @@ public class KakaopayService {
 //				.queryParam("certEmail", memberEmail)
 //				.queryParam("certNumber", number)
 //				.toUriString(); //주소를 만드세요
+		
+		request.setCid(kakaopayProperties.getCid());
 		
 		String baseUrl = ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString();
 		log.debug("context path = {} ", ServletUriComponentsBuilder.fromCurrentContextPath().toUriString());
@@ -65,7 +76,7 @@ public class KakaopayService {
 	public KakaopayApproveResponseVO approve(KakaopayApproveRequestVO request) {
 		String url = "/online/v1/payment/approve";
 				
-				
+		request.setCid(kakaopayProperties.getCid());		
 		
 				
 		//		요청 발송 및 응답 수신

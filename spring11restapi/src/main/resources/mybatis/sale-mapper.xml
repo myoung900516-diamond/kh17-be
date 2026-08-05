@@ -83,6 +83,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		where sale_no = #{saleNo}
 	</update>
 	
+	<!-- 지정한 번호들에 대한 상품 정보 조회-->
+	<select id="findOrders" resultType="SaleListItemVO">
+		select 
+			S.sale_no, S.sale_name, S.sale_category, S.sale_original_price, S.sale_discount_price, T.attach_no
+		from sale S
+			left outer join sale_thumbnail T on S.sale_no = T.sale_no
+		where S.sale_no in (
+			<foreach item="saleNo" collection="list" separator=",">
+				#{saleNo}
+			</foreach>
+		)
+		order by S.sale_no asc
+	</select>
 	
 	
 </mapper>

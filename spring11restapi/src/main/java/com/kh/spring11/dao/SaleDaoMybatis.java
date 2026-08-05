@@ -75,6 +75,11 @@ public class SaleDaoMybatis implements SaleDao{
 	public boolean update(SaleDto saleDto) {
 		return sqlSession.update("mapper.sale.update", saleDto)>0 ;
 	}
+
+	@Override
+	public List<SaleListItemVO> findOrders(List<Integer> saleNumbers) {
+		return sqlSession.selectList("mapper.sale.findOrders", saleNumbers);
+	}
 	
 	
 	

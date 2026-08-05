@@ -130,15 +130,24 @@ public class KakaopayRestControllerV1 {
 		
 		
 	}
-	//취소나 
+	
+//	취소나 실패는 카카오페이에 추가 요청할 내용이 없음(결제가 이루어지지 않았으니까)
+//	Flash Data만 정리하면 됨
 	@GetMapping("/buy/cancel/{partnerOrderId}")
 	public ResponseEntity<?> cancel(@PathVariable String partnerOrderId){
 		KakaopayReadyResultVO result = flashService.getKakaopayReadyFlashData(partnerOrderId);
 		return ResponseEntity.status(302)
-					.location(URI.create("http://localhose:5173/pay/v1/buy/cancel"))
+//					.location(URI.create("http://localhost:5173/pay/v1/buy/cancel"))
+					.location(URI.create(result.getClientPage()+"/cancel"))
 				.build();
 	}
-//	@GetMapping("/buy/success/{partnerOrderId}")
+	@GetMapping("/buy/fail/{partnerOrderId}")
+	public ResponseEntity<?> fail(@PathVariable String partnerOrderId){
+		KakaopayReadyResultVO result = flashService.getKakaopayReadyFlashData(partnerOrderId);
+		return ResponseEntity.status(302)
+					.location(URI.create(result.getClientPage()+"/fail"))
+				.build();
+	}
 	
 
 }

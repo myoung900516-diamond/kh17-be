@@ -25,8 +25,11 @@ import com.kh.spring11.vo.sale.SaleAddRequestVO2;
 import com.kh.spring11.vo.sale.SaleAddResponseVO;
 import com.kh.spring11.vo.sale.SaleDetailResponseVO;
 import com.kh.spring11.vo.sale.SaleEditRequestVO;
+import com.kh.spring11.vo.sale.SaleListItemVO;
 import com.kh.spring11.vo.sale.SaleListRequestVO;
 import com.kh.spring11.vo.sale.SaleListResponseVO;
+import com.kh.spring11.vo.sale.SaleOrderRequestVO;
+import com.kh.spring11.vo.sale.SaleOrderResponseVO;
 
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Encoding;
@@ -161,6 +164,17 @@ public class SaleRestController {
 	}
 	
 	
+	//주문용 상품 정보 조회 명령
+	@ApiResponse(responseCode="200", description="주문버튼 클릭후 나오는 구매 정보 조회 성공")
+	@PostMapping(value="/orders", produces="application/json")
+	public SaleOrderResponseVO order(@Valid @RequestBody SaleOrderRequestVO request) {
+
+		List<SaleListItemVO> saleList = saleService.findOrders(request.getSaleNumbers());
+		
+		return SaleOrderResponseVO.builder()
+					.saleList(saleList)
+				.build();
+	}
 	
 	
 	
