@@ -9,6 +9,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.kh.spring11.configuration.KakaopayProperties;
 import com.kh.spring11.vo.kakaopay.KakaopayApproveRequestVO;
 import com.kh.spring11.vo.kakaopay.KakaopayApproveResponseVO;
+import com.kh.spring11.vo.kakaopay.KakaopayCancelRequestVO;
+import com.kh.spring11.vo.kakaopay.KakaopayCancelResponseVO;
+import com.kh.spring11.vo.kakaopay.KakaopayOrderRequestVO;
+import com.kh.spring11.vo.kakaopay.KakaopayOrderResponseVO;
 import com.kh.spring11.vo.kakaopay.KakaopayReadyRequestVO;
 import com.kh.spring11.vo.kakaopay.KakaopayReadyResponseVO;
 
@@ -25,6 +29,9 @@ public class KakaopayService {
 	
 	@Autowired
 	private KakaopayProperties kakaopayProperties;
+	
+//	@Autowired
+//	private KakaopayReadyResultVO kakaopayReadyResultVO;
 	
 //	private final KakaopayProperties kakaopayProperties;
 //	KakaopayService(KakaopayProperties kakaopayProperties){
@@ -91,7 +98,43 @@ public class KakaopayService {
 			return response;
 	}
 	
+	//결제조회
+	public KakaopayOrderResponseVO order(KakaopayOrderRequestVO payRequest) {
+		
+
+		
+		String url = "/online/v1/payment/order";
+		
+		payRequest.setCid(kakaopayProperties.getCid());
+//		payRequest.setTid(kakaopayReadyResultVO.getTid());
+		
+		KakaopayOrderResponseVO response = webClient.post()//	POST요청
+				.uri(url)//상세주소
+				.bodyValue(payRequest)//첨부데이터
+			.retrieve()//응답 수신 허용
+				.bodyToMono(KakaopayOrderResponseVO.class)//일시불(Mono)로 수신 끝어서 받는건 Flux
+				.block();
+		
+		return response;
+	}
 	
+	//결제취소
+	public KakaopayCancelResponseVO cancel(KakaopayCancelRequestVO payRequest) {
+		
+		String url = "/online/v1/payment/cancel";
+		
+		payRequest.setCid(kakaopayProperties.getCid());
+//		payRequest.setTid(kakaopayReadyResultVO.getTid());//tid는 결제 승인 시점에 브라우저에서 주문번호를 받아와 purchaseDto에서 꺼내오는 것이다. 
+		
+		KakaopayCancelResponseVO payResponse = webClient.post()//	POST요청
+				.uri(url)//상세주소
+				.bodyValue(payRequest)//첨부데이터
+			.retrieve()//응답 수신 허용
+				.bodyToMono(KakaopayCancelResponseVO.class)//일시불(Mono)로 수신 끝어서 받는건 Flux
+				.block();
+		
+		return payResponse;
+	}
 	
 
 }

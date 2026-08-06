@@ -24,5 +24,6 @@ public interface SaleDao {
 	boolean update(SaleDto saleDto);
 	
 	List<SaleListItemVO> findOrders(List<Integer> saleNumbers);
+	SaleListItemVO findOrder(int saleNo);
 	
 }

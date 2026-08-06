@@ -1,0 +1,24 @@
+package com.kh.spring11.vo.kakaopay;
+
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
+public class KakaopayCancelRequestVO {
+	
+	private String cid;
+	private String tid;
+	private Integer cancelAmount;//취소금액
+	@Builder.Default
+	private int cancelTaxFreeAmount = 0;//취소비과세금액
+	
+	
+
+}

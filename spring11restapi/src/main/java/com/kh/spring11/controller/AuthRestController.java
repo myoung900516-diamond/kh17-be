@@ -1,8 +1,6 @@
 package com.kh.spring11.controller;
 
-import java.sql.Timestamp;
 import java.time.Duration;
-import java.time.LocalDateTime;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +21,6 @@ import com.kh.spring11.dao.AccountDao;
 import com.kh.spring11.dao.AccountRefreshDao;
 import com.kh.spring11.dto.AccountDto;
 import com.kh.spring11.dto.AccountRefreshDto;
-import com.kh.spring11.error.GetOutException;
 import com.kh.spring11.error.WhoAreYouException;
 import com.kh.spring11.service.AuthService;
 import com.kh.spring11.service.JwtService;

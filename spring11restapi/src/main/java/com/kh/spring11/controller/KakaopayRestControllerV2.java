@@ -196,20 +196,20 @@ public class KakaopayRestControllerV2 {
 		
 	}
 	
-//	@GetMapping("/buy/cancel/{partnerOrderId}")
-//	public ResponseEntity<?> cancel(@PathVariable String partnerOrderId){
-//		KakaopayReadyResultVO result = flashService.getKakaopayReadyFlashData(partnerOrderId);
-//		return ResponseEntity.status(302)
-////					.location(URI.create("http://localhost:5173/pay/v1/buy/cancel"))
-//					.location(URI.create(result.getClientPage()+"/cancel"))
-//				.build();
-//	}
-//	@GetMapping("/buy/fail/{partnerOrderId}")
-//	public ResponseEntity<?> fail(@PathVariable String partnerOrderId){
-//		KakaopayReadyResultVO result = flashService.getKakaopayReadyFlashData(partnerOrderId);
-//		return ResponseEntity.status(302)
-//					.location(URI.create(result.getClientPage()+"/fail"))
-//				.build();
-//	}
+	@GetMapping("/buy/cancel/{partnerOrderId}")
+	public ResponseEntity<?> cancel(@PathVariable String partnerOrderId){
+		KakaopayReadyResultVO2 result = flashService.getKakaopayReadyFlashData2(partnerOrderId);
+		return ResponseEntity.status(302)
+//					.location(URI.create("http://localhost:5173/pay/v1/buy/cancel"))
+					.location(URI.create(result.getClientPage()+"/cancel/"+result.getPartnerOrderId()))
+				.build();
+	}
+	@GetMapping("/buy/fail/{partnerOrderId}")
+	public ResponseEntity<?> fail(@PathVariable String partnerOrderId){
+		KakaopayReadyResultVO2 result = flashService.getKakaopayReadyFlashData2(partnerOrderId);
+		return ResponseEntity.status(302)
+					.location(URI.create(result.getClientPage()+"/fail/"+result.getPartnerOrderId()))
+				.build();
+	}
 
 }

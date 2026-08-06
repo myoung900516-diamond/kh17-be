@@ -39,5 +39,6 @@ public interface SaleService {
 	List<SaleListItemVO> findOrders(List<Integer> saleNumbers);
 	
 	
+	
 
 }

@@ -11,8 +11,13 @@ import com.kh.spring11.dao.SaleDao;
 import com.kh.spring11.dto.PurchaseDetailDto;
 import com.kh.spring11.dto.PurchaseDto;
 import com.kh.spring11.dto.SaleDto;
+import com.kh.spring11.error.GetOutException;
+import com.kh.spring11.error.TargetNotfoundException;
+import com.kh.spring11.vo.jwt.TokenParseResponseVO;
 import com.kh.spring11.vo.kakaopay.BuyVO;
 import com.kh.spring11.vo.kakaopay.KakaopayApproveResponseVO;
+import com.kh.spring11.vo.kakaopay.KakaopayCancelRequestVO;
+import com.kh.spring11.vo.kakaopay.KakaopayCancelResponseVO;
 import com.kh.spring11.vo.kakaopay.KakaopayReadyResultVO2;
 
 @Service
@@ -22,6 +27,8 @@ public class PurchaseServiceImpl implements PurchaseService {
 	private PurchaseDao purchaseDao;
 	@Autowired
 	private SaleDao saleDao;
+	@Autowired
+	private KakaopayService kakaopayService;
 
 	@Transactional
 	@Override
@@ -60,6 +67,42 @@ public class PurchaseServiceImpl implements PurchaseService {
 				
 
 		
+	}
+
+	@Transactional
+	@Override
+	public KakaopayCancelResponseVO cancelAll(int purchaseNo, TokenParseResponseVO parseVO) {
+		
+		//구매내역 조회
+		//tid를 얻어야 하니까
+		PurchaseDto purchaseDto = purchaseDao.selectOne(purchaseNo);
+		
+		if(purchaseDto == null) throw new TargetNotfoundException();
+		if(!purchaseDto.getPurchaseOwner().equals(parseVO.getAccountId())) throw new GetOutException();
+		
+		if(purchaseDto.getPurchaseStatus().equals("전체취소"))throw new GetOutException();
+		if(purchaseDto.getPurchaseStatus().equals("차단"))throw new GetOutException();
+		if(purchaseDto.getPurchaseRemain() == 0)throw new GetOutException();
+		
+		//DB처리
+		purchaseDao.purchaseCancel(purchaseNo);
+		
+		
+		//취소요청
+		KakaopayCancelResponseVO payResponse = kakaopayService.cancel(
+				KakaopayCancelRequestVO.builder()
+				 	.tid(purchaseDto.getPurchaseTid())
+				 	.cancelAmount(purchaseDto.getPurchaseRemain())
+				.build()
+				);
+				
+		
+		return payResponse;
+	}
+
+	@Override
+	public KakaopayCancelResponseVO cancelUnit(int purchaseDetailNo) {
+		return null;
 	}
 
 }

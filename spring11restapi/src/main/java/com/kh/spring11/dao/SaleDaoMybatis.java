@@ -80,7 +80,11 @@ public class SaleDaoMybatis implements SaleDao{
 	public List<SaleListItemVO> findOrders(List<Integer> saleNumbers) {
 		return sqlSession.selectList("mapper.sale.findOrders", saleNumbers);
 	}
-	
+
+	@Override
+	public SaleListItemVO findOrder(int saleNo) {
+		return sqlSession.selectOne("mapper.sale.findOrder", saleNo);
+	}
 	
 	
 	
@@ -112,3 +116,4 @@ public class SaleDaoMybatis implements SaleDao{
 	
 
 }
+
