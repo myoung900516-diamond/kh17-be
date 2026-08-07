@@ -13,7 +13,9 @@ public interface CartDao {
 	
 	List<CartItemVO> selectList(String cartOwner);
 
-	boolean update(CartDto cartDto); 
+	boolean update(CartDto cartDto);
+
+	boolean delete(String cartOwner, List<Integer> numbers); 
 	
 //	boolean delete(CartDto cartDto);
 	

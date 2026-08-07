@@ -97,6 +97,8 @@ public class KakaopayRestControllerV2 {
 		//검증
 		if(saleList.isEmpty()) throw new GetOutException();
 		
+		
+		
 		//상품명 계산
 		//-구매상푸 수량정보(request.getOrders())를 Map으로 만들 필요가 있다. 
 		Map<Integer, Integer> ordersMap = request.getOrders().stream()
@@ -179,6 +181,8 @@ public class KakaopayRestControllerV2 {
 		
 		//DB저장
 		purchaseService.save(payResponse, result);
+		
+		
 		
 		//React로 리다이렉트
 		return ResponseEntity.status(302)

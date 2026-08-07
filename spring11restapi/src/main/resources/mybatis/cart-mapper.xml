@@ -62,5 +62,17 @@ from cart C
 	
 where C.cart_owner = 'testuser10' order by C.cart_item asc
 </select>
+
+<delete id="deleteItems">
+	delete 	cart
+	where 	cart_owner = #{cartOwner}
+			and
+			cart_item in(
+				<foreach item="number" collection="list" separator=",">
+					#{number}
+				</foreach>
+			)
+</delete>
+	
 	
 </mapper>
