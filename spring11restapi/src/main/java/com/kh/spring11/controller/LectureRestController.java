@@ -3,7 +3,7 @@ package com.kh.spring11.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -55,7 +55,7 @@ public class LectureRestController {
 							responseCode = "200", 
 							description="등록성공",
 							content = @Content(
-									mediaType = "application/json",
+									mediaType = MediaType.APPLICATION_JSON_VALUE,
 									schema = @Schema(implementation = LectureDto.class)
 									)
 							),
@@ -90,7 +90,7 @@ public class LectureRestController {
 							responseCode = "200",
 							description="조회성공",
 							content = @Content(
-									mediaType = "application/json",
+									mediaType = MediaType.APPLICATION_JSON_VALUE,
 									array = @ArraySchema(
 											schema = @Schema(implementation = LectureDto.class)
 											)
@@ -160,7 +160,7 @@ public class LectureRestController {
 					responseCode = "200",
 					description = "삭제한 대상",
 					content = @Content(
-							mediaType = "application/json",
+							mediaType = MediaType.APPLICATION_JSON_VALUE,
 							schema = @Schema(implementation = LectureDto.class)
 							)
 					)
@@ -185,7 +185,7 @@ public class LectureRestController {
 					responseCode="200",
 					description = "강좌 정보 수정 성공",
 					content = @Content(
-							mediaType = "application/json",
+							mediaType = MediaType.APPLICATION_JSON_VALUE,
 							schema = @Schema(implementation = LectureDto.class)
 							)
 					)
@@ -218,7 +218,7 @@ public class LectureRestController {
 					responseCode = "200",
 					description = "강좌 정보 변경 성공",
 					content = @ Content(
-							mediaType = "application/json",
+							mediaType = MediaType.APPLICATION_JSON_VALUE,
 							schema = @Schema(implementation = LectureDto.class)
 							)
 					

@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.spring11.annotation.AuthApiResponse;
 import com.kh.spring11.annotation.CurrentUser;
 import com.kh.spring11.dao.PurchaseDao;
-import com.kh.spring11.dao.SaleDao;
 import com.kh.spring11.error.GetOutException;
 import com.kh.spring11.service.FlashService;
 import com.kh.spring11.service.KakaopayService;
@@ -61,7 +61,7 @@ public class KakaopayRestControllerV2 {
 	private PurchaseService purchaseService;
 	//상품구매매핑 v2
 	@ApiResponse(responseCode="200", description="상품 구매 요청 성공")
-	@PostMapping(value="/buy", produces="application/json")
+	@PostMapping(value="/buy", produces=MediaType.APPLICATION_JSON_VALUE)
 	public KakaopayBuyResponseVO2 buy(
 			@Valid @RequestBody KakaopayBuyRequestVO2 request,
 			@RequestHeader("X-Client-Page") String clientPage, 

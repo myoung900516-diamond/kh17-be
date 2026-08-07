@@ -5,8 +5,8 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,15 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.kh.spring11.annotation.CommonsApiResponse;
 import com.kh.spring11.dao.AccountDao;
 import com.kh.spring11.dao.CertDao;
-import com.kh.spring11.dto.AccountDto;
 import com.kh.spring11.dto.CertDto;
-import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.service.EmailService;
 import com.kh.spring11.service.RandomService;
 import com.kh.spring11.vo.cert.CertCheckRequestVO;
 import com.kh.spring11.vo.cert.CertCheckResponseVO;
 import com.kh.spring11.vo.cert.CertSendRequestVO;
-import com.kh.spring11.vo.cert.CertTempPasswordResponseVO;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -60,7 +57,7 @@ public class CertRestController {
 		
 	}
 	@ApiResponse(responseCode="200", description="이메일검사성공")
-	@PostMapping(value ="/check", produces="application/json")
+	@PostMapping(value ="/check", produces=MediaType.APPLICATION_JSON_VALUE)
 	public CertCheckResponseVO check(@RequestBody CertCheckRequestVO vo) {
 		
 			//1. 정보가 있는지 확인

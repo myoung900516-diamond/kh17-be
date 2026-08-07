@@ -3,6 +3,7 @@ package com.kh.spring11.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -84,7 +85,7 @@ public class PurchaseRestController {
 	}
 	
 	@ApiResponse(responseCode = "200", description = "결제정보(+카카오페이)조회 성공")
-	@GetMapping(value = "/heavy/{purchaseNo}", produces="application/json")
+	@GetMapping(value = "/heavy/{purchaseNo}", produces=MediaType.APPLICATION_JSON_VALUE)
 	public PurchaseHeavyInfoResponseVO findWithKakao(
 			@PathVariable int purchaseNo,
 			@CurrentUser TokenParseResponseVO parseVO
@@ -134,11 +135,12 @@ public class PurchaseRestController {
 	}
 
 	//구매 상세건 취소 (부분취소)
-//	@ApiResponse(responseCode="200", description="구매건 상세건 취소 성공")
-//	@DeleteMapping("/cancelUnit/{purchaseDetailNo}")
-//	public void cancelUnit(@PathVariable int purchaseDetailNo) {
-//		KakaopayCancelResponseVO payResponse = purchaseService.cancelUnit(purchaseDetailNo);
-//		
-//	}
+	@ApiResponse(responseCode="200", description="구매건 상세건 취소 성공")
+	@DeleteMapping("/cancelUnit/{purchaseDetailNo}")
+	public void cancelUnit(@PathVariable int purchaseDetailNo, 
+			@CurrentUser TokenParseResponseVO parseVO) {
+		KakaopayCancelResponseVO payResponse = purchaseService.cancelUnit(purchaseDetailNo, parseVO);
+		
+	}
 	
 }

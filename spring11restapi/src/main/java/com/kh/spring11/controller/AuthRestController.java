@@ -5,6 +5,7 @@ import java.time.Duration;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -63,7 +64,7 @@ public class AuthRestController {
 	
 	@ApiResponse(responseCode="200", description="로그인성공")
 	@ApiResponse(responseCode="404", description="로그인 정보 불일치")
-	@PostMapping(value="/login", produces="application/json")
+	@PostMapping(value="/login", produces=MediaType.APPLICATION_JSON_VALUE)
 //	public AuthLoginResponseVO login(@RequestBody AuthLoginRequestVO request) {
 	public ResponseEntity<AuthLoginResponseVO> login(
 			@RequestHeader(

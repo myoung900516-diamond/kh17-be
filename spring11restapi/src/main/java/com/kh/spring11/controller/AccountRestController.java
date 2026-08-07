@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -55,7 +56,7 @@ public class AccountRestController {
 
 
 	@ApiResponse(responseCode = "200", description = "가입성공")
-	@PostMapping(value = "/", produces = "application/json")
+	@PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
 	public AccountJoinResponseVO2 join(@RequestBody AccountJoinRequestVO request) {
 		// AccountDto에 AccountJoinRequestVO의 데이터를 복사
 		AccountDto accountDto = new AccountDto();
@@ -91,7 +92,7 @@ public class AccountRestController {
 
 	// 회원 정보를 반환하는 매핑(주의: 내정보 아님)
 	@ApiResponse(responseCode = "200", description = "조회 성공")
-	@GetMapping(value = "/{accountId}", produces = "application/json")
+	@GetMapping(value = "/{accountId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public AccountFindResponseVO find(@PathVariable String accountId) {
 		AccountDto accountDto = accountDao.selectOne(accountId);
 		if (accountDto == null)
@@ -112,7 +113,7 @@ public class AccountRestController {
 	// @CookieValue로 쿠키의 값을 읽어서 해당하는 정보를 조회해서 반환
 	// stateless 서버의 세션 대체 방안
 	@ApiResponse(responseCode = "200", description = "조회성공")
-	@GetMapping(value = "/me", produces = "application/json")
+	@GetMapping(value = "/me", produces = MediaType.APPLICATION_JSON_VALUE)
 	public AccountMeResponseVO me(
 			//accessToken이라는 쿠키를 읽는 명령
 //			@CookieValue(value = "accessToken") String accessToken
@@ -148,7 +149,7 @@ public class AccountRestController {
 	
 	
 //	@ApiResponse(responseCode = "200", description = "비밀번호조회성공")
-//	@GetMapping(value="/findPassword", produces="application/json")
+//	@GetMapping(value="/findPassword", produces=MediaType.APPLICATION_JSON_VALUE)
 //	public boolean findPassword(
 //			@CookieValue(name = "accessToken", required = false) String accessToken,
 //			@RequestParam(required = false)  String accountPassword 
@@ -178,7 +179,7 @@ public class AccountRestController {
 
 	//비밀번호 변경 오쳥에 대한 처리
 	@ApiResponse(responseCode="200", description="비밀번호변경성공")
-	@PatchMapping(value="/password", produces="application/json")
+	@PatchMapping(value="/password", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ChangePasswordResponseVO password(
 			@CurrentUser TokenParseResponseVO parseVO,
 			//@Valid를 붙이면 Spring Validation을 사용하겠다는 뜻

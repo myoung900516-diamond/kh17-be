@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,7 +64,7 @@ public class AdminRestController {
 	
 	// 회원 정보를 반환하는 매핑(주의: 내정보 아님)
 		@ApiResponse(responseCode = "200", description = "조회 성공")
-		@GetMapping(value = "/{accountId}", produces = "application/json")
+		@GetMapping(value = "/{accountId}", produces = MediaType.APPLICATION_JSON_VALUE)
 		public AccountFindResponseVO find(@PathVariable String accountId) {
 			AccountDto accountDto = accountDao.selectOne(accountId);
 			if (accountDto == null)
@@ -80,7 +81,7 @@ public class AdminRestController {
 			return response;
 		}
 		@ApiResponse(responseCode = "200", description = "관리자용 회원 검색")
-		@PostMapping(value="/search", produces="application/json")
+		@PostMapping(value="/search", produces=MediaType.APPLICATION_JSON_VALUE)
 		public AdminComplexSearchResponseVO search(@RequestBody AdminComplexSearchRequestVO request) {
 			
 			int count = accountDao.complexSearchCount(request);
@@ -95,7 +96,7 @@ public class AdminRestController {
 		}
 		
 		@ApiResponse(responseCode = "200", description="차단/해제 성공")
-		@PatchMapping(value="/block/{accountId}", produces="application/json")
+		@PatchMapping(value="/block/{accountId}", produces=MediaType.APPLICATION_JSON_VALUE)
 		public AccountBlockResponseVO block(
 				
 				@PathVariable String accountId

@@ -16,5 +16,10 @@ public class PurchaseDetailDto {
 	private int purchaseDetailPrice;
 	private int purchaseDetailQty;
 	private String purchaseDetailStatus;
+	
+	//이 상품의 총 금액 
+	public int getPurchaseDetailTotal() {
+		return purchaseDetailPrice*purchaseDetailQty;
+	}
 
 }

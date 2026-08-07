@@ -1,6 +1,8 @@
 package com.kh.spring11.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +50,32 @@ public class PurchaseDaoMybatis implements PurchaseDao {
 	@Override
 	public boolean purchaseCancel(int purchaseNo) {
 		return sqlSession.update("mapper.purchase.purchaseCancel", purchaseNo)>0;
+	}
+
+	@Override
+	public boolean purchaseDetailCancel(int purchaseDetailOrigin) {
+		return sqlSession.update("mapper.purchase.purchaseDetailCancel", purchaseDetailOrigin)>0;
+	}
+
+	@Override
+	public PurchaseDetailDto selectDetailOne(int purchaseDetailNo) {
+		return sqlSession.selectOne("mapper.purchase.selectDetailOne", purchaseDetailNo);
+	}
+
+	@Override
+	public boolean purchaseCancelUnit(int purchaseNo, int amount) {
+		//Map은 절대로 대외적으로 보낼 때는 (서버를 벗어나거나 문서로 보낼때)쓰면 안됨. 내부적으로 사용할 때만 쓰느것 
+		Map<String, Integer> params = new HashMap<>();
+		params.put("purchaseNo", purchaseNo);
+		params.put("amount", amount);
+		
+		return sqlSession.update("mapper.purchase.purchaseCancelUnit", params)>0;
+	}
+
+	@Override
+	public boolean purchaseDetailCancelUnit(int purchaseDetailNo) {
+		
+		return sqlSession.update("mapper.purchase.purchaseDetailCancelUnit", purchaseDetailNo)>0;
 	}
 
 }

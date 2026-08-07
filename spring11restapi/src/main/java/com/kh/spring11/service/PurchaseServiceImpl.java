@@ -68,41 +68,114 @@ public class PurchaseServiceImpl implements PurchaseService {
 
 		
 	}
-
 	@Transactional
 	@Override
-	public KakaopayCancelResponseVO cancelAll(int purchaseNo, TokenParseResponseVO parseVO) {
-		
-		//구매내역 조회
-		//tid를 얻어야 하니까
+	public KakaopayCancelResponseVO cancelAll(
+				int purchaseNo, TokenParseResponseVO parseVO) {
+		//구매내역 조회 (TID를 얻어야 하니까)
 		PurchaseDto purchaseDto = purchaseDao.selectOne(purchaseNo);
 		
-		if(purchaseDto == null) throw new TargetNotfoundException();
-		if(!purchaseDto.getPurchaseOwner().equals(parseVO.getAccountId())) throw new GetOutException();
-		
-		if(purchaseDto.getPurchaseStatus().equals("전체취소"))throw new GetOutException();
-		if(purchaseDto.getPurchaseStatus().equals("차단"))throw new GetOutException();
-		if(purchaseDto.getPurchaseRemain() == 0)throw new GetOutException();
+		//취소 불가능한 상황 제거
+		if(purchaseDto == null) 
+			throw new TargetNotfoundException();
+		if(!purchaseDto.getPurchaseOwner().equals(parseVO.getAccountId()))
+			throw new GetOutException();
+		if(purchaseDto.getPurchaseStatus().equals("전체취소"))
+			throw new GetOutException();
+		if(purchaseDto.getPurchaseStatus().equals("차단"))
+			throw new GetOutException();
+		if(purchaseDto.getPurchaseRemain() == 0)
+			throw new GetOutException();
 		
 		//DB처리
-		purchaseDao.purchaseCancel(purchaseNo);
+				//[1]구매 대표정보의 취소금액 변경 및 상태 변경 
+				purchaseDao.purchaseCancel(purchaseNo);
+				//[2]구매 대표정보와 연결된 구매 상세정보 항목들의 상태를 취소로 변경
+				purchaseDao.purchaseDetailCancel(purchaseNo);
 		
-		
-		//취소요청
+		//취소 요청
 		KakaopayCancelResponseVO payResponse = kakaopayService.cancel(
-				KakaopayCancelRequestVO.builder()
-				 	.tid(purchaseDto.getPurchaseTid())
-				 	.cancelAmount(purchaseDto.getPurchaseRemain())
-				.build()
-				);
-				
+			KakaopayCancelRequestVO.builder()
+				.tid(purchaseDto.getPurchaseTid())//거래번호(TID)
+				.cancelAmount(purchaseDto.getPurchaseRemain())//남은금액
+			.build()
+		);
 		
 		return payResponse;
 	}
 
+	
+
+	//하나의 구매건중 하나의 상품의 취소(하나의 구매건에 갯수가 5개인데 이중 일부만 취소할 수는 없음)
+	@Transactional
 	@Override
-	public KakaopayCancelResponseVO cancelUnit(int purchaseDetailNo) {
+	public KakaopayCancelResponseVO cancelUnit(int purchaseDetailNo, TokenParseResponseVO parseVO) {
+		//[1]구매 상세 정보를 조회
+		PurchaseDetailDto purchaseDetailDto = purchaseDao.selectDetailOne(purchaseDetailNo);
+		if(purchaseDetailDto == null) throw new TargetNotfoundException();
+		
+		//[2]구매 대표 정보를 조회
+		PurchaseDto purchaseDto = purchaseDao.selectOne(purchaseDetailDto.getPurchaseDetailOrigin());
+		if(purchaseDto == null) throw new TargetNotfoundException();
+		
+		//security에서 검증이 안되는건 내가 해야됨. 꼼꼼하게 . 검증이 많으면 검증메소드를 따로 만들면됨. 
+		
+		//[3]취소 가능한 구매건인지 검증
+		if(purchaseDetailDto.getPurchaseDetailStatus().equals("취소")) throw new GetOutException();
+		System.out.println("purchaseDetailDto : "+ purchaseDetailDto);
+		System.out.println("purchaseDto : "+ purchaseDto);
+		if(purchaseDto.getPurchaseStatus().equals("전체취소")) throw new GetOutException();
+		if(purchaseDto.getPurchaseStatus().equals("차단")) throw new GetOutException();
+		if(purchaseDto.getPurchaseRemain() == 0) throw new GetOutException();
+		if(!purchaseDto.getPurchaseOwner().equals(parseVO.getAccountId())) throw new GetOutException();
+		
+		int amount = purchaseDetailDto.getPurchaseDetailTotal();
+		if(purchaseDto.getPurchaseRemain() < amount)//취소가능액이 상품금액보다 작다면
+			throw new GetOutException();
+		
+		System.out.println("amount"+amount);
+		
+		
+		//DB처리
+		//[1] 구매 대표 정보의 취소 가능금액 차감 + 상태 재계산
+		purchaseDao.purchaseCancelUnit(purchaseDto.getPurchaseNo(), amount);
+		//[2] 구매 상세 정보의 상태를 취소로 변경 
+		purchaseDao.purchaseDetailCancelUnit(purchaseDetailNo);
+		
+		
+		
+		
+		
+		
+		//취소 요청(현재상품 금액만큼만 = 상품거래액 x 수량)
+	
+		
+		KakaopayCancelResponseVO payResponseVO = kakaopayService.cancel(
+				KakaopayCancelRequestVO.builder()
+					.tid(purchaseDto.getPurchaseTid())
+					.cancelAmount(amount)
+				.build()
+				);
+		
+		
 		return null;
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

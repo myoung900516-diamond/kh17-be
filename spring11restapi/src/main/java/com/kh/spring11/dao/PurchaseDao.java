@@ -11,8 +11,16 @@ public interface PurchaseDao {
 	
 	int purchaseDetailSequence();
 	void purchaseDetailInsert(PurchaseDetailDto purchaseDetailDto);
+	
 	PurchaseDto selectOne(int purchaseNo);
 	List<PurchaseDetailDto> selectDetails(int purchaseNo);
+	boolean purchaseDetailCancel(int purchaseDetailOrigin);
+	
 	boolean purchaseCancel(int purchaseNo);
+	PurchaseDetailDto selectDetailOne(int purchaseDetailNo);
+	
+	
+	boolean purchaseCancelUnit(int purchaseNo, int amount);
+	boolean purchaseDetailCancelUnit(int purchaseDetailNo);
 
 }
