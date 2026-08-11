@@ -85,7 +85,9 @@ public class WebSocketV3MemberServer {
 			String targetId = cut.substring(0, space); 
 			log.debug("target Id : {} ", targetId);
 			String content= cut.substring(space+1);
+			log.debug("content : {}", content);
 			AccountDto targetDto = accountDao.selectOne(targetId);//대상 탐색 
+			log.debug("targetDto : {}", targetDto);
 			if(targetDto == null) return;
 			
 			//DM메세지 생성
