@@ -47,6 +47,8 @@ public class WebSocketV3MemberServer {
 			@AuthenticationPrincipal Jwt jwt
 			
 			) {
+		
+		
 		TokenParseResponseVO parseVO = jwtService.parseAccessToken(jwt);
 		log.debug("parseVO = {}", parseVO);//
 		
@@ -81,6 +83,7 @@ public class WebSocketV3MemberServer {
 			String cut = request.getContent().substring(3);//세글자 제거 /w (띄어쓰기 까지)
 			int space = cut.indexOf(" ");//첫 띄어쓰기 찾기
 			String targetId = cut.substring(0, space); 
+			log.debug("target Id : {} ", targetId);
 			String content= cut.substring(space+1);
 			AccountDto targetDto = accountDao.selectOne(targetId);//대상 탐색 
 			if(targetDto == null) return;

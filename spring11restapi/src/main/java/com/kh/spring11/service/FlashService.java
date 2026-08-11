@@ -1,10 +1,13 @@
 package com.kh.spring11.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Service;
 
+import com.kh.spring11.vo.jwt.TokenParseResponseVO;
 import com.kh.spring11.vo.kakaopay.KakaopayReadyResultVO;
 import com.kh.spring11.vo.kakaopay.KakaopayReadyResultVO2;
 
@@ -40,5 +43,48 @@ public class FlashService {
 	public KakaopayReadyResultVO2 getKakaopayReadyFlashData2(String partnerOrderId) {
 		return kakaopayReadyFlashMap2.remove(partnerOrderId); //get은 그냥 꺼내기만 하고 remove는 지우면서 꺼냄. 
 	}
+	
+	//웹소켓 Version3 용도의 플래시 저장소 
+	
+	//-저장해야하는 것
+	//-사용자의 정보(TokenParseResponseVO)
+	//-사용자가 들어왔다 나갔다 하기 때문에 동기화된 Map을 사용
+	//-아이디를 키로 
+	private Map<String, TokenParseResponseVO> userVersion3
+					=	new ConcurrentHashMap<>();
+	public void enter(TokenParseResponseVO parseVO) {
+		userVersion3.put(parseVO.getAccountId(), parseVO);
+	}
+	public void leave(TokenParseResponseVO parseVO) {
+		userVersion3.remove(parseVO.getAccountId());
+	}
+	public List<TokenParseResponseVO> list(){
+		return new ArrayList<>(userVersion3.values());
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 }
