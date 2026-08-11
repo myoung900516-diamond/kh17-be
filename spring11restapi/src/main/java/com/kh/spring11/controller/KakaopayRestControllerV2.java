@@ -137,6 +137,7 @@ public class KakaopayRestControllerV2 {
 					.itemName(itemName)
 					.totalAmount(totalAmount)
 				.build();
+		System.out.println("payRequest : "+ payRequest);
 		//결제 준비 요청
 		KakaopayReadyResponseVO payResponse = kakaopayService.ready(payRequest);
 		
@@ -182,7 +183,7 @@ public class KakaopayRestControllerV2 {
 		//DB저장
 		purchaseService.save(payResponse, result);
 		
-		
+		System.out.println("+result.getPartnerOrderId() : " +result.getPartnerOrderId());
 		
 		//React로 리다이렉트
 		return ResponseEntity.status(302)

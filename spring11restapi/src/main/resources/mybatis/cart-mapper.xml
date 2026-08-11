@@ -58,9 +58,7 @@ select
 from cart C 
 	inner join sale S on C.cart_item = S.sale_no 
 	left outer join sale_thumbnail ST on S.sale_no = ST.sale_no
-	
-	
-where C.cart_owner = 'testuser10' order by C.cart_item asc
+where C.cart_owner = #{cartOwner} order by C.cart_item asc
 </select>
 
 <delete id="deleteItems">

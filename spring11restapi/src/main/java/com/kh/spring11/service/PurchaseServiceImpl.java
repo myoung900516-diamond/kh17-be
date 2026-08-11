@@ -51,6 +51,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 								.purchaseTid(payResponse.getTid())
 							.build()
 						);
+//				System.out.println("purchaseDto : "+ PurchaseDto);
 				//[2]상세정보등록
 				List<BuyVO> orders = result.getOrders();
 				for(BuyVO order : orders) {
@@ -67,6 +68,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 							.build()
 							);
 				}
+				System.out.println("orders : " + orders);
 				
 				//[3]상품의 재고 차감
 				//[4]장바구니의 내역 삭제(구매한 상품만)

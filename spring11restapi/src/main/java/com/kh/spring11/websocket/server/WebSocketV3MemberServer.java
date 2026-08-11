@@ -101,9 +101,11 @@ public class WebSocketV3MemberServer {
 					.content(content)//기호와 아이디가 잘라진 컨텐츠 
 					.time(LocalDateTime.now())
 				.build();
-			simpMessagingTemplate.convertAndSend("/private/dm"+parseVO.getAccountId(), response);
-			simpMessagingTemplate.convertAndSend("/private/dm"+targetDto.getAccountId(), response);
+			simpMessagingTemplate.convertAndSend("/private/dm/"+parseVO.getAccountId(), response);
+			simpMessagingTemplate.convertAndSend("/private/dm/"+targetDto.getAccountId(), response);
 			
+			
+			log.debug("response : {}", response);
 			return;
 			
 		}

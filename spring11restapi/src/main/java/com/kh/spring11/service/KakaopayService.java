@@ -40,7 +40,7 @@ public class KakaopayService {
 
 	//결제 준비
 	public KakaopayReadyResponseVO ready(KakaopayReadyRequestVO request) {
-		
+//		System.out.println("request : " + request);
 //		상세주소 설정
 		String url = "/online/v1/payment/ready";
 		
@@ -53,12 +53,13 @@ public class KakaopayService {
 //				.toUriString(); //주소를 만드세요
 		
 		request.setCid(kakaopayProperties.getCid());
+//		System.out.println("request : " + request);
 		
 		String baseUrl = ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString();
-		log.debug("context path = {} ", ServletUriComponentsBuilder.fromCurrentContextPath().toUriString());
-		log.debug("context request = {} ", ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
-		log.debug("context request uri = {} ", ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString());
-		log.debug("context servlet mapping = {} ", ServletUriComponentsBuilder.fromCurrentServletMapping().toUriString());
+//		log.debug("context path = {} ", ServletUriComponentsBuilder.fromCurrentContextPath().toUriString());
+//		log.debug("context request = {} ", ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
+//		log.debug("context request uri = {} ", ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString());
+//		log.debug("context servlet mapping = {} ", ServletUriComponentsBuilder.fromCurrentServletMapping().toUriString());
 				
 //		request.setApprovalUrl("http://localhost:8080/api/kakaopay/v1/buy/success");
 //		request.setCancelUrl("http://localhost:8080/api/kakaopay/v1/buy/cancel");
@@ -67,6 +68,7 @@ public class KakaopayService {
 		request.setApprovalUrl(baseUrl + "/success/" + request.getPartnerOrderId());
 		request.setCancelUrl(baseUrl + "/cancel/" + request.getPartnerOrderId());
 		request.setFailUrl(baseUrl + "/fail/" + request.getPartnerOrderId());
+		System.out.println("request : " + request);
 		
 //		요청 발송 및 응답 수신
 		KakaopayReadyResponseVO response = webClient.post()//	POST요청
