@@ -135,6 +135,10 @@ public class SecurityConfiguration {
 						)
 						.hasAuthority("마스터")
 						
+						//회원 전용 웹소켓 주소에 대한 인증 요구 처리(이걸 해야 웹소켓접속시 인증정보가 같이 넘어감)
+						.requestMatchers("ws-member/**").authenticated()
+						
+						
 						
 						//나머지 모두 허용
 						.anyRequest().permitAll()
@@ -187,6 +191,7 @@ public class SecurityConfiguration {
 		//[1]. 허용되는 접근 대상을 지정(allow origins or pattern)
 		config.setAllowedOrigins(List.of(
 				"http://localhost:5173"
+				,"http://192.168.20.1:5173"
 		));
 		//[2]허용할 HTTP 메소드 설정
 		config.setAllowedMethods(List.of(

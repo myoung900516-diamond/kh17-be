@@ -169,7 +169,22 @@
 		    <artifactId>spring-boot-starter-webflux</artifactId>
 		    <scope>compile</scope>
 		</dependency>
+		
+		<!--웹 소켓 배울 때 설치한 도구-->
+			
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-websocket</artifactId>
+		    <scope>compile</scope>
+		</dependency>
+		
+		<!--http의 사용자 정보를 웹소켓에게 넘겨주기 위한 도구-->
 
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-messaging</artifactId>
+		</dependency>
+		
 	</dependencies>
 
 	<build>
