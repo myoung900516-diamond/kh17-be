@@ -18,6 +18,8 @@ import com.kh.spring11.error.GetOutException;
 import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.vo.jwt.TokenParseResponseVO;
 import com.kh.spring11.vo.room.RoomCreateRequestVO;
+import com.kh.spring11.vo.room.RoomEnterRequestVO;
+import com.kh.spring11.vo.room.RoomEnterResponseVO;
 
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -63,6 +65,44 @@ public class RoomRestController {
 	@GetMapping("/")
 	public List<RoomDto> list(){
 		return roomDao.selectList();
+	}
+	
+	//방 참여 관련
+	@PostMapping("/enter")
+	public RoomEnterResponseVO enter(
+			@Valid @RequestBody RoomEnterRequestVO request,
+			@CurrentUser TokenParseResponseVO parseVO
+			){
+		//방 존재 여부 검사
+		RoomDto roomDto = roomDao.selectOne(request.getRoomNo());
+		if(roomDto == null) throw new TargetNotfoundException();
+		
+		//이미 참여중인지 검사 
+		List<String> members = roomDao.getMembers(request.getRoomNo());
+		if(members.contains(parseVO.getAccountId())) {
+			return RoomEnterResponseVO.builder()
+						.result(true)
+						.message("이미 참여중인 방입니다.")
+					.build();
+		}
+		
+		//인원 제한이 걸려있는지 검사 
+		if(roomDto.getRoomLimit() == members.size()) {
+			return RoomEnterResponseVO.builder()
+					.result(false)
+					.message("해당 방의 정원이 모두 찼습니다.")
+				.build();
+		}
+		
+		//(+추가) 차단테이블이 따로 있다면 차단테이블을 조회해서 자격 여부를 판정 
+		//참여 처리
+		roomDao.enter(request.getRoomNo(), parseVO.getAccountId());
+		
+		//응답 생성 및 반환
+		return RoomEnterResponseVO.builder()
+					.result(true)
+					.message(request.getRoomNo()+"번 채팅방에 입장하셨습니다.")
+				.build();
 	}
 	
 

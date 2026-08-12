@@ -11,4 +11,8 @@ public interface RoomDao {
 	RoomDto selectOne(int roomNo);
 	List<RoomDto> selectList();
 
+	void enter(int roomNo, String accountId);
+	void leave(int roomNo, String accountId);
+	List<String> getMembers(int roomNo);
+	
 }
