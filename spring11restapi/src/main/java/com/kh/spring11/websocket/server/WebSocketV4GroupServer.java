@@ -32,6 +32,7 @@ public class WebSocketV4GroupServer {
 			Message<WebSocketV4RequestVO> message,
 			@AuthenticationPrincipal Jwt jwt
 			) {
+		log.debug("메세지수신");
 		//인증 정보 복원
 		TokenParseResponseVO parseVO = jwtService.parseAccessToken(jwt);
 		
@@ -49,7 +50,7 @@ public class WebSocketV4GroupServer {
 				.build();
 		
 		
-		simpMessagingTemplate.convertAndSend("public/"+roomNo+"/chat", response);
+		simpMessagingTemplate.convertAndSend("/public/"+roomNo+"/chat", response);
 		
 	}
 
