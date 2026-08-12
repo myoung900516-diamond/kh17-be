@@ -12,9 +12,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @AuthenticationPrincipal(
-		expression="@jwtService.parseAccessToken(#this.tokenValue)",
+		expression="#this instanceof T(org.springframework.security.oauth2.jwt.Jwt)? @jwtService.parseAccessToken(#this.tokenValue) : null",
+		//있는 걸 가정하고 만든것, 없는 것도 추가 설정해줘야함. 
 		errorOnInvalidType = true
 )
 public @interface CurrentUser {
-
+//	boolean required() default true; //required = true 옵션을 내장시킨다.(추가 도구가 필요하다)
+	
 }

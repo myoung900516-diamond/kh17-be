@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kh.spring11.annotation.AuthApiResponse;
 import com.kh.spring11.annotation.CurrentUser;
 import com.kh.spring11.dao.RoomDao;
 import com.kh.spring11.dto.RoomDto;
@@ -20,9 +21,18 @@ import com.kh.spring11.vo.jwt.TokenParseResponseVO;
 import com.kh.spring11.vo.room.RoomCreateRequestVO;
 import com.kh.spring11.vo.room.RoomEnterRequestVO;
 import com.kh.spring11.vo.room.RoomEnterResponseVO;
+import com.kh.spring11.vo.room.RoomListResponseVO;
+import com.kh.spring11.vo.room.RoomListVO;
 
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+
+
+@Tag(name="채팅방 정보")
+@AuthApiResponse
+
 @Slf4j
 @RestController
 @RequestMapping("/api/room")
@@ -31,7 +41,8 @@ public class RoomRestController {
 	@Autowired
 	private RoomDao roomDao;
 	
-	@PostMapping("/")
+	@ApiResponse(responseCode="200", description="채팅방 생성 성공")
+	@PostMapping(value="/", produces="application/json")
 	public void createRoom(
 			@Valid @RequestBody RoomCreateRequestVO request,
 			@CurrentUser TokenParseResponseVO parseVO
@@ -47,7 +58,8 @@ public class RoomRestController {
 				.build());
 	}
 	
-	@DeleteMapping("/{roomNo}")
+	@ApiResponse(responseCode="200", description="채팅방 삭제 성공")
+	@DeleteMapping(value="/{roomNo}")
 	public void deleteRoom(@PathVariable int roomNo,
 				@CurrentUser TokenParseResponseVO parseVO) {
 		RoomDto roomDto = roomDao.selectOne(roomNo);
@@ -62,13 +74,30 @@ public class RoomRestController {
 		roomDao.delete(roomNo);
 	}
 	
+//	@ApiResponse(responseCode="200", description="채팅방 조회 성공")
+//	@GetMapping(value="/", produces="application/json")
+//	public List<RoomDto> list(){
+//		return roomDao.selectList();
+//	}
 	@GetMapping("/")
-	public List<RoomDto> list(){
-		return roomDao.selectList();
+	public RoomListResponseVO list(
+			//security filter chain에서 permittAll()로 처리된 경우만 null이 가능 
+			@CurrentUser TokenParseResponseVO parseVO
+			) {
+		
+		
+		List<RoomListVO> rooms = roomDao.selectList(parseVO.getAccountId());
+		
+		
+		return RoomListResponseVO.builder()
+					.count(rooms.size())
+					.rooms(rooms)
+				.build();
 	}
 	
 	//방 참여 관련
-	@PostMapping("/enter")
+	@ApiResponse(responseCode="200", description="채팅방 입장 성공")
+	@PostMapping(value="/enter", produces="application/json")
 	public RoomEnterResponseVO enter(
 			@Valid @RequestBody RoomEnterRequestVO request,
 			@CurrentUser TokenParseResponseVO parseVO
@@ -86,8 +115,8 @@ public class RoomRestController {
 					.build();
 		}
 		
-		//인원 제한이 걸려있는지 검사 
-		if(roomDto.getRoomLimit() == members.size()) {
+		//인원 제한이 걸려있는지 검사 (null==무제한)
+		if(roomDto.getRoomLimit() != null && roomDto.getRoomLimit() == members.size()) {
 			return RoomEnterResponseVO.builder()
 					.result(false)
 					.message("해당 방의 정원이 모두 찼습니다.")

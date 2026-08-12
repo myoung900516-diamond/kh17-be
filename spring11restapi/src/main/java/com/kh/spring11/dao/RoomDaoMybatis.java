@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.kh.spring11.dto.RoomDto;
+import com.kh.spring11.vo.room.RoomListVO;
 
 @Repository
 public class RoomDaoMybatis implements RoomDao {
@@ -36,7 +37,7 @@ public class RoomDaoMybatis implements RoomDao {
 	}
 
 	@Override
-	public List<RoomDto> selectList() {
+	public List<RoomListVO> selectList() {
 		return sqlSession.selectList("mapper.room.list");
 	}
 
@@ -59,6 +60,11 @@ public class RoomDaoMybatis implements RoomDao {
 	@Override
 	public List<String> getMembers(int roomNo) {
 		return sqlSession.selectList("mapper.room.member", roomNo);
+	}
+
+	@Override
+	public List<RoomListVO> selectList(String accountId) {
+		return sqlSession.selectList("mapper.room.listUpgrade", accountId);
 	}
 
 }
