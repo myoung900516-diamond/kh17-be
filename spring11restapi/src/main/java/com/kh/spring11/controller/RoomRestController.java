@@ -19,6 +19,7 @@ import com.kh.spring11.error.GetOutException;
 import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.vo.jwt.TokenParseResponseVO;
 import com.kh.spring11.vo.room.RoomCreateRequestVO;
+import com.kh.spring11.vo.room.RoomDetailResponseVO;
 import com.kh.spring11.vo.room.RoomEnterRequestVO;
 import com.kh.spring11.vo.room.RoomEnterResponseVO;
 import com.kh.spring11.vo.room.RoomListResponseVO;
@@ -86,7 +87,8 @@ public class RoomRestController {
 			) {
 		
 		
-		List<RoomListVO> rooms = roomDao.selectList(parseVO.getAccountId());
+		List<RoomListVO> rooms = parseVO != null ? roomDao.selectList(parseVO.getAccountId()) 
+								: roomDao.selectList();
 		
 		
 		return RoomListResponseVO.builder()
@@ -134,6 +136,25 @@ public class RoomRestController {
 				.build();
 	}
 	
+	//방의 상세정보
+	@GetMapping("/{roomNo}")
+	public RoomDetailResponseVO detail(@PathVariable int roomNo, @CurrentUser TokenParseResponseVO parseVO) {
+		
+		//방이 있는지 검사 -> 404
+		RoomDto roomDto = roomDao.selectOne(roomNo);
+		if(roomDto == null ) throw new TargetNotfoundException();
+		
+		
+		//참여자 중에 사용자가 존재하는지 검사 -> 403
+		List<String> members = roomDao.getMembers(roomNo);
+		if(!members.contains(parseVO.getAccountId())) throw new GetOutException();
+		
+		//응답 생성 및 반환
+		return RoomDetailResponseVO.builder()
+					.room(roomDto)
+				.build();
+		
+	}
 
 	
 	

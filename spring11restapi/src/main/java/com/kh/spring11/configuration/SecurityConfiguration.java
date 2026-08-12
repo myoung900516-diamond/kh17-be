@@ -138,7 +138,13 @@ public class SecurityConfiguration {
 						//회원 전용 웹소켓 주소에 대한 인증 요구 처리(이걸 해야 웹소켓접속시 인증정보가 같이 넘어감)
 						.requestMatchers("ws-member/**").authenticated()
 						
+						.requestMatchers(HttpMethod.POST, "/api/room/**").authenticated()
+						.requestMatchers(HttpMethod.PUT, "/api/room/**").authenticated()
+						.requestMatchers(HttpMethod.PATCH, "/api/room/**").authenticated()
+						.requestMatchers(HttpMethod.DELETE, "/api/room/**").authenticated()
 						
+						.requestMatchers(HttpMethod.GET, "/api/room/").permitAll()
+						.requestMatchers(HttpMethod.GET, "/api/room/**").authenticated()
 						
 						//나머지 모두 허용
 						.anyRequest().permitAll()

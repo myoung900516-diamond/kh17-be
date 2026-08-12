@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	select 
 		R.*,
 		nvl(U.cnt, 0) cnt,
-		'N' 
+		'N' enter
 	from room R 
 		left outer join (
 		select room_no, count(*) cnt from room_user group by room_no
