@@ -83,11 +83,11 @@ public class WebSocketV3MemberServer {
 			String cut = request.getContent().substring(3);//세글자 제거 /w (띄어쓰기 까지)
 			int space = cut.indexOf(" ");//첫 띄어쓰기 찾기
 			String targetId = cut.substring(0, space); 
-			log.debug("target Id : {} ", targetId);
+//			log.debug("target Id : {} ", targetId);
 			String content= cut.substring(space+1);
-			log.debug("content : {}", content);
+//			log.debug("content : {}", content);
 			AccountDto targetDto = accountDao.selectOne(targetId);//대상 탐색 
-			log.debug("targetDto : {}", targetDto);
+//			log.debug("targetDto : {}", targetDto);
 			if(targetDto == null) return;
 			
 			//DM메세지 생성
@@ -105,7 +105,7 @@ public class WebSocketV3MemberServer {
 			simpMessagingTemplate.convertAndSend("/private/dm/"+targetDto.getAccountId(), response);
 			
 			
-			log.debug("response : {}", response);
+//			log.debug("response : {}", response);
 			return;
 			
 		}

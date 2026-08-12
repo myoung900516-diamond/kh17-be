@@ -83,6 +83,18 @@ from room R
 order by R.room_no asc
 </select>
 
+<!-- 참여자 정보 -->
+
+<select id="memberInfo" resultType="RoomUserVO">
+select 
+	ACC.account_id, 
+	ACC.account_nickname, 
+	ACC.account_level
+from room_user RU
+	inner join account ACC on RU.account_id = ACC.account_id
+where room_no = #{roomNo}
+</select>
+
 
 
 

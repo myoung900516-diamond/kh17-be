@@ -1,5 +1,7 @@
 package com.kh.spring11.vo.room;
 
+import java.util.List;
+
 import com.kh.spring11.dto.RoomDto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class RoomDetailResponseVO {
 	
 	private RoomDto room;//방 정보
+	private List<RoomUserVO> users;//참여자 정보
 	
 	
 

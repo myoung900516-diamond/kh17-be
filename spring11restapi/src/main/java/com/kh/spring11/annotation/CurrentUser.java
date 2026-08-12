@@ -20,3 +20,5 @@ public @interface CurrentUser {
 //	boolean required() default true; //required = true 옵션을 내장시킨다.(추가 도구가 필요하다)
 	
 }
+//spel문법
+//this = 스프링 시큐리티가 가져오는 요청 정보

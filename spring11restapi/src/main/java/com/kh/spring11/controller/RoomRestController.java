@@ -3,6 +3,7 @@ package com.kh.spring11.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.kh.spring11.vo.room.RoomEnterRequestVO;
 import com.kh.spring11.vo.room.RoomEnterResponseVO;
 import com.kh.spring11.vo.room.RoomListResponseVO;
 import com.kh.spring11.vo.room.RoomListVO;
+import com.kh.spring11.vo.room.RoomUserVO;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -41,6 +43,8 @@ public class RoomRestController {
 	
 	@Autowired
 	private RoomDao roomDao;
+	@Autowired
+	private SimpMessagingTemplate simpMessagingTemplate;
 	
 	@ApiResponse(responseCode="200", description="채팅방 생성 성공")
 	@PostMapping(value="/", produces="application/json")
@@ -129,6 +133,13 @@ public class RoomRestController {
 		//참여 처리
 		roomDao.enter(request.getRoomNo(), parseVO.getAccountId());
 		
+		//***중요***
+		//enter가 발생하거 나서 (DB에 참여처리가 완료되고 나서) 웹소켓으로 인원변동을 알림
+		List<RoomUserVO> users = roomDao.getMemberInfo(request.getRoomNo());
+		simpMessagingTemplate.convertAndSend(
+				"/public/"+request.getRoomNo()+"/users", users
+				);
+		
 		//응답 생성 및 반환
 		return RoomEnterResponseVO.builder()
 					.result(true)
@@ -146,12 +157,21 @@ public class RoomRestController {
 		
 		
 		//참여자 중에 사용자가 존재하는지 검사 -> 403
-		List<String> members = roomDao.getMembers(roomNo);
-		if(!members.contains(parseVO.getAccountId())) throw new GetOutException();
+//		List<String> members = roomDao.getMembers(roomNo);
+//		if(!members.contains(parseVO.getAccountId())) throw new GetOutException();
+		
+		List<RoomUserVO> users=roomDao.getMemberInfo(roomNo);//id, 등급, 닉네임
+		if(users.stream()
+				.map(user->user.getAccountId())
+				.noneMatch(accountId->accountId.equals(parseVO.getAccountId()))
+		) {
+			throw new GetOutException();
+		}
 		
 		//응답 생성 및 반환
 		return RoomDetailResponseVO.builder()
-					.room(roomDto)
+					.room(roomDto)//방정보
+					.users(users)//유저목록
 				.build();
 		
 	}
