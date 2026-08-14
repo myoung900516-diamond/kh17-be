@@ -22,12 +22,14 @@ import com.kh.spring11.dto.RoomDto;
 import com.kh.spring11.error.GetOutException;
 import com.kh.spring11.error.TargetNotfoundException;
 import com.kh.spring11.vo.jwt.TokenParseResponseVO;
+import com.kh.spring11.vo.message.MessageVO;
 import com.kh.spring11.vo.room.RoomCreateRequestVO;
 import com.kh.spring11.vo.room.RoomDetailResponseVO;
 import com.kh.spring11.vo.room.RoomEnterRequestVO;
 import com.kh.spring11.vo.room.RoomEnterResponseVO;
 import com.kh.spring11.vo.room.RoomListResponseVO;
 import com.kh.spring11.vo.room.RoomListVO;
+import com.kh.spring11.vo.room.RoomMessagesResponseVO;
 import com.kh.spring11.vo.room.RoomSystemMessageVO;
 import com.kh.spring11.vo.room.RoomUserVO;
 import com.kh.spring11.websocket.vo.WebSocketV4SystemVO;
@@ -210,7 +212,30 @@ public class RoomRestController {
 
 	
 	
-	
+	//방 메세지 매핑
+	@ApiResponse(responseCode = "200", description="메세지 조회 성공")
+	@GetMapping("/{roomNo}/messages")
+	public RoomMessagesResponseVO messages(
+			@PathVariable int roomNo,
+			@CurrentUser TokenParseResponseVO parseVO
+			){
+		//참여자인지 검사
+		List<String> ids = roomDao.getMembers(roomNo);//아이디조회
+		if(!ids.contains(parseVO.getAccountId()))
+			throw new GetOutException();//403
+		
+		
+		
+		//메세지 불러오기
+		List<MessageVO> messages = messageDao.selectList(roomNo);
+		
+		
+		
+		
+		return RoomMessagesResponseVO.builder()
+					.messages(messages)
+				.build();
+	}
 	
 	
 	

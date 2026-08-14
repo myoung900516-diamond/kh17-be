@@ -47,6 +47,46 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{messageNo}, #{messageLevel}
 		)
 	</insert>
+	
+	<!-- 조회를 위한 구조를 안내(ResultMap) -->
+	
+	<resultMap type="MessageVO" id="MessageVO">
+		<result property="messageNo" column="message_no"/>
+		<result property="messageRoom" column="message_room"/>
+		<result property="messageType" column="message_type"/>
+		<result property="messageContent" column="message_content"/>
+		<result property="messageTime" column="message_time"/>
+		<!-- 항목을 제공해주고 경우에 따라 다른 데이터를 불러오도록 처리 -->
+		<discriminator javaType="String" column="message_type">
+			<case value="chat" resultMap="ChatMessageVO"></case>
+			<case value="system" resultMap="SystemMessageVO"></case>
+		</discriminator>
+	</resultMap>
+	<resultMap type="ChatMessageVO" id="ChatMessageVO">
+		<result property="messageNo" column="message_no"/>
+		<result property="messageSenderId" column="message_sender_id"/>
+		<result property="messageSenderNickname" column="message_sender_nickname"/>
+		<result property="messageSenderLevel" column="message_sender_level"/>
+	</resultMap>
+	<resultMap type="SystemMessageVO" id="SystemMessageVO">
+		<result property="messageNo" column="message_no"/>
+		<result property="messageLevel" column="message_level"/>
+	</resultMap>
+	
+	<!-- 메세지 조회 -->
+	<select id="selectTest" resultMap="MessageVO">
+		select 
+			M.*,
+			C.message_sender_id,
+			C.message_sender_nickname,
+			C.message_sender_level,
+			S.message_level 
+		from message M
+			left outer join message_chat C on M.message_no = C.message_no
+			left outer join message_system S on M.message_no = S.message_no
+		where M.message_room = #{messageRoom}
+		order by M.message_no desc
+	</select>
 
 	
 </mapper>
