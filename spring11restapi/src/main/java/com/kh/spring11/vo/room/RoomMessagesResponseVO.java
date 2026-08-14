@@ -15,5 +15,6 @@ import lombok.NoArgsConstructor;
 public class RoomMessagesResponseVO {
 	
 	private List<MessageVO> messages;
+	private boolean last;
 
 }

@@ -29,6 +29,7 @@ import com.kh.spring11.vo.room.RoomEnterRequestVO;
 import com.kh.spring11.vo.room.RoomEnterResponseVO;
 import com.kh.spring11.vo.room.RoomListResponseVO;
 import com.kh.spring11.vo.room.RoomListVO;
+import com.kh.spring11.vo.room.RoomMessageRequestVO;
 import com.kh.spring11.vo.room.RoomMessagesResponseVO;
 import com.kh.spring11.vo.room.RoomSystemMessageVO;
 import com.kh.spring11.vo.room.RoomUserVO;
@@ -240,7 +241,40 @@ public class RoomRestController {
 	
 	
 	
-	
+	@ApiResponse(responseCode = "200", description="메세지 조회 성공")
+	@PostMapping("/{roomNo}/messages")
+	public RoomMessagesResponseVO messages(
+			@PathVariable int roomNo,
+			@Valid @RequestBody RoomMessageRequestVO request,
+			@CurrentUser TokenParseResponseVO parseVO
+			){
+		
+		//참여자인지 검사
+		List<String> ids = roomDao.getMembers(roomNo);//아이디조회
+		if(!ids.contains(parseVO.getAccountId()))
+			throw new GetOutException();//403
+		
+		
+		
+		//메세지 불러오기
+//		List<MessageVO> messages = messageDao.selectList(roomNo);
+//		List<MessageVO> messages = request.getLastMessageNo() == null ?
+//				messageDao.selectList(roomNo, request.getSize()) :
+//				messageDao.selectList(roomNo, request.getSize(), request.getLastMessageNo());
+		
+		List<MessageVO> messages = messageDao.selectList(roomNo, request);
+		
+		
+		int count = messageDao.count(roomNo, request);
+		
+		
+		
+		
+		return RoomMessagesResponseVO.builder()
+					.messages(messages)
+					.last(messages.size() >= count)
+				.build();
+	}
 	
 	
 	

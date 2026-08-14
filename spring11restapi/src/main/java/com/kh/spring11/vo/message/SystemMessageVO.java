@@ -6,6 +6,6 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class SystemMessageVO extends MessageVO{
-	private int messageNo;
-	private String messageLevel;
+	private int no;
+	private String level;
 }

@@ -236,6 +236,8 @@ public class SecurityConfiguration {
 		
 	}
 	
+	
+	
 	//BearerTokenResolver
 	//-Bearer는 토큰의 한 종류(인증을 통해 무언가를 얻어내겠다는 의미의 토큰)
 	//- 원래 토큰은 표준이 없어서 JWT앞에 어떤 접두사를 붙여도 됨. 
