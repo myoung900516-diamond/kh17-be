@@ -147,11 +147,11 @@ public class SecurityConfiguration {
 						.requestMatchers(HttpMethod.GET, "/api/room/**").authenticated()
 						
 						//나머지 모두 허용
-						.anyRequest().permitAll()
+//						.anyRequest().permitAll()
 						//나머지는 최소한 로그인은 해야되
 //						.anyRequest().authenticated()
 						//나머지는 모두 안되
-						//.anyRequest().denyAll()
+						.anyRequest().denyAll()
 			)
 			//JWT를 어떻게 검증할 것인지 설정 (JwtDecoder가 반드시 필요)
 			//→ BearerTokenResolver : AccessToken을 꺼내서 JWT를 뽑아내는 도구

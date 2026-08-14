@@ -115,6 +115,8 @@ public class AuthRestController {
 		String accessToken = jwtService.createAccessToken(tokenRequest);
 		String refreshToken = jwtService.createRefreshToken(tokenRequest.getAccountId());
 		
+		//System.out.println(jwtProperties);
+		
 		//쿠키생성
 		ResponseCookie accessCookie = ResponseCookie
 				.from("accessToken", accessToken)

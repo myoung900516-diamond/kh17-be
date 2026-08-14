@@ -27,6 +27,8 @@ import com.kh.spring11.vo.room.RoomCreateRequestVO;
 import com.kh.spring11.vo.room.RoomDetailResponseVO;
 import com.kh.spring11.vo.room.RoomEnterRequestVO;
 import com.kh.spring11.vo.room.RoomEnterResponseVO;
+import com.kh.spring11.vo.room.RoomKickRequestVO;
+import com.kh.spring11.vo.room.RoomLeaveRequestVO;
 import com.kh.spring11.vo.room.RoomListResponseVO;
 import com.kh.spring11.vo.room.RoomListVO;
 import com.kh.spring11.vo.room.RoomMessageRequestVO;
@@ -210,6 +212,116 @@ public class RoomRestController {
 				.build();
 		
 	}
+	
+	//방 나가기 매핑
+	@PostMapping("/leave")
+	public void leave(@Valid @RequestBody RoomLeaveRequestVO request, 
+					@CurrentUser TokenParseResponseVO parseVO) {
+		//방 존재 여부 검사
+		RoomDto roomDto = roomDao.selectOne(request.getRoomNo());
+		if(roomDto == null) throw new TargetNotfoundException();
+		
+		//참여중인지 검사는 pass
+		
+		//참여자 제거
+		roomDao.leave(roomDto.getRoomNo(), parseVO.getAccountId());
+		
+		//시스템메세지를 해당 방으로 발송
+		LocalDateTime current = LocalDateTime.now();
+		
+		WebSocketV4SystemVO response = WebSocketV4SystemVO.builder()
+					.content("["+parseVO.getAccountId()+"]님이 퇴장하셨습니다.")
+					.level("primary")
+					.time(current)
+				.build();
+		
+		
+		//시스템메세지를 DB에 저장
+		//DB저장 처리
+		int messageNo = messageDao.sequence();
+		messageDao.insertSystem(RoomSystemMessageVO.builder()
+					.messageNo(messageNo)
+					.messageRoom(request.getRoomNo())
+					.messageType(response.getType())
+					.messageContent(response.getContent())
+					.messageTime(Timestamp.valueOf(response.getTime()))
+					.messageLevel(response.getLevel())
+				.build());
+		
+		//시스템 메세지 발송
+		simpMessagingTemplate.convertAndSend(
+				"/public/"+roomDto.getRoomNo()+"/system", response
+				);
+		
+		
+		//***중요***
+		//leave가 발생하고 나서 (DB에 참여처리가 완료되고 나서) 웹소켓으로 인원변동을 알림
+		List<RoomUserVO> users = roomDao.getMemberInfo(request.getRoomNo());
+		simpMessagingTemplate.convertAndSend(
+				"/public/"+request.getRoomNo()+"/users", users
+		);
+		
+	}
+	
+	//방 추방 매핑
+		@PostMapping("/kick")
+		public void kick(@Valid @RequestBody RoomKickRequestVO request, 
+						@CurrentUser TokenParseResponseVO parseVO) {
+			//방 존재 여부 검사
+			RoomDto roomDto = roomDao.selectOne(request.getRoomNo());
+			if(roomDto == null) throw new TargetNotfoundException();
+			
+			//방장인지 검사
+			if(!parseVO.getAccountId().equals(roomDto.getRoomOwner())){
+				throw new GetOutException();
+			}
+					
+			
+			//참여자 제거
+			roomDao.leave(roomDto.getRoomNo(), request.getAccountId());
+			
+			//시스템메세지를 해당 방으로 발송
+			LocalDateTime current = LocalDateTime.now();
+			
+			WebSocketV4SystemVO response = WebSocketV4SystemVO.builder()
+						.content("["+request.getAccountId()+"]님이 추방당하셨습니다.")
+						.level("danget")
+						.time(current)
+					.build();
+			
+			
+			//시스템메세지를 DB에 저장
+			//DB저장 처리
+			int messageNo = messageDao.sequence();
+			messageDao.insertSystem(RoomSystemMessageVO.builder()
+						.messageNo(messageNo)
+						.messageRoom(request.getRoomNo())
+						.messageType(response.getType())
+						.messageContent(response.getContent())
+						.messageTime(Timestamp.valueOf(response.getTime()))
+						.messageLevel(response.getLevel())
+					.build());
+			
+			//추방된 대상에게 목록으로 튕겨질 수 있도록 행위를 요청(action채널)
+			simpMessagingTemplate.convertAndSend(
+						"/private/"+roomDto.getRoomNo()+"/action/"+request.getAccountId(),
+						"leave"
+					);
+			
+			//시스템 메세지 발송
+			simpMessagingTemplate.convertAndSend(
+					"/public/"+roomDto.getRoomNo()+"/system", response
+					);
+			
+			
+			//***중요***
+			//leave가 발생하고 나서 (DB에 참여처리가 완료되고 나서) 웹소켓으로 인원변동을 알림
+			List<RoomUserVO> users = roomDao.getMemberInfo(request.getRoomNo());
+			simpMessagingTemplate.convertAndSend(
+					"/public/"+request.getRoomNo()+"/users", users
+			);
+			
+		}
 
 	
 	

@@ -122,6 +122,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<include refid="temp-footer"></include>
 		
 		select * from (
+			select * from (
 			<!-- temp_list는 위에서 만든 임시 뷰의 이름 -->
 			select * from temp_list
 			
@@ -130,13 +131,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			where message_no < #{lastMessageNo} 
 			]]>
 			</if>
-		)
-		<!-- 사이즈가 존재할 경우만 개수제한을 해서 불러와라 -->
-		<if test="size != null">
-		<![CDATA[
-		where rownum <= #{size}
-		]]>
-		</if>
+			)
+			<!-- 사이즈가 존재할 경우만 개수제한을 해서 불러와라 -->
+			<if test="size != null">
+			<![CDATA[
+			where rownum <= #{size}
+			]]>
+			</if>
+		) 
+		order by message_no asc
 	</select>
 
 
