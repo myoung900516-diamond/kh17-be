@@ -1,0 +1,21 @@
+package com.kh.spring11.vo.room;
+
+import java.sql.Timestamp;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data @Builder @NoArgsConstructor @AllArgsConstructor
+public class RoomSystemMessageVO {
+		private int messageNo;
+		private int messageRoom;
+		private String messageType;
+		private String messageContent;
+		private String messageLevel;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+		private Timestamp messageTime;
+
+
+
+}

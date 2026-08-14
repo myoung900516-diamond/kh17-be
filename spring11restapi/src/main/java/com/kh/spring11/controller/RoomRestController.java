@@ -1,5 +1,7 @@
 package com.kh.spring11.controller;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kh.spring11.annotation.AuthApiResponse;
 import com.kh.spring11.annotation.CurrentUser;
+import com.kh.spring11.dao.MessageDao;
 import com.kh.spring11.dao.RoomDao;
 import com.kh.spring11.dto.RoomDto;
 import com.kh.spring11.error.GetOutException;
@@ -25,7 +28,9 @@ import com.kh.spring11.vo.room.RoomEnterRequestVO;
 import com.kh.spring11.vo.room.RoomEnterResponseVO;
 import com.kh.spring11.vo.room.RoomListResponseVO;
 import com.kh.spring11.vo.room.RoomListVO;
+import com.kh.spring11.vo.room.RoomSystemMessageVO;
 import com.kh.spring11.vo.room.RoomUserVO;
+import com.kh.spring11.websocket.vo.WebSocketV4SystemVO;
 
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -45,6 +50,8 @@ public class RoomRestController {
 	private RoomDao roomDao;
 	@Autowired
 	private SimpMessagingTemplate simpMessagingTemplate;
+	@Autowired
+	private MessageDao messageDao;
 	
 	@ApiResponse(responseCode="200", description="채팅방 생성 성공")
 	@PostMapping(value="/", produces="application/json")
@@ -132,13 +139,38 @@ public class RoomRestController {
 		//(+추가) 차단테이블이 따로 있다면 차단테이블을 조회해서 자격 여부를 판정 
 		//참여 처리
 		roomDao.enter(request.getRoomNo(), parseVO.getAccountId());
+		LocalDateTime current = LocalDateTime.now();
+		
+		//메세지 생성
+		WebSocketV4SystemVO response = WebSocketV4SystemVO.builder()
+			.content("["+parseVO.getAccountNickname()+"]님이 입장하셨습니다")
+			.level("primary")
+			.time(current)
+		.build();
+		
+		//DB저장 처리
+		int messageNo = messageDao.sequence();
+		messageDao.insertSystem(RoomSystemMessageVO.builder()
+					.messageNo(messageNo)
+					.messageRoom(request.getRoomNo())
+					.messageType(response.getType())
+					.messageContent(response.getContent())
+					.messageTime(Timestamp.valueOf(response.getTime()))
+					.messageLevel(response.getLevel())
+				.build());
 		
 		//***중요***
 		//enter가 발생하거 나서 (DB에 참여처리가 완료되고 나서) 웹소켓으로 인원변동을 알림
 		List<RoomUserVO> users = roomDao.getMemberInfo(request.getRoomNo());
 		simpMessagingTemplate.convertAndSend(
 				"/public/"+request.getRoomNo()+"/users", users
-				);
+		);
+		//해당 방에 입장(혹은 퇴장) 시스템 메세지도 발송
+		simpMessagingTemplate.convertAndSend(
+				"/public/"+request.getRoomNo()+"/system",
+				response
+		);
+		
 		
 		//응답 생성 및 반환
 		return RoomEnterResponseVO.builder()

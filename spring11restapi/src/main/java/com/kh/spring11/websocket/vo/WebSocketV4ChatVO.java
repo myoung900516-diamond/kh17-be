@@ -15,4 +15,5 @@ public class WebSocketV4ChatVO {
 	private String senderId, senderLevel, senderNickname;
 	private String content;
 	private LocalDateTime time;
+	
 }
