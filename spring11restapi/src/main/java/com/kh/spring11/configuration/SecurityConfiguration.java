@@ -146,12 +146,14 @@ public class SecurityConfiguration {
 						.requestMatchers(HttpMethod.GET, "/api/room/").permitAll()
 						.requestMatchers(HttpMethod.GET, "/api/room/**").authenticated()
 						
+						//뷰 허용
+						.requestMatchers(HttpMethod.GET, "/views/**").permitAll()
 						//나머지 모두 허용
-//						.anyRequest().permitAll()
+						.anyRequest().permitAll()
 						//나머지는 최소한 로그인은 해야되
 //						.anyRequest().authenticated()
 						//나머지는 모두 안되
-						.anyRequest().denyAll()
+//						.anyRequest().denyAll()
 			)
 			//JWT를 어떻게 검증할 것인지 설정 (JwtDecoder가 반드시 필요)
 			//→ BearerTokenResolver : AccessToken을 꺼내서 JWT를 뽑아내는 도구
@@ -264,6 +266,13 @@ public class SecurityConfiguration {
 			}
 			//accessToken이 필요한 주소만 남았으므로 검색을 통해 찾아서 반환
 			Cookie[] cookies = request.getCookies();//모든 쿠키를 긁어온다. 
+			
+//			for(Cookie cookie : cookies) {
+//				
+//				System.out.println("name = " + cookie.getName());
+//			    System.out.println("value = " + cookie.getValue());
+//			}
+			
 			if(cookies == null) {//options 같은 상황에서 null일 수 있다.
 				return null;
 			}

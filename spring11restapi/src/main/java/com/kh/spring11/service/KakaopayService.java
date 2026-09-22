@@ -43,27 +43,13 @@ public class KakaopayService {
 //		System.out.println("request : " + request);
 //		상세주소 설정
 		String url = "/online/v1/payment/ready";
-		
-//		(+추가) approvalUrl, cancelUrl, failUrl을 현재 페이지 주소를 알아내서 계산
-//		String url = ServletUriComponentsBuilder
-//				.fromCurrentContextPath() //현재 주소의 최상단에서 시작
-//				.path("/member/cert") //추가 경로를 합치고
-//				.queryParam("certEmail", memberEmail)
-//				.queryParam("certNumber", number)
-//				.toUriString(); //주소를 만드세요
+
 		
 		request.setCid(kakaopayProperties.getCid());
 //		System.out.println("request : " + request);
 		
 		String baseUrl = ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString();
-//		log.debug("context path = {} ", ServletUriComponentsBuilder.fromCurrentContextPath().toUriString());
-//		log.debug("context request = {} ", ServletUriComponentsBuilder.fromCurrentRequest().toUriString());
-//		log.debug("context request uri = {} ", ServletUriComponentsBuilder.fromCurrentRequestUri().toUriString());
-//		log.debug("context servlet mapping = {} ", ServletUriComponentsBuilder.fromCurrentServletMapping().toUriString());
-				
-//		request.setApprovalUrl("http://localhost:8080/api/kakaopay/v1/buy/success");
-//		request.setCancelUrl("http://localhost:8080/api/kakaopay/v1/buy/cancel");
-//		request.setFailUrl("http://localhost:8080/api/kakaopay/v1/buy/fail");
+
 		
 		request.setApprovalUrl(baseUrl + "/success/" + request.getPartnerOrderId());
 		request.setCancelUrl(baseUrl + "/cancel/" + request.getPartnerOrderId());
