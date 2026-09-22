@@ -20,14 +20,14 @@ public class PokemonUpdateTest {
 	private PokemonRepository pokemonRepository;
 	
 	@Test
-	@Transactional
+//	@Transactional
 	public void test() {
 		//[수정] 수정을 하려면 PK와 수정할 정보가 있어야 한다 (다 바꿀수도 있고, 일부만 바꿀 수도 있고...)
 		
 		//변경할 정보들을 객체로 생성 (=화면에서 넘어오는 정보 수신과 동일)
 		
 		Pokemon p = Pokemon.builder()
-					.pokemonNo(1L)
+					.pokemonNo(2L)
 					.pokemonName("테스트몬")
 					.pokemonType("테스트")
 				.build();
