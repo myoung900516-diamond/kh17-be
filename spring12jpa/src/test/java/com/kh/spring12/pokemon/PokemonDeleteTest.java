@@ -8,7 +8,6 @@ import com.kh.spring12.entity.Pokemon;
 import com.kh.spring12.error.TargetNotfoundException;
 import com.kh.spring12.repo.PokemonRepository;
 
-import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
